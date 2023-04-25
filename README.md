@@ -1,1 +1,0 @@
-# delivery-hmo-companies-api
