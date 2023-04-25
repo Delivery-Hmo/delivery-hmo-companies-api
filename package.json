@@ -1,0 +1,36 @@
+{
+  "name": "delivery-hmo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "ts:node": "ts-node src",
+    "dev": "nodemon -x node --es-module-specifier-resolution=node --no-warnings --loader ts-node/esm src/index.ts",
+    "build": "rm -rf build && tsc",
+    "html": "find ./src -name '*.hbs' -o -name '*.css' -type f -exec cp --parents {} ./build \\;",
+    "clean": "rm -rf build",
+    "cleanModule": "rm -rf node_modules",
+    "start": "node build/src"
+  },
+  "build": "tsc --project ./",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cors": "^2.8.13",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.7.0",
+    "mongodb": "^5.3.0",
+    "mongoose": "^7.0.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.11",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}

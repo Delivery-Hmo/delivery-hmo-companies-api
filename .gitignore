@@ -1,0 +1,12 @@
+# Compiled JavaScript files
+lib/**/*.js
+lib/**/*.js.map
+
+# TypeScript v1 declaration filess
+typings/
+
+# Node.js dependency directory
+node_modules/
+# tsc build
+build/
+.env
