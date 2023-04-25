@@ -1,0 +1,173 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Delivery Amazon API Gateway. This is a API that integrates via HTTP delivery",
+        "title": "Delivery"
+    },
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/userAdmin/list": {
+            "get": {
+                "tags": [
+                    "userAdmin"
+                ],
+                "summary": "List userAdmin",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The limit of data",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number of results to return.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {},
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string",
+                                "description": "URI that may access the resource"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Origin": "'*'"
+                            }
+                        }
+                    },
+                    "requestParameters": {
+                        "integration.request.querystring.limit": "method.request.querystring.limit",
+                        "integration.request.querystring.page": "method.request.querystring.page"
+                    },
+                    "uri": "http://www.elastic.deliapihmo.fun/userAdmin/list",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "GET",
+                    "type": "http"
+                }
+            }
+        },
+        "/userAdmin/getById": {
+            "get": {
+                "tags": [
+                    "userAdmin"
+                ],
+                "summary": "getById",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id of data",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {},
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string",
+                                "description": "URI that may access the resource"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Origin": "'*'"
+                            }
+                        }
+                    },
+                    "requestParameters": {
+                        "integration.request.querystring.id": "method.request.querystring.id"
+                    },
+                    "uri": "http://www.elastic.deliapihmo.fun/userAdmin/getById",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "GET",
+                    "type": "http"
+                }
+            }
+        },
+        "/userAdmin/getByUid": {
+            "get": {
+                "tags": [
+                    "userAdmin"
+                ],
+                "summary": "getByUid",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "in": "query",
+                        "description": "uid of data",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {},
+                        "headers": {
+                            "Access-Control-Allow-Origin": {
+                                "type": "string",
+                                "description": "URI that may access the resource"
+                            }
+                        }
+                    }
+                },
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "default": {
+                            "statusCode": "200",
+                            "responseParameters": {
+                                "method.response.header.Access-Control-Allow-Origin": "'*'"
+                            }
+                        }
+                    },
+                    "requestParameters": {
+                        "integration.request.querystring.id": "method.request.querystring.id"
+                    },
+                    "uri": "http://www.elastic.deliapihmo.fun/userAdmin/getByUid",
+                    "passthroughBehavior": "when_no_match",
+                    "httpMethod": "GET",
+                    "type": "http"
+                }
+            }
+        }
+    },
+    "definitions": {},
+    "x-amazon-apigateway-documentation": {
+        "version": "v1.1",
+        "createdDate": "2023-11-28T07:03:59Z",
+        "documentationParts": []
+    }
+}
