@@ -15,7 +15,7 @@ export interface User {
 }
 export interface UserAdmin extends User {
   company?: string;
-  rfc: string;
+  rfc?: string;
 }
 export interface UserDeliveryMan extends User {
   branchOffice: string | BranchOffice;

@@ -10,10 +10,10 @@ const schema = new Schema<UserAdmin>(
     phone: { type: Number, maxlength: 10, minlength: 10 }, 
     company: { type: String, maxlength: 50 }, 
     description: { type: String, maxlength: 1000, default: "" }, 
-    imagen: { type: String, maxlength: 2000, default: "" }, 
+    imagen: { type: String, maxlength: 2000, default: "https://firebasestorage.googleapis.com/v0/b/delivery-hmo.appspot.com/o/imagenesPerfil%2Fperfil.jpg?alt=media&token=a07f8154-7aaa-4397-a8cf-4aeaee5b0f5e" }, 
     active: { type: Boolean, required: true, default: true },
     role: { type: String },
-    rfc: {type: String, required: true, unique: true}
+    rfc: {type: String, unique: true}
   }, 
   optionsModel as SchemaOptions<UserAdmin>
 );
