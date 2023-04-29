@@ -1,8 +1,8 @@
 import { Schema, model, SchemaOptions } from 'mongoose';
 import { maxlength, optionsModel } from '../constants';
-import { UserBranchOfficeSeller } from '../interfaces';
+import { UserSeller } from '../interfaces';
 
-const schema = new Schema<UserBranchOfficeSeller>(
+const schema = new Schema<UserSeller>(
   {
     uid: { type: String, required: true },
     name: { type: String, required: true, maxlength },
@@ -12,9 +12,10 @@ const schema = new Schema<UserBranchOfficeSeller>(
     branchOffice: { type: Schema.Types.ObjectId, ref: 'BranchOffice' },
     userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin' },
     description: { type: String },
-    image: { type: String, required: true, maxlength }
+    image: { type: String, maxlength },
+    role: { type: String, required: true, maxlength: 13 }
   }, 
-  optionsModel as SchemaOptions<UserBranchOfficeSeller>
+  optionsModel as SchemaOptions<UserSeller>
 );
 
-export default model<UserBranchOfficeSeller>('UserSeller', schema);
+export default model<UserSeller>('UserSeller', schema);

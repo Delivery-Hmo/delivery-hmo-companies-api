@@ -12,7 +12,6 @@ const schema = new Schema<UserAdmin>(
     description: { type: String, maxlength: 1000, default: "" }, 
     imagen: { type: String, maxlength: 2000, default: "" }, 
     active: { type: Boolean, required: true, default: true },
-    role: { type: String },
     rfc: {type: String, required: true, unique: true}
   }, 
   optionsModel as SchemaOptions<UserAdmin>
