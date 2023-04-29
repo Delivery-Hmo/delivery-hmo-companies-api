@@ -1,5 +1,5 @@
 import express from 'express';
-import admin from 'firebase-admin';
+import { initializeApp, cert } from 'firebase-admin/app';
 import configServer, { server, serviceAccount } from './configServer';
 import startDb from './configServer/mongodb';
 import routes from './routes';
@@ -9,7 +9,7 @@ const app = express();
 
 try {
   configServer(app);
-  admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+  initializeApp({ credential: cert(serviceAccount) });
   await startDb();
   await routes(app);
 
@@ -28,7 +28,6 @@ try {
   app.listen(app.get('port'), server.HOST, () => {
     console.log(`App listening server on http://${server.HOST}:${app.get('port')}`);
   });
-  
 } catch (error) {
   console.error(error);
 }

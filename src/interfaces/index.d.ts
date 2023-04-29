@@ -1,8 +1,9 @@
-import { Roles } from "../types/types";
+import { Rols } from "../types";
 
 export interface User {
   id?: string;
   uid: string;
+  role: Rols;
   name: string;
   email: string;
   phone?: string; 
@@ -10,7 +11,6 @@ export interface User {
   imagen?: string;
   active: boolean;
   image?: string;
-  role: Roles;
   password?: string;
 }
 export interface UserAdmin extends User {
@@ -18,14 +18,11 @@ export interface UserAdmin extends User {
   rfc: string;
 }
 export interface UserDeliveryMan extends User {
-  branchOffice: string | BranchOffice;
-  deliveryMan: boolean;
-  deliveryManProps? : {
-    location: number | null;
-  }
-  userAdmin: string | UserAdmin;
+  branchOffice?: string | BranchOffice;
+  userAdmin?: string | UserAdmin;
+  latLng: LatLng;
 }
-export interface UserBranchOfficeSeller extends User {
+export interface UserSeller extends User {
   branchOffice: string | BranchOffice;
   userAdmin: string | UserAdmin;
 }
