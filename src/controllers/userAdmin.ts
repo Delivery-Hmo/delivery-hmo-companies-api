@@ -7,11 +7,7 @@ import { getUserAdminByUid } from "../services/userAdmin";
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
     const model = req.body as UserAdmin;
-    model.role = "Administrador";
-    if(model.imagen === "" || !model.imagen){
-      model.imagen = "https://firebasestorage.googleapis.com/v0/b/delivery-hmo.appspot.com/o/imagenesPerfil%2Fperfil.jpg?alt=media&token=a07f8154-7aaa-4397-a8cf-4aeaee5b0f5e";
-    }
-    
+  
     const userAdmin = await UserModel.create(model);
 
     return res.status(201).json(userAdmin);
