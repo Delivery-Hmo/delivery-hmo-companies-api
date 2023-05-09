@@ -1,4 +1,5 @@
 import { Response } from "express";
+import { FirebaseError } from "firebase-admin";
 
 const earthRadius = 6371000;
 
@@ -17,3 +18,7 @@ export const isPointInsideCircle = (pointLat: number, pointLng: number, circleLa
 }
 
 export const unauthorized = (res: Response) => res.status(401).json({ message: 'Unauthorized' });
+
+export default function isFirebaseError(error: FirebaseError): error is FirebaseError {
+  return error.code !== undefined;
+}

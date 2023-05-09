@@ -3,6 +3,8 @@ import BranchOfficeModel from '../models/branchOffice';
 import { BranchOffice } from "../interfaces";
 import { FilterQuery } from 'mongoose';
 
+export const getBranchOfficeByUid = (uid: string) => BranchOfficeModel.findOne({ uid });
+
 export const findBranchOffice = (query: FilterQuery<BranchOffice>) => BranchOfficeModel.find(query);
 
 export const findByIdBranchOffice = (id: string) => BranchOfficeModel.findById(id);

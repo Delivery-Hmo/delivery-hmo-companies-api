@@ -9,8 +9,8 @@ const schema = new Schema<UserSeller>(
     email: { type: String, required: true, maxlength, unique: true },
     phone: { type: Number, required: true, maxlength: 10, minlength: 10 }, 
     active: { type: Boolean, required: true, default: true },
-    branchOffice: { type: Schema.Types.ObjectId, ref: 'BranchOffice' },
-    userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin' },
+    branchOffice: { type: Schema.Types.ObjectId, ref: 'BranchOffice', required: true },
+    userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin', required: true },
     description: { type: String },
     image: { type: String, maxlength },
     role: { type: String, required: true, maxlength: 13 }
