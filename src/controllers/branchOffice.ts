@@ -3,14 +3,26 @@ import { BranchOffice, UserAdmin } from '../interfaces';
 import BranchOfficeModel from '../models/branchOffice';
 import handleError from "../utils/handleError";
 import { getPaginatedList } from "../services";
-import { createUserFirebase, updateUserFirebase } from "../services/firebaseAuth";
+import { createUserAuth, deleteUserAuth, updateUserAuth } from "../services/firebaseAuth";
 import { FilterQuery, Model } from "mongoose";
-import { createBranchOffice, findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice, validateBranchOffice } from "../services/branchOffice";
+import { createBranchOffice, findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice, getBranchOfficeByUid, validateBranchOffice } from "../services/branchOffice";
+
+export const getByUid = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+  try {
+    const { uid } = req.query;
+
+    const model = await getBranchOfficeByUid(uid as string);
+
+    return res.status(200).json(model);
+  } catch (err) {
+    return handleError(res, err);
+  }
+}
 
 export const paginatedListByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
     const { search } = req.query;
-    const userAdmin = global?.userAdmin;
+    const userAdmin = global?.user;
     let query: FilterQuery<Model<BranchOffice>> = {
       userAdmin: userAdmin?.id,
       active: true,
@@ -33,7 +45,7 @@ export const paginatedListByUserAdmin = async (req: Request, res: Response): Pro
 
 export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
-    const userAdmin = global?.userAdmin;
+    const userAdmin = global?.user;
     const query: FilterQuery<Model<BranchOffice>> = {
       userAdmin: userAdmin?.id,
       active: true,
@@ -47,9 +59,10 @@ export const listByUserAdmin = async (req: Request, res: Response): Promise<Resp
   }
 }
 
-export const create = async (req: Request, res: Response): Promise<Response<String, Record<string, any>>> => {
+export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+  const model = req.body as BranchOffice;
+
   try {
-    const model = req.body as BranchOffice;
     const { email, password } = model;
 
     const error = await validateBranchOffice(model);
@@ -58,20 +71,31 @@ export const create = async (req: Request, res: Response): Promise<Response<Stri
       return res.status(500).json(error);
     }
 
-    const userAdmin = global?.userAdmin;
+    const userAdmin = global?.user;
 
     model.userAdmin = userAdmin as UserAdmin;
 
     delete model.password;
 
-    const createAuth = await createUserFirebase(email, password as string);
+    const createAuth = await createUserAuth(email, password!, "Administrador sucursal");
 
     model.uid = createAuth.uid;
+  } catch (err) {
+    await deleteUserAuth(model.uid!);
+
+    return handleError(res, err);
+  }
+
+  try {
+    model.active = true;
+    model.role = "Administrador sucursal";
 
     const branchOffice = await createBranchOffice(model);
 
     return res.status(201).json(branchOffice);
   } catch (err) {
+    await deleteUserAuth(model.uid!);
+
     return handleError(res, err);
   }
 }
@@ -88,20 +112,20 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
       return res.status(500).json(error);
     }
 
-    const userAdmin = global?.userAdmin;
+    const userAdmin = global?.user;
 
     model.userAdmin = userAdmin as UserAdmin;
 
     if (model.password) {
       delete model.password;
 
-      await updateUserFirebase(uid, { password });
+      await updateUserAuth(uid, { password });
     }
 
     const oldBranchOffice = await findByIdBranchOffice(model.id as string);
 
     if (oldBranchOffice?.email !== email) {
-      await updateUserFirebase(uid, { email });
+      await updateUserAuth(uid, { email });
     }
 
     const branchOffice = await findByIdAndUpdateBranchOffice(model.id as string, model);

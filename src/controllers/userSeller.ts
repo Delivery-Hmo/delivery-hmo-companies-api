@@ -4,16 +4,16 @@ import { UserSeller, UserAdmin } from '../interfaces';
 import UserSellerModel from '../models/userSeller';
 import { getPaginatedList } from "../services";
 import { FilterQuery, Model } from "mongoose";
-import { createUserFirebase, updateUserFirebase } from "../services/firebaseAuth";
+import { createUserAuth, updateUserAuth } from "../services/firebaseAuth";
 
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
     const model = req.body as UserSeller;
     const { email, password } = model;
 
-    const createAuth = await createUserFirebase(email, password as string);
+    const createAuth = await createUserAuth(email, password as string, "Vendedor");
 
-    const userAdmin = global?.userAdmin;
+    const userAdmin = global?.user;
 
     model.uid = createAuth.uid;
     model.userAdmin = userAdmin as UserAdmin;
@@ -31,7 +31,7 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 
 export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
-    const userAdmin = global?.userAdmin;
+    const userAdmin = global?.user;
     const { search } = req.query;
 
     let query: FilterQuery<Model<UserSeller>> = {
@@ -72,7 +72,7 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
     const model = req.body as UserSeller;
     const { email, password, id } = model;
 
-    await updateUserFirebase(model.uid, { email, password });
+    await updateUserAuth(model.uid, { email, password });
 
     const userBranchOfficeSeller = await UserSellerModel.findByIdAndUpdate(id, { email, password, id });
 

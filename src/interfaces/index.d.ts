@@ -14,7 +14,7 @@ export interface User {
 }
 export interface UserAdmin extends User {
   company?: string;
-  rfc: string;
+  rfc?: string;
 }
 export interface UserDeliveryMan extends User {
   branchOffice?: string | BranchOffice;
@@ -30,6 +30,7 @@ export interface CommentsBranchOffice {
   comment: string;
   user: string;
   date: Date;
+  branchOffice: string | BranchOffice;
 }
 
 export interface LatLng {
@@ -52,6 +53,7 @@ export interface BranchOffice {
   address: string; 
   active?: boolean;
   showingInApp?: boolean;
-  comments: CommentsBranchOffice[];
+  comments?: CommentsBranchOffice[];
   totolSales?: number; 
+  role?: Rols;
 }
