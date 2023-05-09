@@ -1,3 +1,5 @@
+import { Response } from "express";
+
 const earthRadius = 6371000;
 
 export const isPointInsideCircle = (pointLat: number, pointLng: number, circleLat: number, circleLng: number, circleRadius: number) => {
@@ -13,3 +15,5 @@ export const isPointInsideCircle = (pointLat: number, pointLng: number, circleLa
 
 	return distance <= circleRadius;
 }
+
+export const unauthorized = (res: Response) => res.status(401).json({ message: 'Unauthorized' });

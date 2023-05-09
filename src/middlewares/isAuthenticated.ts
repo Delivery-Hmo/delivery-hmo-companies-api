@@ -1,16 +1,12 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import admin from 'firebase-admin';
 import { getUserAdminByUid } from "../services/userAdmin";
+import { unauthorized } from "../utils/functions";
 
-const unauthorized = (res: Response) => res.status(401).json({ message: 'Unauthorized' });
-
-const isAuthenticated = async (req: Request, res: Response, next: Function) => {
+const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers
 
-  if (!authorization) 
-    return unauthorized(res);
-
-  if (!authorization.startsWith('Bearer'))
+  if (!authorization || !authorization.startsWith('Bearer')) 
     return unauthorized(res);
 
   const split = authorization.split('Bearer ');
@@ -30,8 +26,7 @@ const isAuthenticated = async (req: Request, res: Response, next: Function) => {
     global.userAdmin = userAdmin;
     
     return next();
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
     return unauthorized(res);
   }
