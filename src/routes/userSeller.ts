@@ -1,16 +1,16 @@
 import { Application, Router } from "express";
 import { create, getById, update, disable, listByUserAdmin } from '../controllers/userSeller'
 import isAuthenticated from "../middlewares/isAuthenticated";
-import isAdmin from "../middlewares/isAdmin";
+import isBranchOffice from "../middlewares/isBranchOffice";
 
 const router = Router();
 
 const RoutesUserSeller = (app: Application) => {
-  router.get('/listByUserAdmin', isAdmin, listByUserAdmin);
-  router.post('/create', isAdmin, create);
+  router.get('/listByUserAdmin', isBranchOffice, listByUserAdmin);
   router.get('/getById', getById);
+  router.post('/create', isBranchOffice, create);
   router.put('/update', update);
-  router.patch('/disable', isAdmin, disable);
+  router.patch('/disable', isBranchOffice, disable);
 
   app.use("/userSeller", [isAuthenticated], router);
 }

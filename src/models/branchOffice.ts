@@ -15,11 +15,12 @@ export const schema = new Schema<BranchOffice>(
     latLng: latLngSchema,
     center: latLngSchema,
     radius: { type: Number, required: true, max: 3800, min: 1000 },
-    address: { type: String, default: "", maxlength },
+    address: { type: String, maxlength },
     active: { type: Boolean, default: true },
     showingInApp: { type: Boolean, default: false },
     totolSales: { type: Number, default: 0, min: 0},
-    role: { type: String, required: true }
+    role: { type: String, required: true },
+    description: { type: String, maxlength },
   }, 
   optionsModel as SchemaOptions<BranchOffice>
 );

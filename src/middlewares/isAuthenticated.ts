@@ -7,11 +7,11 @@ import { Document } from "mongoose";
 import { getBranchOfficeByUid } from "../services/branchOffice";
 
 const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
-  "": () => Promise.reject('Error, no se pudo obtener la información del usuario.'),
+  "": () => Promise.resolve(null),
   "Administrador": (uid: string) => getUserAdminByUid(uid),
   "Administrador sucursal": (uid: string) => getBranchOfficeByUid(uid),
-  "Vendedor": (uid: string) => Promise.reject('Error, no se pudo obtener la información del usuario.'),
-  "Repartidor": (uid: string) => Promise.reject('Error, no se pudo obtener la información del usuario.'),
+  "Vendedor": (uid: string) => Promise.resolve(null),
+  "Repartidor": (uid: string) => Promise.resolve(null),
 };
 
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {

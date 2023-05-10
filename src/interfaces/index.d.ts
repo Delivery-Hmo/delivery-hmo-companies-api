@@ -16,15 +16,32 @@ export interface UserAdmin extends User {
   company?: string;
   rfc?: string;
 }
+
+export interface BranchOffice extends User {
+  userAdmin?: string | UserAdmin;
+  salesGoalByMonth: number;
+  facebook: string; 
+  phones: number[];
+  latLng: LatLng;
+  center: LatLng;
+  radius: number;
+  address: string; 
+  showingInApp?: boolean;
+  comments?: CommentsBranchOffice[];
+  totolSales?: number; 
+}
+
+export interface UserSeller extends User {
+  branchOffice?: string | BranchOffice;
+  userAdmin?: string | UserAdmin;
+}
+
 export interface UserDeliveryMan extends User {
   branchOffice?: string | BranchOffice;
   userAdmin?: string | UserAdmin;
-  latLng: LatLng;
+  latLng?: LatLng;
 }
-export interface UserSeller extends User {
-  branchOffice: string | BranchOffice;
-  userAdmin: string | UserAdmin;
-}
+
 export interface CommentsBranchOffice {
   id?: string;
   comment: string;
@@ -36,24 +53,4 @@ export interface CommentsBranchOffice {
 export interface LatLng {
   lat: number;
   lng: number;
-}
-export interface BranchOffice {
-  id?: string;
-  uid?: string;
-  userAdmin: string | UserAdmin;
-  name: string;
-  email: string;
-  password?: string;
-  salesGoalByMonth: number;
-  facebook?: string; 
-  phones: [number, number | undefined, number | undefined];
-  latLng: LatLng;
-  center: LatLng;
-  radius: number;
-  address: string; 
-  active?: boolean;
-  showingInApp?: boolean;
-  comments?: CommentsBranchOffice[];
-  totolSales?: number; 
-  role?: Rols;
 }
