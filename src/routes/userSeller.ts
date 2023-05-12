@@ -6,6 +6,7 @@ import isBranchOffice from "../middlewares/isBranchOffice";
 const router = Router();
 
 const RoutesUserSeller = (app: Application) => {
+  //cambiar nombre a esta ruta
   router.get('/listByUserAdmin', isBranchOffice, listByUserAdmin);
   router.get('/getById', getById);
   router.post('/create', isBranchOffice, create);
