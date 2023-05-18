@@ -5,7 +5,7 @@ export const unauthorized = (res: Response) => res.status(401).json({ message: '
 const handleError = (res: Response, err: any) => {
   console.log(err);
 
-  res.status(500).json(`${err.message ?? err}`)
+  return res.status(500).json(`${err.message ?? err}`)
 };
 
 export default handleError;
