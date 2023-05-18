@@ -3,7 +3,7 @@ import { initializeApp, cert } from 'firebase-admin/app';
 import configServer, { server, serviceAccount, storageBucket } from './configServer';
 import startDb from './configServer/mongodb';
 import routes from './routes';
-import { uploadFiles } from "./services/firebaseStorage";
+import uploadFiles from "./middlewares/uploadFiles";
 //import cluster from 'cluster';
 
 const app = express();

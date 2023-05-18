@@ -19,7 +19,7 @@ export const isPointInsideCircle = (pointLat: number, pointLng: number, circleLa
 
 export const checkSecureImage = async (base64: string) => {
 	try {
-		if (!base64) return true;
+		if (!base64) throw "No se ha encontrado la imagen.";
 
 		const content = Buffer.from(base64, "base64");
 		const image = tf.node.decodeImage(content, 3) as Tensor3D;
@@ -31,10 +31,9 @@ export const checkSecureImage = async (base64: string) => {
 
 		const isSecure = !predictions.some(p => ["Hentai", "Porn", "Sexy"].includes(p.className) && p.probability >= 0.5);
 
-		return isSecure;
+		if(!isSecure) throw "La imagen no es segura.";
 	} catch (error) {
-		console.log(error);
-		return false;
+		throw "Error al verificar la imagen.";
 	}
 }
 
