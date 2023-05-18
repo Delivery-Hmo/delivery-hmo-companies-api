@@ -18,12 +18,15 @@ export const serviceAccount: admin.ServiceAccount = {
   clientEmail: process.env.CLIENT_EMAIL,
 } as const;
 
+export const storageBucket = process.env.STORAGE_BUCKET;
+
 const configServer = (app: Application) => {
   app.set('port', server.PORT);
   app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
+  app.use(express.json({ limit: '50mb' }));
   app.use(cors({ origin: true }));
   app.use(express.static(path.join(new URL(import.meta.url).pathname, 'public')));
+
 }
 
 export default configServer;

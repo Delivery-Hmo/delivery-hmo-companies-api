@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Rols } from "../types";
 
 export interface User {

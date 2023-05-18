@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import admin from 'firebase-admin';
 import { getUserAdminByUid } from "../services/userAdmin";
-import { unauthorized } from "../utils/functions";
 import { Rols, Users } from "../types";
 import { Document } from "mongoose";
 import { getBranchOfficeByUid } from "../services/branchOffice";
+import { unauthorized } from "../utils/handleError";
 
 const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
   "": () => Promise.resolve(null),

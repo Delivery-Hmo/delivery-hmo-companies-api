@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { unauthorized } from "../utils/functions";
+import { unauthorized } from "../utils/handleError";
 
 const isAdmin = async (_: Request, res: Response, next: NextFunction) => {
   try {
