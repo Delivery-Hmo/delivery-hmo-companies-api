@@ -78,6 +78,8 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
     const model = req.body as UserAdmin;
     const _id = model.id;
 
+    model.role = "Administrador";
+
     const userUserAdmin = await UserModel.findByIdAndUpdate(_id, model, { new: true });
 
     return res.status(200).json(userUserAdmin);

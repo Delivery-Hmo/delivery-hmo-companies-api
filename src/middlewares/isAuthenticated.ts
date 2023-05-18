@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 import admin from 'firebase-admin';
 import { getUserAdminByUid } from "../services/userAdmin";
-import { unauthorized } from "../utils/functions";
 import { Rols, Users } from "../types";
 import { Document } from "mongoose";
 import { getBranchOfficeByUid } from "../services/branchOffice";
+import { unauthorized } from "../utils/handleError";
 
 const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
-  "": () => Promise.reject('Error, no se pudo obtener la información del usuario.'),
+  "": () => Promise.resolve(null),
   "Administrador": (uid: string) => getUserAdminByUid(uid),
   "Administrador sucursal": (uid: string) => getBranchOfficeByUid(uid),
-  "Vendedor": (uid: string) => Promise.reject('Error, no se pudo obtener la información del usuario.'),
-  "Repartidor": (uid: string) => Promise.reject('Error, no se pudo obtener la información del usuario.'),
+  "Vendedor": (uid: string) => Promise.resolve(null),
+  "Repartidor": (uid: string) => Promise.resolve(null),
 };
 
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {

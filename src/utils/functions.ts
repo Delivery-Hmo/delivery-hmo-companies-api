@@ -1,5 +1,5 @@
-import { Response } from "express";
-import { FirebaseError } from "firebase-admin";
+import tf, { Tensor3D } from "@tensorflow/tfjs-node";
+import nsfw from "nsfwjs";
 
 const earthRadius = 6371000;
 
@@ -17,8 +17,31 @@ export const isPointInsideCircle = (pointLat: number, pointLng: number, circleLa
 	return distance <= circleRadius;
 }
 
-export const unauthorized = (res: Response) => res.status(401).json({ message: 'Unauthorized' });
+export const checkSecureImage = async (base64: string) => {
+	try {
+		if (!base64) return true;
 
-export default function isFirebaseError(error: FirebaseError): error is FirebaseError {
-  return error.code !== undefined;
+		const content = Buffer.from(base64, "base64");
+		const image = tf.node.decodeImage(content, 3) as Tensor3D;
+
+		const model = await nsfw.load();
+		const predictions = await model.classify(image);
+
+		image.dispose();
+
+		const isSecure = !predictions.some(p => ["Hentai", "Porn", "Sexy"].includes(p.className) && p.probability >= 0.5);
+
+		return isSecure;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
+}
+
+export const getExtensionByContentType = (contentType: string) => {
+	const extension = contentType.split("/")[1];
+
+	if(extension === "jpeg") return "jpg";
+
+	return extension;
 }

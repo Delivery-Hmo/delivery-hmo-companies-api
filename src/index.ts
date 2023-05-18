@@ -1,16 +1,18 @@
 import express from 'express';
 import { initializeApp, cert } from 'firebase-admin/app';
-import configServer, { server, serviceAccount } from './configServer';
+import configServer, { server, serviceAccount, storageBucket } from './configServer';
 import startDb from './configServer/mongodb';
 import routes from './routes';
+import { uploadFiles } from "./services/firebaseStorage";
 //import cluster from 'cluster';
 
 const app = express();
 
 try {
   configServer(app);
-  initializeApp({ credential: cert(serviceAccount) });
+  initializeApp({ credential: cert(serviceAccount), storageBucket });
   await startDb();
+  uploadFiles(app);
   await routes(app);
 
   /*   

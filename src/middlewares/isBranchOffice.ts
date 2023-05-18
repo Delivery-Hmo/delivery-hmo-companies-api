@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { unauthorized } from "../utils/handleError";
 
-const isAdmin = async (_: Request, res: Response, next: NextFunction) => {
+const isBranchOffice = async (_: Request, res: Response, next: NextFunction) => {
   try {
-    if(global.user?.role !== "Administrador") {
+    if(!global.user?.role || !["Administrador", "Administrador sucursal"].includes(global.user.role)) {
       return unauthorized(res);
     }
     
@@ -14,4 +14,4 @@ const isAdmin = async (_: Request, res: Response, next: NextFunction) => {
   }
 }
 
-export default isAdmin;
+export default isBranchOffice;
