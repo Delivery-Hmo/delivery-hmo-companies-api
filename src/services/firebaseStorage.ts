@@ -4,6 +4,7 @@ import { baseUrlStorage, baseUrlStorageGoogle } from "../constants";
 import { deleteFileRepo, uploadFileRepo } from "../repositories/firebaseStorageRepo";
 import { getByIdAllModelsRepo } from "../repositories/allModelsRepo";
 import { NameModels } from "../types";
+import { handleErrorFunction } from "../utils/handleError";
 
 export const uploadImageBase64ToStorage = async (req: Request) => {
 	try {
@@ -34,12 +35,6 @@ export const uploadImageBase64ToStorage = async (req: Request) => {
 
 		return url;
 	} catch (error) {
-		if(typeof error === "string") throw error;
-		
-		if(error instanceof Error) {
-			throw error.message;
-		}
-
-		throw "Error al subir la imagen.";
+		return handleErrorFunction(error, "Error al subir la imagen.");
 	}
 }
