@@ -7,6 +7,7 @@ export const getByIdAllModelsRepo = async (nameModel: NameModels, id: string) =>
 
     return model.findById(id);
   } catch (error) {
+    console.log(error);
     throw "Error al obtener el modelo.";
   }
 }

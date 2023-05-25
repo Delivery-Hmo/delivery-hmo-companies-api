@@ -1,5 +1,6 @@
 import tf, { Tensor3D } from "@tensorflow/tfjs-node";
 import nsfw from "nsfwjs";
+import { handleErrorFunction } from "./handleError";
 
 const earthRadius = 6371000;
 
@@ -33,7 +34,7 @@ export const checkSecureImage = async (base64: string) => {
 
 		if(!isSecure) throw "La imagen no es segura.";
 	} catch (error) {
-		throw "Error al verificar la imagen.";
+		handleErrorFunction(error, "Error al verificar la imagen.");	
 	}
 }
 
