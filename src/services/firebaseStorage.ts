@@ -16,7 +16,7 @@ export const uploadImageBase64ToStorage = async (req: Request) => {
 
 		const routeController = req.originalUrl.replace("/", "").split("/")[0];
 		//const contentType = image.split(";")[0].split(":")[1];
-		const fileName = `${uuidv4()} - ${new Date().getTime()}.jpeg`;
+		const fileName = `${uuidv4()}-${new Date().getTime()}.jpeg`;
 		const path = `images/${routeController}/${fileName}`;
 		const buffer = Buffer.from(fileBase64, "base64");
 
