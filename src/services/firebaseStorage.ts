@@ -1,10 +1,11 @@
 import { Request } from "express";
-import { checkSecureImage, getExtensionByContentType } from "../utils/functions";
+import { checkSecureImage, compreesImage } from "../utils/functions";
 import { baseUrlStorage, baseUrlStorageGoogle } from "../constants";
 import { deleteFileRepo, uploadFileRepo } from "../repositories/firebaseStorageRepo";
 import { getByIdAllModelsRepo } from "../repositories/allModelsRepo";
 import { NameModels } from "../types";
 import { handleErrorFunction } from "../utils/handleError";
+import { v4 as uuidv4 } from 'uuid';
 
 export const uploadImageBase64ToStorage = async (req: Request) => {
 	try {
@@ -14,10 +15,12 @@ export const uploadImageBase64ToStorage = async (req: Request) => {
 	  await checkSecureImage(fileBase64);
 
 		const routeController = req.originalUrl.replace("/", "").split("/")[0];
-		const contentType = image.split(";")[0].split(":")[1];
-		const path = `images/${routeController}/${new Date().getTime()}.${getExtensionByContentType(contentType)}`;
-		const content = Buffer.from(fileBase64, "base64");
+		//const contentType = image.split(";")[0].split(":")[1];
+		const fileName = `${uuidv4()}-${new Date().getTime()}.jpeg`;
+		const path = `images/${routeController}/${fileName}`;
+		const buffer = Buffer.from(fileBase64, "base64");
 
+		const content = await compreesImage(buffer);
 		const url = await uploadFileRepo(path, content);
 
 		if (id) {
@@ -35,6 +38,6 @@ export const uploadImageBase64ToStorage = async (req: Request) => {
 
 		return url;
 	} catch (error) {
-		return handleErrorFunction(error, "Error al subir la imagen.");
+		throw handleErrorFunction(error, "Error al subir la imagen.");
 	}
 }
