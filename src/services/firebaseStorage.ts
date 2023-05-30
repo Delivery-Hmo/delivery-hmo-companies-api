@@ -5,7 +5,7 @@ import { deleteFileRepo, uploadFileRepo } from "../repositories/firebaseStorageR
 import { getByIdAllModelsRepo } from "../repositories/allModelsRepo";
 import { NameModels } from "../types";
 import { handleErrorFunction } from "../utils/handleError";
-import { v4 as uuidv4 } from 'uuid';
+import short from "short-uuid";
 
 export const uploadImageBase64ToStorage = async (req: Request) => {
 	try {
@@ -16,7 +16,7 @@ export const uploadImageBase64ToStorage = async (req: Request) => {
 
 		const routeController = req.originalUrl.replace("/", "").split("/")[0];
 		//const contentType = image.split(";")[0].split(":")[1];
-		const fileName = `${uuidv4()}-${new Date().getTime()}.jpeg`;
+		const fileName = `${short.generate()}.jpeg`;
 		const path = `images/${routeController}/${fileName}`;
 		const buffer = Buffer.from(fileBase64, "base64");
 

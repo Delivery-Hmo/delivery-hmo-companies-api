@@ -1,5 +1,5 @@
 import { Schema, SchemaOptions, model } from 'mongoose';
-import { maxlength, optionsModel } from '../constants';
+import { maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
 import { UserAdmin } from '../interfaces';
 
 const schema = new Schema<UserAdmin>(
@@ -10,7 +10,7 @@ const schema = new Schema<UserAdmin>(
     phone: { type: Number, maxlength: 10, minlength: 10 },
     company: { type: String, maxlength: 50 },
     description: { type: String, maxlength: 1000, default: "" },
-    image: { type: String, maxlength, default: "https://firebasestorage.googleapis.com/v0/b/delivery-hmo.appspot.com/o/imagenesPerfil%2Fperfil.jpg?alt=media&token=a07f8154-7aaa-4397-a8cf-4aeaee5b0f5e" },
+    image: { type: String, maxlength: maxlengthImage, default: urlImageDefaultProfile },
     active: { type: Boolean, required: true },
     rfc: { type: String, unique: true },
     role: { type: String, required: true }
