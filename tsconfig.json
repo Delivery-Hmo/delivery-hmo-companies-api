@@ -2,7 +2,6 @@
   "compilerOptions": {
     "module": "ESNext",
     "strictNullChecks": true,
-    "skipLibCheck": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "./build/",
@@ -13,7 +12,6 @@
     "moduleResolution": "node",
     "typeRoots": ["./src/types"],
     "rootDir": "src",
-    "strictNullChecks": true,
   },
   "compileOnSave": true,
   "include": [
