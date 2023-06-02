@@ -6,7 +6,7 @@ phases:
       nodejs: 18
     commands:
        - npm cache clean --force
-       - npm install express
+       - npm install express --force
        - npm install --force
        - npm install ts-node --force
        - npm install -g typescript --save-dev @types/node
