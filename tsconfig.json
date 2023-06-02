@@ -10,7 +10,8 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "typeRoots": ["./src/types"],
-    "rootDir": "src"
+    "rootDir": "src",
+    "strictNullChecks": true,
   },
   "compileOnSave": true,
   "include": [

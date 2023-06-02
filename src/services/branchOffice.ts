@@ -1,17 +1,46 @@
 import { isPointInsideCircle } from "../utils/functions";
 import BranchOfficeModel from '../models/branchOffice';
 import { BranchOffice } from "../interfaces";
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, Model } from "mongoose";
+import { handleErrorFunction } from "../utils/handleError";
+import { getPaginatedList } from "../repositories/allModels";
+import { Request } from "express";
+import { findBranchOffice } from "../repositories/branchOffice";
 
-export const getBranchOfficeByUid = (uid: string) => BranchOfficeModel.findOne({ uid });
+export const getPaginatedListByUserAdmin = async ({ search, req }: { search: string, req: Request }) => {
+  try {
+    const userAdmin = global?.user;
+    let query: FilterQuery<Model<BranchOffice>> = {
+      userAdmin: userAdmin?.id,
+      active: true,
+    };
 
-export const findBranchOffice = (query: FilterQuery<BranchOffice>) => BranchOfficeModel.find(query);
+    if (search) {
+      query.$or = [
+        { name: { "$regex": search, "$options": "i" } },
+        { email: { "$regex": search, "$options": "i" } },
+      ];
+    }
 
-export const findByIdBranchOffice = (id: string) => BranchOfficeModel.findById(id);
+    return await getPaginatedList({ model: BranchOfficeModel, query, populate: "userAdmin", req });
+  } catch (error) {
+    throw handleErrorFunction(error);
+  }
+}
 
-export const createBranchOffice = (model: BranchOffice) => BranchOfficeModel.create(model);
+export const getListByUserAdmin = async () => {
+  try {
+    const userAdmin = global?.user;
+    const query: FilterQuery<Model<BranchOffice>> = {
+      userAdmin: userAdmin?.id,
+      active: true,
+    };
 
-export const findByIdAndUpdateBranchOffice = (id: string, data: BranchOffice | Record<string, any>) => BranchOfficeModel.findByIdAndUpdate(id, data);
+    return await findBranchOffice(query);
+  } catch (error) {
+    throw handleErrorFunction(error);
+  }
+}    
 
 export const validateBranchOffice = async (branchOffice: BranchOffice) => {
   const { latLng, center, radius, email, phones, name } = branchOffice;

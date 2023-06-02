@@ -28,7 +28,7 @@ export const checkSecureImage = async (base64: string) => {
 		const image = tf.node.decodeImage(content, 3) as Tensor3D;
 
 		const model = await nsfw.load();
-		const predictions = await model.classify(image);
+		const predictions = await model.classify(image as any);
 
 		image.dispose();
 
