@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import handleError from "../utils/handleError";
 import { UserSeller, UserAdmin } from '../interfaces';
 import UserSellerModel from '../models/userSeller';
-import { getPaginatedList } from "../services";
 import { FilterQuery, Model } from "mongoose";
 import { createUserAuth, updateUserAuth } from "../services/firebaseAuth";
+import { getPaginatedList } from "../repositories/allModels";
 
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {

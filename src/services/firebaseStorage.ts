@@ -1,11 +1,11 @@
 import { Request } from "express";
 import { checkSecureImage, compreesImage } from "../utils/functions";
 import { baseUrlStorage, baseUrlStorageGoogle } from "../constants";
-import { deleteFileRepo, uploadFileRepo } from "../repositories/firebaseStorageRepo";
-import { getByIdAllModelsRepo } from "../repositories/allModelsRepo";
+import { deleteFile, uploadFile } from "../repositories/firebaseStorage";
+import { getByIdAllModels } from "../repositories/allModels";
 import { NameModels } from "../types";
 import { handleErrorFunction } from "../utils/handleError";
-import { v4 as uuidv4 } from 'uuid';
+import short from "short-uuid";
 
 export const uploadImageBase64ToStorage = async (req: Request) => {
 	try {
@@ -16,23 +16,23 @@ export const uploadImageBase64ToStorage = async (req: Request) => {
 
 		const routeController = req.originalUrl.replace("/", "").split("/")[0];
 		//const contentType = image.split(";")[0].split(":")[1];
-		const fileName = `${uuidv4()}-${new Date().getTime()}.jpeg`;
+		const fileName = `${short.generate()}.jpeg`;
 		const path = `images/${routeController}/${fileName}`;
 		const buffer = Buffer.from(fileBase64, "base64");
 
 		const content = await compreesImage(buffer);
-		const url = await uploadFileRepo(path, content);
+		const url = await uploadFile(path, content);
 
 		if (id) {
 			const routeController = req.originalUrl.replace("/", "").split("/")[0];
 			const nameModel = routeController.charAt(0).toUpperCase() + routeController.slice(1) as NameModels;
 
-			const modelDoc = await getByIdAllModelsRepo(nameModel, id);
+			const modelDoc = await getByIdAllModels(nameModel, id);
 
 			if (modelDoc && !modelDoc.image.includes(baseUrlStorage)) {
 				const fileName = modelDoc.image.split(baseUrlStorageGoogle)[1].split('?')[0];
 
-				await deleteFileRepo(fileName);
+				await deleteFile(fileName);
 			}
 		}
 

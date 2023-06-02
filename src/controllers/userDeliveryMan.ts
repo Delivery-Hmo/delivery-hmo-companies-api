@@ -4,8 +4,8 @@ import { UserDeliveryMan, UserAdmin } from '../interfaces';
 import { FilterQuery, Model } from "mongoose";
 import UserDeliverymanModel from '../models/userDeliveryMan';
 import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan, validateUserDeliveryMan } from "../services/deliveryMan";
-import { getPaginatedList } from "../services";
 import { createUserAuth } from "../services/firebaseAuth";
+import { getPaginatedList } from "../repositories/allModels";
 
 
 export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {

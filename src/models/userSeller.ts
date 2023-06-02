@@ -1,5 +1,5 @@
 import { Schema, model, SchemaOptions } from 'mongoose';
-import { maxlength, optionsModel } from '../constants';
+import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
 import { UserSeller } from '../interfaces';
 
 const schema = new Schema<UserSeller>(
@@ -12,7 +12,7 @@ const schema = new Schema<UserSeller>(
     branchOffice: { type: Schema.Types.ObjectId, ref: 'BranchOffice', required: true },
     userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin', required: true },
     description: { type: String },
-    image: { type: String, maxlength },
+    image: { type: String, maxlength: maxlengthImage, default: urlImageDefaultProfile },
     role: { type: String, required: true, maxlength: 13 }
   }, 
   optionsModel as SchemaOptions<UserSeller>

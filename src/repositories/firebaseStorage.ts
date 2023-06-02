@@ -1,6 +1,6 @@
 import admin from "firebase-admin";
 
-export const uploadFileRepo = async (path: string, content: Buffer) => {
+export const uploadFile = async (path: string, content: Buffer) => {
   try {
     const file = admin.storage().bucket().file(path);
 
@@ -15,7 +15,7 @@ export const uploadFileRepo = async (path: string, content: Buffer) => {
   }
 }
 
-export const deleteFileRepo = async (fileName: string) => {
+export const deleteFile = async (fileName: string) => {
   try {
     const file = admin.storage().bucket().file(fileName);
 

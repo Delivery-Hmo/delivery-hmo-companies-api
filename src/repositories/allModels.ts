@@ -1,12 +1,17 @@
-import { Request } from "express";
-import { Model, FilterQuery } from 'mongoose';
+import AllModels from "../models/allModels";
+import { NameModels } from "../types";
 import { GenericDocument } from "../types";
+import { PropsPaginatedList } from "../interfaces/allModels";
 
-interface PropsPaginatedList<T> {
-  model: Model<T>;
-  query: FilterQuery<Model<T>>; 
-  populate: string | string[];
-  req: Request; 
+export const getByIdAllModels = async (nameModel: NameModels, id: string) => {
+  try {
+    const model = AllModels[nameModel];
+
+    return model.findById(id);
+  } catch (error) {
+    console.log(error);
+    throw "Error al obtener el modelo.";
+  }
 }
 
 export const getPaginatedList = async <T extends {}>({ model, query, populate, req }: PropsPaginatedList<T>) => {

@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import { BranchOffice, UserAdmin } from '../interfaces';
-import BranchOfficeModel from '../models/branchOffice';
 import handleError from "../utils/handleError";
-import { getPaginatedList } from "../services";
 import { createUserAuth, deleteUserAuth, updateUserAuth } from "../services/firebaseAuth";
-import { FilterQuery, Model } from "mongoose";
-import { createBranchOffice, findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice, getBranchOfficeByUid, validateBranchOffice } from "../services/branchOffice";
+import { getListByUserAdmin, getPaginatedListByUserAdmin, validateBranchOffice } from "../services/branchOffice";
+import { createBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice, getBranchOfficeByUid } from "../repositories/branchOffice";
 
 export const getByUid = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
@@ -22,20 +20,8 @@ export const getByUid = async (req: Request, res: Response): Promise<Response<an
 export const paginatedListByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
     const { search } = req.query;
-    const userAdmin = global?.user;
-    let query: FilterQuery<Model<BranchOffice>> = {
-      userAdmin: userAdmin?.id,
-      active: true,
-    };
 
-    if (search) {
-      query.$or = [
-        { name: { "$regex": search, "$options": "i" } },
-        { email: { "$regex": search, "$options": "i" } },
-      ];
-    }
-
-    const paginatedList = await getPaginatedList({ model: BranchOfficeModel, query, populate: "userAdmin", req });
+    const paginatedList = await getPaginatedListByUserAdmin({ search: search as string, req });
 
     return res.status(200).json(paginatedList);
   } catch (err) {
@@ -43,17 +29,11 @@ export const paginatedListByUserAdmin = async (req: Request, res: Response): Pro
   }
 }
 
-export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const listByUserAdmin = async (_: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
-    const userAdmin = global?.user;
-    const query: FilterQuery<Model<BranchOffice>> = {
-      userAdmin: userAdmin?.id,
-      active: true,
-    };
+    const paginatedList = await getListByUserAdmin();
 
-    const paginatedList = await findBranchOffice(query);
-
-    return res.json(paginatedList);
+    return res.status(200).json(paginatedList);
   } catch (err) {
     return handleError(res, err);
   }

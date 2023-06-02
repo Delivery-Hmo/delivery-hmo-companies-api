@@ -3,8 +3,8 @@ import admin from 'firebase-admin';
 import { getUserAdminByUid } from "../services/userAdmin";
 import { Rols, Users } from "../types";
 import { Document } from "mongoose";
-import { getBranchOfficeByUid } from "../services/branchOffice";
 import { unauthorized } from "../utils/handleError";
+import { getBranchOfficeByUid } from "../repositories/branchOffice";
 
 const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
   "": () => Promise.resolve(null),
