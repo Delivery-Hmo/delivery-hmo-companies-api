@@ -12,7 +12,6 @@
     "typeRoots": ["./src/types"],
     "rootDir": "src",
     "strictNullChecks": true,
-    "skipLibCheck": true
   },
   "compileOnSave": true,
   "include": [
