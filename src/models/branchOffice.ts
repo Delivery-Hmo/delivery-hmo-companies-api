@@ -6,8 +6,8 @@ import { BranchOffice } from '../interfaces';
 export const schema = new Schema<BranchOffice>(
   {
     uid: { type: String, required: true, maxlength },
-    userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin' },
-    name: { type: String, unique: true, required: true, maxlength },
+    userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin', required: true },
+    name: { type: String, required: true, unique: true,  maxlength },
     email: { type: String, required: true, unique: true, maxlength },
     salesGoalByMonth: { type: Number, default: 0, min: 0, max: 50000 },
     facebook: { type: String, maxlength },
@@ -15,11 +15,12 @@ export const schema = new Schema<BranchOffice>(
     latLng: latLngSchema,
     center: latLngSchema,
     radius: { type: Number, required: true, max: 3800, min: 1000 },
-    address: { type: String, default: "", maxlength },
+    address: { type: String, maxlength },
     active: { type: Boolean, default: true },
     showingInApp: { type: Boolean, default: false },
-    comments: [{ type: Schema.Types.ObjectId, ref: 'CommentsBranchOffice' }],
     totolSales: { type: Number, default: 0, min: 0},
+    role: { type: String, required: true },
+    description: { type: String, maxlength },
   }, 
   optionsModel as SchemaOptions<BranchOffice>
 );

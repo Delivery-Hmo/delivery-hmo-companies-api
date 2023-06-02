@@ -1,3 +1,9 @@
+import tf, { Tensor3D } from "@tensorflow/tfjs-node";
+import nsfw from "nsfwjs";
+import { handleErrorFunction } from "./handleError";
+import sharp from "sharp";
+//import axios, { AxiosResponse } from "axios";
+
 const earthRadius = 6371000;
 
 export const isPointInsideCircle = (pointLat: number, pointLng: number, circleLat: number, circleLng: number, circleRadius: number) => {
@@ -12,4 +18,61 @@ export const isPointInsideCircle = (pointLat: number, pointLng: number, circleLa
 	);
 
 	return distance <= circleRadius;
+}
+
+export const checkSecureImage = async (base64: string) => {
+	try {
+		if (!base64) throw "No se ha encontrado la imagen.";
+
+		const content = Buffer.from(base64, "base64");
+		const image = tf.node.decodeImage(content, 3) as Tensor3D;
+
+		const model = await nsfw.load();
+		const predictions = await model.classify(image);
+
+		image.dispose();
+
+		const isSecure = !predictions.some(p => ["Hentai", "Porn", "Sexy"].includes(p.className) && p.probability >= 0.5);
+
+		if (!isSecure) throw "La imagen no es segura.";
+	} catch (error) {
+		throw handleErrorFunction(error, "Error al verificar la imagen.");
+	}
+}
+
+export const getExtensionByContentType = (contentType: string) => {
+	const extension = contentType.split("/")[1];
+
+	if (extension === "jpeg") return "jpg";
+
+	return extension;
+}
+
+export const compreesImage = async (buffer: Buffer) => {
+	try {
+		let { width, height } = await sharp(buffer).metadata();
+		width = width || 0;
+		height = height || 0;
+
+		const cropWidth = 320;
+		const cropHeight = 240;
+
+		if(width > cropWidth || height > cropHeight) {
+		  return await sharp(buffer).resize(320, 240).jpeg().toBuffer();
+		}
+
+		return await sharp(buffer).jpeg().toBuffer();
+	} catch (error) {
+		throw handleErrorFunction(error, "Error al comprimir la imagen.");
+	}
+}
+
+export const fileToBuffer = async (blob: Blob) => {
+	try {
+		const arrayBuffer = await blob.arrayBuffer();
+
+		return Buffer.from(arrayBuffer);
+	} catch (error) {
+		throw handleErrorFunction(error, "Error al convertir el archivo.");
+	}
 }

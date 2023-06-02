@@ -1,16 +1,18 @@
 import express from 'express';
-import admin from 'firebase-admin';
-import configServer, { server, serviceAccount } from './configServer';
+import { initializeApp, cert } from 'firebase-admin/app';
+import configServer, { server, serviceAccount, storageBucket } from './configServer';
 import startDb from './configServer/mongodb';
 import routes from './routes';
+import uploadFiles from "./middlewares/uploadFiles";
 //import cluster from 'cluster';
 
 const app = express();
 
 try {
   configServer(app);
-  admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+  initializeApp({ credential: cert(serviceAccount), storageBucket });
   await startDb();
+  uploadFiles(app);
   await routes(app);
 
   /*   
@@ -28,7 +30,6 @@ try {
   app.listen(app.get('port'), server.HOST, () => {
     console.log(`App listening server on http://${server.HOST}:${app.get('port')}`);
   });
-  
 } catch (error) {
   console.error(error);
 }

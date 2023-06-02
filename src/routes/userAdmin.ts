@@ -1,6 +1,7 @@
 import { Application, Router } from "express";
-import { create,list,getById,update ,disable, getByUid, verifyEmail} from "../controllers/userAdmin";
-import isAuthenticated from "../middlewares/authenticated";
+import { list, getById, update, disable, getByUid, verifyEmail, create } from "../controllers/userAdmin";
+import isAuthenticated from "../middlewares/isAuthenticated";
+import isAdmin from "../middlewares/isAdmin";
 
 const router = Router();
 
@@ -13,7 +14,7 @@ const RoutesUserAdmin = (app: Application) => {
   router.put('/update', update);
   router.patch('/disable', disable);
 
-  app.use("/userAdmin", [isAuthenticated], router);
+  app.use("/userAdmin", [isAuthenticated, isAdmin], router);
 }
 
 export default RoutesUserAdmin;

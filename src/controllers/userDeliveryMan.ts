@@ -5,12 +5,12 @@ import { FilterQuery, Model } from "mongoose";
 import UserDeliverymanModel from '../models/userDeliveryMan';
 import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan, validateUserDeliveryMan } from "../services/deliveryMan";
 import { getPaginatedList } from "../services";
-import { createUserFirebase } from "../services/firebaseAuth";
+import { createUserAuth } from "../services/firebaseAuth";
 
 
 export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
-    const userAdmin = global?.userAdmin;
+    const userAdmin = global?.user;
     const query: FilterQuery<Model<UserDeliveryMan>> = {
       userAdmin: userAdmin?.id,
       active: true,
@@ -35,13 +35,15 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
       return res.status(500).json(error);
     }
 
-    const userAdmin = global?.userAdmin;
+    const userAdmin = global?.user;
 
     model.userAdmin = userAdmin as UserAdmin;
+    model.active = true;
+    model.role = "Repartidor";
 
     delete model.password;
 
-    const createAuth = await createUserFirebase(email, password as string);
+    const createAuth = await createUserAuth(email, password!, "Repartidor");
 
     model.uid = createAuth.uid;
 

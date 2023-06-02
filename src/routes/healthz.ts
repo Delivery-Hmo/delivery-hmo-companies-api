@@ -3,7 +3,7 @@ import { Application, Router } from "express";
 const router = Router();
 
 const RouteExample = (app: Application) => {
-  router.get('/', (req, res) => {
+  router.get('/', async (req, res) => {
     res.status(200).send({ check: "OKtest1" });
   });
 
