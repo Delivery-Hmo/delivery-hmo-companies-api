@@ -34,6 +34,7 @@ export interface CommentsBranchOffice {
   comment: string;
   user: string;
   date: Date;
+  branch: string;
 }
 
 export interface LatLng {
