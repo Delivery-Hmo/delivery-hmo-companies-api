@@ -1,0 +1,1 @@
+https://github.com/nodejs/node-gyp/blob/main/docs/Updating-npm-bundled-node-gyp.md
