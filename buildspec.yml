@@ -5,6 +5,8 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
+       - npm audit fix --force
+       - npm install 
        - npm install ts-node 
        - npm install -g typescript --save-dev @types/node 
        - npm install express 
