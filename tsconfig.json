@@ -10,7 +10,9 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "typeRoots": ["./src/types"],
-    "rootDir": "src"
+    "rootDir": "src",
+    "strictNullChecks": true,
+    "skipLibCheck": true
   },
   "compileOnSave": true,
   "include": [
