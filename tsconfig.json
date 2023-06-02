@@ -13,7 +13,6 @@
     "moduleResolution": "node",
     "typeRoots": ["./src/types"],
     "rootDir": "src",
-    "strictNullChecks": true,
   },
   "compileOnSave": true,
   "include": [
