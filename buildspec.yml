@@ -24,3 +24,4 @@ artifacts:
     - '.elasticbeanstalk/**/*'
     - .env
   discard-paths: no
+  OverrideArtifactName: false
