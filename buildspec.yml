@@ -7,7 +7,7 @@ phases:
     commands:
        - npm install --force
        - npm install ts-node --force
-       - npm install -g typescript --save-dev @types/node --force 
+       - npm install -g typescript --save-dev @types/node --force
        - npm install express --force
        - npm install --silent --no-progress -g npm --force
   build:
