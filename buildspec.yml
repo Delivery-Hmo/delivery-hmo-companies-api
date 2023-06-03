@@ -22,4 +22,3 @@ artifacts:
     - '.ebextensions/**/*'
     - '.elasticbeanstalk/**/*'
     - .env
-  discard-paths: no
