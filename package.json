@@ -11,7 +11,7 @@
     "html": "find ./src -name '*.hbs' -o -name '*.css' -type f -exec cp --parents {} ./build \\;",
     "clean": "rm -rf build",
     "cleanModule": "rm -rf node_modules",
-    "start": "node build/src"
+    "start": "node build/"
   },
   "build": "tsc --project ./",
   "keywords": [],
