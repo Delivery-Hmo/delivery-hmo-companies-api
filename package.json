@@ -8,6 +8,7 @@
     "ts:node": "ts-node src",
     "dev": "nodemon -x node --es-module-specifier-resolution=node --no-warnings --loader ts-node/esm src/index.ts",
     "build": "tsc",
+    "build2": "rm -rf build && tsc",
     "html": "find ./src -name '*.hbs' -o -name '*.css' -type f -exec cp --parents {} ./build \\;",
     "clean": "rm -rf build",
     "cleanModule": "rm -rf node_modules",
