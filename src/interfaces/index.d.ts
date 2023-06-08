@@ -6,7 +6,7 @@ export interface User {
   role: Rols;
   name: string;
   email: string;
-  phone?: string; 
+  phone?: number; 
   description?: string;
   active: boolean;
   image?: string;

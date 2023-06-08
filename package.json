@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow/tfjs": "^4.7.0",
     "@tensorflow/tfjs-node": "^4.7.0",
     "@types/cors": "^2.8.13",
     "axios": "^1.4.0",

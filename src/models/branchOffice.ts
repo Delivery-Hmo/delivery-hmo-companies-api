@@ -1,4 +1,4 @@
-import { Schema, model, SchemaOptions } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { latLngSchema } from '.';
 import { maxlength, optionsModel } from '../constants';
 import { BranchOffice } from '../interfaces';
@@ -22,7 +22,7 @@ export const schema = new Schema<BranchOffice>(
     role: { type: String, required: true },
     description: { type: String, maxlength },
   }, 
-  optionsModel as SchemaOptions<BranchOffice>
+  optionsModel 
 );
 
 export default model<BranchOffice>('BranchOffice', schema);
