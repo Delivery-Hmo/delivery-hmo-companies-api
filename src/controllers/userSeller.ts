@@ -72,7 +72,7 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
     const model = req.body as UserSeller;
     const { email, password, id } = model;
 
-    await updateUserAuth(model.uid, { email, password });
+    await updateUserAuth(model.uid!, { email, password });
 
     const userBranchOfficeSeller = await UserSellerModel.findByIdAndUpdate(id, { email, password, id });
 

@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "strictNullChecks": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "./build/",

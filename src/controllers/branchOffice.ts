@@ -44,29 +44,15 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 
   try {
     const { email, password } = model;
-
-    const error = await validateBranchOffice(model);
-
-    if (error) {
-      return res.status(500).json(error);
-    }
-
     const userAdmin = global?.user;
-
     model.userAdmin = userAdmin as UserAdmin;
 
-    delete model.password;
+    await validateBranchOffice(model);
 
     const createAuth = await createUserAuth(email, password!, "Administrador sucursal");
 
+    delete model.password;
     model.uid = createAuth.uid;
-  } catch (err) {
-    await deleteUserAuth(model.uid!);
-
-    return handleError(res, err);
-  }
-
-  try {
     model.active = true;
     model.role = "Administrador sucursal";
 
@@ -74,7 +60,9 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 
     return res.status(201).json(branchOffice);
   } catch (err) {
-    await deleteUserAuth(model.uid!);
+    if(model.uid) {
+      await deleteUserAuth(model.uid);
+    }
 
     return handleError(res, err);
   }
@@ -83,32 +71,26 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 export const update = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
     const model = req.body as BranchOffice;
-    const { email, password } = model;
-    const uid = model.uid as string;
-
-    const error = await validateBranchOffice(model);
-
-    if (error) {
-      return res.status(500).json(error);
-    }
-
+    const { email, password, id, uid } = model;
     const userAdmin = global?.user;
 
     model.userAdmin = userAdmin as UserAdmin;
 
+    await validateBranchOffice(model);
+
     if (model.password) {
       delete model.password;
 
-      await updateUserAuth(uid, { password });
+      await updateUserAuth(uid!, { password });
     }
 
-    const oldBranchOffice = await findByIdBranchOffice(model.id as string);
+    const oldBranchOffice = await findByIdBranchOffice(id!);
 
     if (oldBranchOffice?.email !== email) {
-      await updateUserAuth(uid, { email });
+      await updateUserAuth(uid!, { email });
     }
 
-    const branchOffice = await findByIdAndUpdateBranchOffice(model.id as string, model);
+    const branchOffice = await findByIdAndUpdateBranchOffice(id!, model);
 
     return res.status(200).json(branchOffice);
   } catch (err) {
