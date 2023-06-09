@@ -11,7 +11,8 @@ export const server = {
   HOST: process.env.HOST || 'localhost',
   PORT: Number(process.env.PORT)
 } as const;
-
+console.log(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;sssssssssssssssssssssssss')
+console.log(process.env.PROJECT_ID)
 export const serviceAccount: admin.ServiceAccount = {
   projectId: process.env.PROJECT_ID,
   privateKey: process.env.PRIVATE_KEY,
