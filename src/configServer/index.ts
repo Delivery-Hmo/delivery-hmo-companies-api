@@ -5,14 +5,14 @@ import dotenv from "dotenv";
 import admin from 'firebase-admin';
 
 dotenv.config();
-
+console.log(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;sssssssssssssssssssssssss')
+console.log(process.env.PROJECT_ID)
 export const server = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   HOST: process.env.HOST || 'localhost',
   PORT: Number(process.env.PORT)
 } as const;
-console.log(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;sssssssssssssssssssssssss')
-console.log(process.env.PROJECT_ID)
+
 export const serviceAccount: admin.ServiceAccount = {
   projectId: process.env.PROJECT_ID,
   privateKey: process.env.PRIVATE_KEY,
