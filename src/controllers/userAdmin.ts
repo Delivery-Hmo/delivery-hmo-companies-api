@@ -9,7 +9,7 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
   try {
     const model = req.body as UserAdmin;
 
-    await updateUserAuth(model.uid, { displayName: "Administrador" });
+    await updateUserAuth(model.uid!, { displayName: "Administrador" });
 
     model.active = true;
     model.role = "Administrador";

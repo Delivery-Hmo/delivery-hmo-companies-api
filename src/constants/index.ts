@@ -1,6 +1,6 @@
 import { SchemaOptions } from "mongoose";
 
-export const optionsModel: SchemaOptions = {
+export const optionsModel: SchemaOptions<any> = {
   timestamps: {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'

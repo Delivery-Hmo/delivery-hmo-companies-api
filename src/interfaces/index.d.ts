@@ -2,11 +2,11 @@ import { Rols } from "../types";
 
 export interface User {
   id?: string;
-  uid: string;
+  uid?: string;
   role: Rols;
   name: string;
   email: string;
-  phone?: string; 
+  phone?: number; 
   description?: string;
   active: boolean;
   image?: string;

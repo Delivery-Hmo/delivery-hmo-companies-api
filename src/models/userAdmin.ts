@@ -1,4 +1,4 @@
-import { Schema, SchemaOptions, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
 import { UserAdmin } from '../interfaces';
 
@@ -15,7 +15,7 @@ const schema = new Schema<UserAdmin>(
     rfc: { type: String, unique: true },
     role: { type: String, required: true }
   },
-  optionsModel as SchemaOptions<UserAdmin>
+  optionsModel
 );
 
 export default model<UserAdmin>('UserAdmin', schema);
