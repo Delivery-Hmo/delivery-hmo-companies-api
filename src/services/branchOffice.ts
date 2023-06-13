@@ -1,11 +1,11 @@
-import { isPointInsideCircle } from "../utils/functions";
-import BranchOfficeModel from '../models/branchOffice';
-import { BranchOffice } from "../interfaces";
-import { FilterQuery, Model } from "mongoose";
-import { handleErrorFunction } from "../utils/handleError";
-import { getPaginatedList } from "../repositories/allModels";
 import { Request } from "express";
+import { FilterQuery, Model } from "mongoose";
+import BranchOfficeModel from '../models/branchOffice';
+import { BranchOffice, UserAdmin } from "../interfaces";
+import { isPointInsideCircle } from "../utils/functions";
+import { handleErrorFunction } from "../utils/handleError";
 import { findBranchOffice } from "../repositories/branchOffice";
+import { getPaginatedList } from "../repositories/allModels";
 
 export const getPaginatedListByUserAdmin = async ({ search, req }: { search: string, req: Request }) => {
   try {
@@ -42,9 +42,13 @@ export const getListByUserAdmin = async () => {
   }
 }    
 
-export const validateBranchOffice = async (branchOffice: BranchOffice) => {
-  const { latLng, center, radius, email, phones, name } = branchOffice;
+export const newBranchOffice = async (branchOffice: BranchOffice) => {
+  const { latLng, center, radius, email, phones, name, password } = branchOffice;
 
+  if(password && password?.length < 6) {
+    throw "La contraseña debe tener al menos 6 caracteres.";
+  }
+  
   if (!latLng.lat || !latLng.lng) {
     throw "La ubicación de la sucursal es obligatoria.";
   }
@@ -76,4 +80,11 @@ export const validateBranchOffice = async (branchOffice: BranchOffice) => {
   if(otherModelSameName && otherModelSameName?.id !== branchOffice.id) {
     throw "Ya existe una sucursal con este nombre.";
   }
+
+  const userAdmin = global?.user;
+  branchOffice.userAdmin = userAdmin as UserAdmin;
+  branchOffice.active = true;
+  branchOffice.role = "Administrador sucursal";
+
+  return branchOffice;
 }

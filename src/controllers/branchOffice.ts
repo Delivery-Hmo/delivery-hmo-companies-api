@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { BranchOffice, UserAdmin } from '../interfaces';
 import handleError from "../utils/handleError";
-import { createUserAuth, deleteUserAuth, updateUserAuth } from "../services/firebaseAuth";
-import { getListByUserAdmin, getPaginatedListByUserAdmin, validateBranchOffice } from "../services/branchOffice";
+import { getListByUserAdmin, getPaginatedListByUserAdmin } from "../services/branchOffice";
 import { createBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice, getBranchOfficeByUid } from "../repositories/branchOffice";
+import { deleteUserAuth, updateUserAuth } from "../repositories/firebaseAuth";
+import { createUser } from "../services";
 
 export const getByUid = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
@@ -40,21 +41,10 @@ export const listByUserAdmin = async (_: Request, res: Response): Promise<Respon
 }
 
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
-  const model = req.body as BranchOffice;
+  let model = req.body as BranchOffice;
 
   try {
-    const { email, password } = model;
-    const userAdmin = global?.user;
-    model.userAdmin = userAdmin as UserAdmin;
-
-    await validateBranchOffice(model);
-
-    const createAuth = await createUserAuth(email, password!, "Administrador sucursal");
-
-    delete model.password;
-    model.uid = createAuth.uid;
-    model.active = true;
-    model.role = "Administrador sucursal";
+    model = await createUser<BranchOffice>(model, "Administrador sucursal");
 
     const branchOffice = await createBranchOffice(model);
 
@@ -76,7 +66,7 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
 
     model.userAdmin = userAdmin as UserAdmin;
 
-    await validateBranchOffice(model);
+    //await validateBranchOffice(model);
 
     if (model.password) {
       delete model.password;
