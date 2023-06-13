@@ -1,25 +1,45 @@
-import { BranchOffice } from "../interfaces";
-import { Rols } from "../types";
+import { NewModelFunction, CreateRepoFunction, Rols } from "../types";
 import { newBranchOffice } from "./branchOffice";
-import { createUserAuth } from "../repositories/firebaseAuth";
+import { createUserAuth, deleteUserAuth } from "../repositories/firebaseAuth";
+import { createBranchOffice } from "../repositories/branchOffice";
+import { createUserAdmin } from "../repositories/userAdmin";
+import { handleErrorFunction } from "../utils/handleError";
 
-export const createUser = async <T extends {}>(model: T, displayName: Rols) => {
-  const promise = new Promise<T>((res) => res);
-  const newModels: Record<Rols, Promise<T>> = {
-    "Administrador sucursal": newBranchOffice(model as any as BranchOffice) as any as Promise<T>,
-    "Administrador": promise,
-    "Repartidor": promise,
-    "Vendedor": promise,
-    "": promise
-  } as const;
-  const m = newModels[displayName] as any & { email: string, password?: string, uid: string };
-  const { email, password } = m;
+export const createUser = async <T extends { email: string, password?: string, uid?: string }>(model: T, rol: Rols) => {
+  try {
+    const newModels: Record<Rols, NewModelFunction<T>> = {
+      "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
+      "Administrador": null,
+      "Repartidor": null,
+      "Vendedor": null,
+      "": null
+    } as const;
 
-  const userAuth = await createUserAuth({ email, password, displayName });
+    model = await newModels[rol]!(model);
 
-  m.uid = userAuth.uid;
-  delete m.password;
+    const { email, password } = model;
+  
+    const userAuth = await createUserAuth({ email, password, displayName: rol });
+  
+    model.uid = userAuth.uid;
+    delete model.password;
 
-  return m;
+    const reposCreate: Record<Rols, CreateRepoFunction<T>> = {
+      "Administrador": createUserAdmin as any as CreateRepoFunction<T>,
+      "Administrador sucursal": createBranchOffice as any as CreateRepoFunction<T>,
+      "Repartidor": null,
+      "Vendedor": null,
+      "": null
+    } as const;
+  
+    const modelCreated = await reposCreate[rol]!(model);
+  
+    return modelCreated;
+  } catch (error) {
+    if(model.uid) {
+      await deleteUserAuth(model.uid);
+    }
+
+    throw handleErrorFunction(error);
+  }
 }
-

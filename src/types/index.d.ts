@@ -20,5 +20,8 @@ export type GenericDocument<T> = (Document<unknown, {}, T> & Omit<T & {
 
 export type GenericModel<T> = Model<T, {}, {}, {}, Document<unknown, {}, T> & Omit<T & {
   _id: Types.ObjectId;
-}, never>, any>
+}, never>, any>;
 
+export type NewModelFunction<T> = ((model: T) => Promise<T>) | null;
+
+export type CreateRepoFunction<T> = ((model: T) => Promise<GenericDocument<T>>) | null;
