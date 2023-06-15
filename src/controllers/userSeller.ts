@@ -3,15 +3,16 @@ import handleError from "../utils/handleError";
 import { UserSeller, UserAdmin } from '../interfaces';
 import UserSellerModel from '../models/userSeller';
 import { FilterQuery, Model } from "mongoose";
-import { createUserAuth, updateUserAuth } from "../services/firebaseAuth";
 import { getPaginatedList } from "../repositories/allModels";
+import { createUserAuth, updateUserAuth } from "../repositories/firebaseAuth";
+import { ReqQuery } from "../types";
 
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
     const model = req.body as UserSeller;
     const { email, password } = model;
 
-    const createAuth = await createUserAuth(email, password as string, "Vendedor");
+    const createAuth = await createUserAuth({ email, password: password! });
 
     const userAdmin = global?.user;
 
@@ -32,7 +33,7 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
     const userAdmin = global?.user;
-    const { search } = req.query;
+    const { search, page, limit } = req.query as ReqQuery;
 
     let query: FilterQuery<Model<UserSeller>> = {
       userAdmin: userAdmin?.id,
@@ -47,7 +48,7 @@ export const listByUserAdmin = async (req: Request, res: Response): Promise<Resp
       ];
     }
 
-    const paginatedList = await getPaginatedList({ model: UserSellerModel, query, populate: [], req });
+    const paginatedList = await getPaginatedList({ model: UserSellerModel, query, populate: [], page: +page, limit: +limit });
 
     return res.status(200).json(paginatedList);
   } catch (err) {

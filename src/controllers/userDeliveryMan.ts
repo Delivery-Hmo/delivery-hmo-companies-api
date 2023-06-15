@@ -4,19 +4,21 @@ import { UserDeliveryMan, UserAdmin } from '../interfaces';
 import { FilterQuery, Model } from "mongoose";
 import UserDeliverymanModel from '../models/userDeliveryMan';
 import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan, validateUserDeliveryMan } from "../services/deliveryMan";
-import { createUserAuth } from "../services/firebaseAuth";
 import { getPaginatedList } from "../repositories/allModels";
-
+import { createUserAuth } from "../repositories/firebaseAuth";
+import { ReqQuery } from "../types";
 
 export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
+    const { page, limit } = req.query as ReqQuery;
+
     const userAdmin = global?.user;
     const query: FilterQuery<Model<UserDeliveryMan>> = {
       userAdmin: userAdmin?.id,
       active: true,
     };
 
-    const paginatedList = await getPaginatedList({ model: UserDeliverymanModel, query, populate: "branchOffice", req });
+    const paginatedList = await getPaginatedList({ model: UserDeliverymanModel, query, populate: "branchOffice", page: +page, limit: +limit });
 
     return res.status(200).json(paginatedList);
   } catch (err) {
@@ -43,7 +45,7 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 
     delete model.password;
 
-    const createAuth = await createUserAuth(email, password!, "Repartidor");
+    const createAuth = await createUserAuth({ email, password: password! });
 
     model.uid = createAuth.uid;
 
