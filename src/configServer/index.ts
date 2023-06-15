@@ -5,8 +5,6 @@ import dotenv from "dotenv";
 import admin from 'firebase-admin';
 
 dotenv.config();
-console.log(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;sssssssssssssssssssssssss')
-console.log(process.env.PROJECT_ID)
 export const server = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   HOST: process.env.HOST || 'localhost',
