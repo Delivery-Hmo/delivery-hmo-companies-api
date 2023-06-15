@@ -1,8 +1,5 @@
 version: 0.2
-env:  
-  parameter-store:
-    PORT: "3001"
-    PORT: "delivery-hmo"
+
 phases:
   install:
     runtime-versions:
