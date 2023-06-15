@@ -11,9 +11,13 @@ export const server = {
   PORT: Number(process.env.PORT)
 } as const;
 
+const Pk = process.env.PRIVATE_KEY
+  ? process.env.PRIVATE_KEY.replace(/\\n/gm, "\n")
+  : undefined
+
 export const serviceAccount: admin.ServiceAccount = {
   projectId: process.env.PROJECT_ID,
-  privateKey: process.env.PRIVATE_KEY,
+  privateKey: Pk,
   clientEmail: process.env.CLIENT_EMAIL,
 } as const;
 
