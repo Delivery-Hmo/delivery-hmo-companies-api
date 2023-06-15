@@ -1,6 +1,6 @@
 import { Types, Document, Model } from "mongoose";
 import { BranchOffice, CommentsBranchOffice, UserAdmin, UserDeliveryMan, UserSeller } from '../interfaces';
-
+import { Response } from "express";
 
 export {};
 
@@ -25,3 +25,10 @@ export type GenericModel<T> = Model<T, {}, {}, {}, Document<unknown, {}, T> & Om
 export type NewModelFunction<T> = ((model: T) => Promise<T>) | null;
 
 export type CreateRepoFunction<T> = ((model: T) => Promise<GenericDocument<T>>) | null;
+
+export type UpdateRepoFunction<T> = ((id: string, model: T) => Promise<GenericDocument<T>>) | null;
+
+export type ControllerFunction = Promise<Response<any, Record<string, any>>>;
+
+export type ReqQuery = Record<string, string>;
+
