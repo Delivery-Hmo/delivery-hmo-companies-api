@@ -10,7 +10,6 @@ export const server = {
   HOST: process.env.HOST || 'localhost',
   PORT: Number(process.env.PORT)
 } as const;
-console.log("/////////////1111111111111111111/////////////////////")
 console.log(process.env.PRIVATE_KEY)
 const privateKey = " " + `${process.env.PRIVATE_KEY}` + " ";
 console.log("/////////////sssssssssssssss/////////////////////")
