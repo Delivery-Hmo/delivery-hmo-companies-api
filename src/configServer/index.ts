@@ -12,8 +12,12 @@ export const server = {
 } as const;
 console.log("///////////////////////////////////////////////////////////Hola28")
 console.log(process.env.PRIVATE_KEY)
-const privateKey = process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY.toString() : undefined;
+const privateKey = process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY.replace('\n', '\n') : undefined;
+
+console.log("//////////////////////////////privateKey/////////////////////////////Hola28")
 console.log(privateKey)
+
+
 export const serviceAccount: admin.ServiceAccount = {
   projectId: process.env.PROJECT_ID,
   privateKey: privateKey,
