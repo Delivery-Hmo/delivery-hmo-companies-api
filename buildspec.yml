@@ -12,6 +12,7 @@ phases:
        - npm install --silent --no-progress -g npm
   build:
     commands:
+      - echo Build started on `date`
       - npm run build
 artifacts:
   files:
