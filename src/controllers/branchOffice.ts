@@ -39,6 +39,7 @@ export const listByUserAdmin = async (_: Request, res: Response): Promise<Respon
   }
 }
 
+
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   const model = req.body as BranchOffice;
 
