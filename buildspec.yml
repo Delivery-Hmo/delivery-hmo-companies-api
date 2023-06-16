@@ -5,20 +5,20 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-       - npm install
-       - npm install ts-node
-       - npm install -g typescript --save-dev @types/node
-       - npm install express
-       - npm install --silent --no-progress -g npm
+      - npm install
+      - npm install ts-node
+      - npm install -g typescript --save-dev @types/node
+      - npm install express
+      - npm install --silent --no-progress -g npm
   build:
     commands:
       - echo Build started on `date`
       - npm run build
   post_build:
     commands:
-      - aws ssm get-parameter --name "PORT" --with-decryption --query "Parameter.Value" --output text > .env
-      - aws ssm get-parameter --name "DB_CONN_STRING" --with-decryption --query "Parameter.Value" --output text > .env
-      - aws ssm get-parameter --name "PROJECT_ID" --with-decryption --query "Parameter.Value" --output text > .env     
+      - aws ssm get-parameter --name "PORT" --with-decryption --query "Parameter.Value" --output text >> .env
+      - aws ssm get-parameter --name "DB_CONN_STRING" --with-decryption --query "Parameter.Value" --output text >> .env
+      - aws ssm get-parameter --name "PROJECT_ID" --with-decryption --query "Parameter.Value" --output text >> .env     
 artifacts:
   files:
     - package.json
