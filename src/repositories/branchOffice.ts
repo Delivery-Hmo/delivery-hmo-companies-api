@@ -6,6 +6,8 @@ export const getBranchOfficeByUid = (uid: string) => BranchOfficeModel.findOne({
 
 export const findBranchOffice = (query: FilterQuery<BranchOffice>) => BranchOfficeModel.find(query);
 
+export const findOneBranchOffice = (query: FilterQuery<BranchOffice>) => BranchOfficeModel.findOne(query);
+
 export const findByIdBranchOffice = (id: string) => BranchOfficeModel.findById(id);
 
 export const createBranchOffice = (model: BranchOffice) => BranchOfficeModel.create(model);

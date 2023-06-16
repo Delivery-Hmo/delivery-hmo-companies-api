@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import handleError from "../utils/handleError";
 import { UserAdmin } from '../interfaces';
 import UserModel from '../models/userAdmin';
-import { getUserAdminByUid } from "../services/userAdmin";
-import { updateUserAuth } from "../services/firebaseAuth";
+import { getUserAdminByUid } from "../repositories/userAdmin";
+import { updateUserAuth } from "../repositories/firebaseAuth";
 
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {

@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
-import { BranchOffice, UserAdmin } from '../interfaces';
+import { BranchOffice } from '../interfaces';
+import { ControllerFunction, ReqQuery } from "../types";
 import handleError from "../utils/handleError";
-import { createUserAuth, deleteUserAuth, updateUserAuth } from "../services/firebaseAuth";
-import { getListByUserAdmin, getPaginatedListByUserAdmin, validateBranchOffice } from "../services/branchOffice";
-import { createBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice, getBranchOfficeByUid } from "../repositories/branchOffice";
+import { createUser, updateUser } from "../services";
+import { getListByUserAdmin, getPaginatedListByUserAdmin } from "../services/branchOffice";
+import { findByIdAndUpdateBranchOffice, getBranchOfficeByUid } from "../repositories/branchOffice";
 
-export const getByUid = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const getByUid = async (req: Request, res: Response): ControllerFunction => {
   try {
     const { uid } = req.query;
 
@@ -17,11 +18,11 @@ export const getByUid = async (req: Request, res: Response): Promise<Response<an
   }
 }
 
-export const paginatedListByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const paginatedListByUserAdmin = async (req: Request, res: Response): ControllerFunction => {
   try {
-    const { search } = req.query;
+    let { search, page, limit } = req.query as ReqQuery;
 
-    const paginatedList = await getPaginatedListByUserAdmin({ search: search as string, req });
+    const paginatedList = await getPaginatedListByUserAdmin({ search, page: +page, limit: +limit });
 
     return res.status(200).json(paginatedList);
   } catch (err) {
@@ -29,7 +30,7 @@ export const paginatedListByUserAdmin = async (req: Request, res: Response): Pro
   }
 }
 
-export const listByUserAdmin = async (_: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const listByUserAdmin = async (_: Request, res: Response): ControllerFunction => {
   try {
     const paginatedList = await getListByUserAdmin();
 
@@ -39,59 +40,23 @@ export const listByUserAdmin = async (_: Request, res: Response): Promise<Respon
   }
 }
 
-
-export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
-  const model = req.body as BranchOffice;
+export const create = async (req: Request, res: Response): ControllerFunction => {
+  const body = req.body as BranchOffice;
 
   try {
-    const { email, password } = model;
-    const userAdmin = global?.user;
-    model.userAdmin = userAdmin as UserAdmin;
-
-    await validateBranchOffice(model);
-
-    const createAuth = await createUserAuth(email, password!, "Administrador sucursal");
-
-    delete model.password;
-    model.uid = createAuth.uid;
-    model.active = true;
-    model.role = "Administrador sucursal";
-
-    const branchOffice = await createBranchOffice(model);
+    const branchOffice = await createUser<BranchOffice>(body, "Administrador sucursal");
 
     return res.status(201).json(branchOffice);
   } catch (err) {
-    if(model.uid) {
-      await deleteUserAuth(model.uid);
-    }
-
     return handleError(res, err);
   }
 }
 
-export const update = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const update = async (req: Request, res: Response): ControllerFunction => {
   try {
     const model = req.body as BranchOffice;
-    const { email, password, id, uid } = model;
-    const userAdmin = global?.user;
 
-    model.userAdmin = userAdmin as UserAdmin;
-
-    await validateBranchOffice(model);
-
-    if (model.password) {
-      delete model.password;
-
-      await updateUserAuth(uid!, { password });
-    }
-
-    const oldBranchOffice = await findByIdBranchOffice(id!);
-
-    if (oldBranchOffice?.email !== email) {
-      await updateUserAuth(uid!, { email });
-    }
-
-    const branchOffice = await findByIdAndUpdateBranchOffice(id!, model);
+    const branchOffice = await updateUser(model, "Administrador sucursal");
 
     return res.status(200).json(branchOffice);
   } catch (err) {
@@ -99,7 +64,7 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const disable = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const disable = async (req: Request, res: Response): ControllerFunction => {
   try {
     const id = req.body.id as string;
 

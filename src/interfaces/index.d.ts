@@ -5,7 +5,7 @@ export interface User {
   uid?: string;
   role: Rols;
   name: string;
-  email: string;
+  email?: string;
   phone?: number; 
   description?: string;
   active: boolean;
