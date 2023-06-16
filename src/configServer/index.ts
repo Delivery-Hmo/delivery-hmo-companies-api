@@ -10,7 +10,7 @@ export const server = {
   HOST: process.env.HOST || 'localhost',
   PORT: Number(process.env.PORT)
 } as const;
-console.log("///////////////////////////////////////////////////////////Hola222")
+console.log("///////////////////////////////////////////////////////////Hola28")
 console.log(process.env.PRIVATE_KEY)
 const privateKey = process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY.toString() : undefined;
 console.log(privateKey)
