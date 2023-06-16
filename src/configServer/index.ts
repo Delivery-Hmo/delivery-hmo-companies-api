@@ -10,13 +10,10 @@ export const server = {
   HOST: process.env.HOST || 'localhost',
   PORT: Number(process.env.PORT)
 } as const;
-console.log(process.env.PRIVATE_KEY)
-const privateKey = " " + `${process.env.PRIVATE_KEY}` + " ";
-console.log("/////////////sssssssssssssss/////////////////////")
-console.log(privateKey)
+
 export const serviceAccount: admin.ServiceAccount = {
   projectId: process.env.PROJECT_ID,
-  privateKey: privateKey,
+  privateKey: process.env.PRIVATE_KEY,
   clientEmail: process.env.CLIENT_EMAIL,
 } as const;
 
