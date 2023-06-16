@@ -5,7 +5,6 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-       - npm install node-forge
        - npm install
        - npm install ts-node
        - npm install -g typescript --save-dev @types/node

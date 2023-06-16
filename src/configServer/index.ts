@@ -10,16 +10,7 @@ export const server = {
   HOST: process.env.HOST || 'localhost',
   PORT: Number(process.env.PORT)
 } as const;
-console.log("///////////////////////////////////////////////////////////Hola28")
-console.log(process.env.PRIVATE_KEY)
-const privateKey = process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY.replace(/\\n/g, '\n') : undefined;
-const privateKey2 = process.env.PRIVATE_KEY ? process.env.PRIVATE_KEY.replace(/\n/g, '\n') : undefined;
-
-console.log("//////////////////////////////privateKey11/////////////////////////////Hola28")
-console.log(privateKey)
-
-console.log("//////////////////////////////privateKey22/////////////////////////////Hola28")
-console.log(privateKey2)
+const privateKey = `${process.env.PRIVATE_KEY}`;
 
 export const serviceAccount: admin.ServiceAccount = {
   projectId: process.env.PROJECT_ID,
