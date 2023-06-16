@@ -8,9 +8,9 @@ import { findByIdAndUpdateBranchOffice, getBranchOfficeByUid } from "../reposito
 
 export const getByUid = async (req: Request, res: Response): ControllerFunction => {
   try {
-    const { uid } = req.query;
+    const { uid } = req.query as ReqQuery;
 
-    const model = await getBranchOfficeByUid(uid as string);
+    const model = await getBranchOfficeByUid(uid);
 
     return res.status(200).json(model);
   } catch (err) {
@@ -20,7 +20,7 @@ export const getByUid = async (req: Request, res: Response): ControllerFunction 
 
 export const paginatedListByUserAdmin = async (req: Request, res: Response): ControllerFunction => {
   try {
-    let { search, page, limit } = req.query as ReqQuery;
+    const { search, page, limit } = req.query as ReqQuery;
 
     const paginatedList = await getPaginatedListByUserAdmin({ search, page: +page, limit: +limit });
 
@@ -44,7 +44,7 @@ export const create = async (req: Request, res: Response): ControllerFunction =>
   const body = req.body as BranchOffice;
 
   try {
-    const branchOffice = await createUser<BranchOffice>(body, "Administrador sucursal");
+    const branchOffice = await createUser(body, "Administrador sucursal");
 
     return res.status(201).json(branchOffice);
   } catch (err) {

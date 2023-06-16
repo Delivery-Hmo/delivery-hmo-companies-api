@@ -4,6 +4,7 @@ import { UserAdmin } from '../interfaces';
 import UserModel from '../models/userAdmin';
 import { getUserAdminByUid } from "../repositories/userAdmin";
 import { updateUserAuth } from "../repositories/firebaseAuth";
+import { updateUser } from "../services";
 
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
@@ -76,14 +77,10 @@ export const verifyEmail = async (req: Request, res: Response): Promise<Response
 export const update = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
     const model = req.body as UserAdmin;
-    const _id = model.id;
 
-    model.role = "Administrador";
+    const branchOffice = await updateUser(model, "Administrador");
 
-    const userUserAdmin = await UserModel.findByIdAndUpdate(_id, model, { new: true });
-
-    return res.status(200).json(userUserAdmin);
-
+    return res.status(200).json(branchOffice);
   } catch (err) {
     return handleError(res, err);
   }

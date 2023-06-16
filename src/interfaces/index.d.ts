@@ -6,7 +6,6 @@ export interface User {
   role: Rols;
   name: string;
   email?: string;
-  phone?: number; 
   description?: string;
   active: boolean;
   image?: string;
@@ -14,6 +13,7 @@ export interface User {
 }
 export interface UserAdmin extends User {
   company?: string;
+  phone?: number; 
   rfc?: string;
 }
 
@@ -34,12 +34,14 @@ export interface BranchOffice extends User {
 export interface UserSeller extends User {
   branchOffice?: string | BranchOffice;
   userAdmin?: string | UserAdmin;
+  phone?: number; 
 }
 
 export interface UserDeliveryMan extends User {
   branchOffice?: string | BranchOffice;
   userAdmin?: string | UserAdmin;
   latLng?: LatLng;
+  phone?: number; 
 }
 
 export interface CommentsBranchOffice {

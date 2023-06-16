@@ -12,4 +12,4 @@ export const findByIdBranchOffice = (id: string) => BranchOfficeModel.findById(i
 
 export const createBranchOffice = (model: BranchOffice) => BranchOfficeModel.create(model);
 
-export const findByIdAndUpdateBranchOffice = (id: string, data: BranchOffice | Record<string, any>) => BranchOfficeModel.findByIdAndUpdate(id, data);
+export const findByIdAndUpdateBranchOffice = (id: string, data: BranchOffice | Record<string, any>) => BranchOfficeModel.findByIdAndUpdate(id, data, { new: true });

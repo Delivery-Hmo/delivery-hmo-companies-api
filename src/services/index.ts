@@ -2,7 +2,7 @@ import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction }
 import { newBranchOffice } from "./branchOffice";
 import { createUserAuth, deleteUserAuth, getUserAuthByUid, updateUserAuth } from "../repositories/firebaseAuth";
 import { createBranchOffice, findByIdAndUpdateBranchOffice } from "../repositories/branchOffice";
-import { createUserAdmin } from "../repositories/userAdmin";
+import { createUserAdmin, findByIdAndUpdateUserAdmin } from "../repositories/userAdmin";
 import { handleErrorFunction } from "../utils/handleError";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
@@ -48,8 +48,8 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
 export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
     const newModels: Record<Rols, NewModelFunction<T>> = {
-      "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Administrador": null,
+      "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
       "": null
@@ -60,11 +60,11 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     const { id, uid, email, password } = model;
     const { email: oldEmail } = await getUserAuthByUid(uid!);
 
-    await updateUserAuth(uid!, { email: oldEmail !== email ? email : undefined, password });
+    await updateUserAuth(uid!, { email: email && oldEmail !== email ? email : undefined, password });
 
     const reposUpdate: Record<Rols, UpdateRepoFunction<T>> = {
-      "Administrador": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
-      "Administrador sucursal": null,
+      "Administrador": findByIdAndUpdateUserAdmin as any as UpdateRepoFunction<T>,
+      "Administrador sucursal": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
       "": null
