@@ -13,11 +13,9 @@ phases:
   build:
     commands:
       - npm run build
-  post_build:
-    commands:
-      - echo "PORT=\"$(aws ssm get-parameter --name \"PORT\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
-      - echo "PORT=\"$(aws ssm get-parameter --name \"PORT\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
-      - echo "PORT=$(aws ssm get-parameter --name \"PORT\" --with-decryption --query \"Parameter.Value\" --output text)=$(aws ssm get-parameter --name \"PORT\" --with-decryption --query \"Parameter.Value\" --output text)" >> .env
+env:
+  variables:
+    PORT: aws ssm get-parameter --name "PORT" --with-decryption --query "Parameter.Value"
 artifacts:
   files:
     - package.json
