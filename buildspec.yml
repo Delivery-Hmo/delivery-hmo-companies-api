@@ -21,9 +21,6 @@ phases:
       - aws ssm get-parameter --name "PROJECT_ID" --with-decryption --query "Parameter.Value" --output text | awk -v var="PROJECT_ID" >> .env
       - aws ssm get-parameter --name "PRIVATE_KEY" --with-decryption --query "Parameter.Value" --output text | awk -v var="PRIVATE_KEY" >> .env
       - aws ssm get-parameter --name "CLIENT_EMAIL" --with-decryption --query "Parameter.Value" --output text | awk -v var="CLIENT_EMAIL" >> .env
-
-      - aws ssm get-parameter --name "DB_CONN_STRING" --with-decryption --query "Parameter.Value" --output text >> .env
-      - aws ssm get-parameter --name "PROJECT_ID" --with-decryption --query "Parameter.Value" --output text >> .env     
 artifacts:
   files:
     - package.json
