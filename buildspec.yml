@@ -14,10 +14,10 @@ phases:
     commands:
       - echo "Hola Build"
       - npm run build
-env:
-  variables:
-    PORT: aws ssm get-parameter --name "PORT" --with-decryption --query "Parameter.Value"
-    PROJECT_ID: aws ssm get-parameter --name "PROJECT_ID" --with-decryption --query "Parameter.Value"
+  post_build:
+    commands:
+      - echo "PORT=$(aws ssm get-parameter --name \"PORT\" --with-decryption --query \"Parameter.Value\" --output text)" >> .env
+      - echo "PROJECT_ID=$(aws ssm get-parameter --name \"PROJECT_ID\" --with-decryption --query \"Parameter.Value\" --output text)" >> .env
 artifacts:
   files:
     - package.json
