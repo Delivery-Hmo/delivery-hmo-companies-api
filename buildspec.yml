@@ -15,7 +15,7 @@ phases:
       - npm run build
   post_build:
     commands:
-      - aws ssm get-parameter --name "PORT" --with-decryption --query "Parameter.Value" --output text >> .env
+      - aws ssm get-parameter --name "PORT" --with-decryption --query "PORT" --output text >> .env
       - aws ssm get-parameter --name "DB_CONN_STRING" --with-decryption --query "Parameter.Value" --output text | awk -v var="DB_CONN_STRING" >> .env
       - echo "PORT=\"$(aws ssm get-parameter --name \"PORT\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
       - echo "DB_CONN_STRING=\"$(aws ssm get-parameter --name \"DB_CONN_STRING\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
