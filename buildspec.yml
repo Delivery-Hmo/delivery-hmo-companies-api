@@ -12,7 +12,6 @@ phases:
       - npm install --silent --no-progress -g npm
   build:
     commands:
-      - echo "Hola Build"
       - npm run build
   post_build:
     commands:
