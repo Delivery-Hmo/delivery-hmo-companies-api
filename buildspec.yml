@@ -15,12 +15,12 @@ phases:
       - npm run build
   post_build:
     commands:
-      - aws ssm get-parameter --name "PORT" --with-decryption --query "Parameter.Value" --output text | awk -v var="PORT" >> .env
-      - aws ssm get-parameter --name "DB_CONN_STRING" --with-decryption --query "Parameter.Value" --output text | awk -v var="DB_CONN_STRING" >> .env
-      - aws ssm get-parameter --name "DB_CONN_STRING_PRODUCTION" --with-decryption --query "Parameter.Value" --output text | awk -v var="DB_CONN_STRING_PRODUCTION" >> .env
-      - aws ssm get-parameter --name "PROJECT_ID" --with-decryption --query "Parameter.Value" --output text | awk -v var="PROJECT_ID" >> .env
-      - aws ssm get-parameter --name "PRIVATE_KEY" --with-decryption --query "Parameter.Value" --output text | awk -v var="PRIVATE_KEY" >> .env
-      - aws ssm get-parameter --name "CLIENT_EMAIL" --with-decryption --query "Parameter.Value" --output text | awk -v var="CLIENT_EMAIL" >> .env
+      - echo "PORT=\"$(aws ssm get-parameter --name \"PORT\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
+      - echo "DB_CONN_STRING=\"$(aws ssm get-parameter --name \"DB_CONN_STRING\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
+      - echo "DB_CONN_STRING_PRODUCTION=\"$(aws ssm get-parameter --name \"DB_CONN_STRING_PRODUCTION\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
+      - echo "PROJECT_ID=\"$(aws ssm get-parameter --name \"PROJECT_ID\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
+      - echo "PRIVATE_KEY=\"$(aws ssm get-parameter --name \"PRIVATE_KEY\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
+      - echo "CLIENT_EMAIL=\"$(aws ssm get-parameter --name \"CLIENT_EMAIL\" --with-decryption --query \"Parameter.Value\" --output text)\"" >> .env
 artifacts:
   files:
     - package.json
