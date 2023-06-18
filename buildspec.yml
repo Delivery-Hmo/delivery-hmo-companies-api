@@ -17,6 +17,7 @@ phases:
 env:
   variables:
     PORT: aws ssm get-parameter --name "PORT" --with-decryption --query "Parameter.Value"
+    PROJECT_ID: aws ssm get-parameter --name "PROJECT_ID" --with-decryption --query "Parameter.Value"
 artifacts:
   files:
     - package.json
