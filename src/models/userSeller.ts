@@ -1,12 +1,19 @@
 import { Schema, model, SchemaOptions } from 'mongoose';
 import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
 import { UserSeller } from '../interfaces';
+import { validateMaxLength } from "../utils/mongoose";
 
 const schema = new Schema<UserSeller>(
   {
     uid: { type: String, required: true },
+    email: { 
+      type: String, 
+      required: [true, "El email de la sucursal es obligatorio."],
+      unique: true, 
+      maxlength,
+      validate: validateMaxLength
+    },
     name: { type: String, required: true, maxlength },
-    email: { type: String, required: true, maxlength, unique: true },
     phone: { type: Number, required: true, maxlength: 10, minlength: 10 }, 
     active: { type: Boolean, required: true, default: true },
     branchOffice: { type: Schema.Types.ObjectId, ref: 'BranchOffice', required: true },

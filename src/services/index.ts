@@ -9,7 +9,7 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
     const newModels: Record<Rols, NewModelFunction<T>> = {
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
-      "Administrador": null,
+      "Administrador": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
       "": null
@@ -23,7 +23,6 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
 
     model.uid = userAuth.uid;
     delete model.password;
-    delete model.email;
 
     const reposCreate: Record<Rols, CreateRepoFunction<T>> = {
       "Administrador": createUserAdmin as any as CreateRepoFunction<T>,
@@ -71,7 +70,6 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     } as const;
 
     delete model.password;
-    delete model.email;
 
     const modelUpdated = await reposUpdate[rol]!(id!, model);
 

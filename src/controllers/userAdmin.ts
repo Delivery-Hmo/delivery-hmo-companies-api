@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import handleError from "../utils/handleError";
+import { handleError } from "../utils/handleError";
 import { UserAdmin } from '../interfaces';
 import UserModel from '../models/userAdmin';
 import { getUserAdminByUid } from "../repositories/userAdmin";

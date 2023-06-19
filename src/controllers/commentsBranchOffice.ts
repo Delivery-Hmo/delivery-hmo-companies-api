@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import handleError from "../utils/handleError";
+import { handleError } from "../utils/handleError";
 import { CommentsBranchOffice } from '../interfaces';
 import CommentsBranchOfficeModel from '../models/commentsBranchOffice';
 

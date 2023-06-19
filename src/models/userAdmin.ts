@@ -1,15 +1,22 @@
 import { Schema, model } from 'mongoose';
-import { maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
+import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
 import { UserAdmin } from '../interfaces';
+import { validateMaxLength } from "../utils/mongoose";
 
 const schema = new Schema<UserAdmin>(
   {
-    uid: { type: String, max: 64 },
+    uid: { type: String, maxlength },
+    email: { 
+      type: String, 
+      required: [true, "El email de la empresa es obligatorio."],
+      unique: true, 
+      maxlength,
+      validate: validateMaxLength
+    },
     name: { type: String, required: true, maxlength: 300 },
-    email: { type: String, required: true, unique: true, maxlength: 300 },
     phone: { type: Number, maxlength: 10, minlength: 10 },
-    company: { type: String, maxlength: 50 },
-    description: { type: String, maxlength: 1000, default: "" },
+    company: { type: String, maxlength },
+    description: { type: String, maxlength, default: "" },
     image: { type: String, maxlength: maxlengthImage, default: urlImageDefaultProfile },
     active: { type: Boolean, required: true },
     rfc: { type: String, unique: true },

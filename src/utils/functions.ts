@@ -2,7 +2,6 @@ import tf, { Tensor3D } from "@tensorflow/tfjs-node";
 import nsfw from "nsfwjs";
 import { handleErrorFunction } from "./handleError";
 import sharp from "sharp";
-//import axios, { AxiosResponse } from "axios";
 
 const earthRadius = 6371000;
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import handleError from "../utils/handleError";
+import { handleError } from "../utils/handleError";
 import { UserDeliveryMan, UserAdmin } from '../interfaces';
 import { FilterQuery, Model } from "mongoose";
 import UserDeliverymanModel from '../models/userDeliveryMan';

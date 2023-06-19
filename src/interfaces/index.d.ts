@@ -1,11 +1,11 @@
 import { Rols } from "../types";
 
 export interface User {
-  id?: string;
+  readonly id?: string;
   uid?: string;
   role: Rols;
   name: string;
-  email?: string;
+  email: string;
   description?: string;
   active: boolean;
   image?: string;
@@ -45,7 +45,7 @@ export interface UserDeliveryMan extends User {
 }
 
 export interface CommentsBranchOffice {
-  id?: string;
+  readonly id?: string;
   comment: string;
   user: string;
   date: Date;

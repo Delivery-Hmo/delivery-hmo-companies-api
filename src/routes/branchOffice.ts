@@ -18,5 +18,3 @@ const RoutesBranchOffice = (app: Application) => {
 }
 
 export default RoutesBranchOffice;
-
-//funcion para generar numeros alaeatorios  

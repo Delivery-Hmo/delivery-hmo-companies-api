@@ -1,4 +1,4 @@
-import handleError from "../utils/handleError";
+import { handleError } from "../utils/handleError";
 import { Application } from "express";
 import { baseUrlStorage, baseUrlStorageGoogle } from "../constants";
 import { uploadImageBase64ToStorage } from "../services/firebaseStorage";

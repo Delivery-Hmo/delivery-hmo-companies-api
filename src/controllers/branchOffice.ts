@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { BranchOffice } from '../interfaces';
 import { ControllerFunction, ReqQuery } from "../types";
-import handleError from "../utils/handleError";
+import { handleError } from "../utils/handleError";
 import { createUser, updateUser } from "../services";
 import { getListByUserAdmin, getPaginatedListByUserAdmin } from "../services/branchOffice";
 import { findByIdAndUpdateBranchOffice, getBranchOfficeByUid } from "../repositories/branchOffice";
