@@ -4,13 +4,13 @@ import { ControllerFunction, ReqQuery } from "../types";
 import { handleError } from "../utils/handleError";
 import { createUser, updateUser } from "../services";
 import { getListByUserAdmin, getPaginatedListByUserAdmin } from "../services/branchOffice";
-import { findByIdAndUpdateBranchOffice, getBranchOfficeByUid } from "../repositories/branchOffice";
+import { findByIdAndUpdateBranchOffice, findByUidBranchOffice } from "../repositories/branchOffice";
 
 export const getByUid = async (req: Request, res: Response): ControllerFunction => {
   try {
     const { uid } = req.query as ReqQuery;
 
-    const model = await getBranchOfficeByUid(uid);
+    const model = await findByUidBranchOffice(uid);
 
     return res.status(200).json(model);
   } catch (err) {

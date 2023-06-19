@@ -1,7 +1,7 @@
-import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction } from "../types";
+import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction, ModelFindByIdFunction } from "../types";
 import { newBranchOffice } from "./branchOffice";
 import { createUserAuth, deleteUserAuth, getUserAuthByUid, updateUserAuth } from "../repositories/firebaseAuth";
-import { createBranchOffice, findByIdAndUpdateBranchOffice } from "../repositories/branchOffice";
+import { createBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
 import { createUserAdmin, findByIdAndUpdateUserAdmin } from "../repositories/userAdmin";
 import { handleErrorFunction } from "../utils/handleError";
 
@@ -15,7 +15,7 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
       "": null
     } as const;
 
-    model = await newModels[rol]!(model);
+    model = newModels[rol]!(model);
 
     const { email, password } = model;
 
@@ -45,7 +45,18 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
 }
 
 export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
+  let oldEmail: string = "";
+
   try {
+    //utilizar el oldModel para actualizar firebase al email anterior por si falla mongose
+    const oldModels: Record<Rols, ModelFindByIdFunction<T>>= {
+      "Administrador": null,
+      "Administrador sucursal": findByIdBranchOffice as any as ModelFindByIdFunction<T>,
+      "Repartidor": null,
+      "Vendedor": null,
+      "": null
+    } as const;
+    
     const newModels: Record<Rols, NewModelFunction<T>> = {
       "Administrador": null,
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
@@ -54,7 +65,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "": null
     } as const;
 
-    model = await newModels[rol]!(model);
+    model = newModels[rol]!(model);
 
     const { id, uid, email, password } = model;
     const { email: oldEmail } = await getUserAuthByUid(uid!);

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { handleError } from "../utils/handleError";
 import { UserAdmin } from '../interfaces';
 import UserModel from '../models/userAdmin';
-import { getUserAdminByUid } from "../repositories/userAdmin";
+import { findByUidUserAdmin } from "../repositories/userAdmin";
 import { updateUserAuth } from "../repositories/firebaseAuth";
 import { updateUser } from "../services";
 
@@ -54,7 +54,7 @@ export const getByUid = async (req: Request, res: Response): Promise<Response<an
   try {
     const { uid } = req.query;
 
-    const model = await getUserAdminByUid(uid as string);
+    const model = await findByUidUserAdmin(uid as string);
 
     return res.status(200).json(model);
   } catch (err) {
