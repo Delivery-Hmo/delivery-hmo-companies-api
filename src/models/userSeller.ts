@@ -20,7 +20,7 @@ const schema = new Schema<UserSeller>(
     userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin', required: true },
     description: { type: String },
     image: { type: String, maxlength: maxlengthImage, default: urlImageDefaultProfile },
-    role: { type: String, required: true, maxlength: 13 }
+    role: { type: String, default: "Vendedor" }
   }, 
   optionsModel as SchemaOptions<UserSeller>
 );

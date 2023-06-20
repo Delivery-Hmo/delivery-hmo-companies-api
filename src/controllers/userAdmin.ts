@@ -3,19 +3,14 @@ import { handleError } from "../utils/handleError";
 import { UserAdmin } from '../interfaces';
 import UserModel from '../models/userAdmin';
 import { findByUidUserAdmin } from "../repositories/userAdmin";
-import { updateUserAuth } from "../repositories/firebaseAuth";
-import { updateUser } from "../services";
+import { createUser, updateUser } from "../services";
+import { ReqQuery } from "../types";
 
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+  const body = req.body as UserAdmin;
+
   try {
-    const model = req.body as UserAdmin;
-
-    await updateUserAuth(model.uid!, { displayName: "Administrador" });
-
-    model.active = true;
-    model.role = "Administrador";
-
-    const userAdmin = await UserModel.create(model);
+    const userAdmin = await createUser(body, "Administrador");
 
     return res.status(201).json(userAdmin);
   } catch (err) {
@@ -38,37 +33,13 @@ export const list = async (req: Request, res: Response): Promise<Response<any, R
   }
 }
 
-export const getById = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
-  try {
-    const { id } = req.query;
-
-    const model = await UserModel.findById(id);
-
-    return res.status(200).json(model);
-  } catch (err) {
-    return handleError(res, err);
-  }
-}
-
 export const getByUid = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
-    const { uid } = req.query;
+    const { uid } = req.query as ReqQuery;
 
-    const model = await findByUidUserAdmin(uid as string);
+    const model = await findByUidUserAdmin(uid);
 
     return res.status(200).json(model);
-  } catch (err) {
-    return handleError(res, err);
-  }
-}
-
-export const verifyEmail = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
-  try {
-    const { email } = req.query;
-
-    const model = await UserModel.findOne({ email })
-
-    return res.status(200).json(Boolean(model));
   } catch (err) {
     return handleError(res, err);
   }

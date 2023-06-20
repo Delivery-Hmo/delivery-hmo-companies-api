@@ -18,7 +18,7 @@ export const schema = new Schema<BranchOffice>(
     userAdmin: {
       type: Schema.Types.ObjectId,
       ref: 'UserAdmin',
-      required: [true, "La empresa es obligatoria."]
+      required: [true, "La empresa de la succursal es obligatoria."]
     },
     email: { 
       type: String, 
@@ -65,8 +65,14 @@ export const schema = new Schema<BranchOffice>(
       maxlength,
       validate: validateMaxLength
     },
-    active: { type: Boolean, default: true },
-    showingInApp: { type: Boolean, default: false },
+    active: { 
+      type: Boolean, 
+      default: true 
+    },
+    showingInApp: { 
+      type: Boolean, 
+      default: false 
+    },
     totolSales: {
       type: Number,
       default: 0,
@@ -75,7 +81,10 @@ export const schema = new Schema<BranchOffice>(
         message: "El total de ventas por mes no puede ser mayor a 100000"
       }
     },
-    role: { type: String, required: [true, "El rol es obligatorio"] },
+    role: { 
+      type: String, 
+      default: "Administrador sucursal" 
+    },
     description: {
       type: String,
       maxlength,

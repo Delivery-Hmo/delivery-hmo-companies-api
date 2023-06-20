@@ -44,8 +44,6 @@ export const newBranchOffice = (branchOffice: BranchOffice) => {
   try {
     const userAdmin = global?.user;
     branchOffice.userAdmin = userAdmin as UserAdmin;
-    branchOffice.active = true;
-    branchOffice.role = "Administrador sucursal";
 
     return branchOffice;
   } catch (error) {

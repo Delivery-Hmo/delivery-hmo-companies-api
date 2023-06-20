@@ -1,28 +1,77 @@
 import { Schema, model } from 'mongoose';
 import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
 import { UserAdmin } from '../interfaces';
-import { validateMaxLength } from "../utils/mongoose";
+import { validateMaxLength, validateMaxLengthImage } from "../utils/mongoose";
+import { findOneUserAdmin } from "../repositories/userAdmin";
 
 const schema = new Schema<UserAdmin>(
   {
-    uid: { type: String, maxlength },
+    uid: {
+      type: String,
+      required: [true, "El uid es obligatorio."],
+      unique: true,
+      maxlength,
+      validate: validateMaxLength
+    },
     email: { 
       type: String, 
-      required: [true, "El email de la empresa es obligatorio."],
+      required: [true, "El correo electronico de la empresa es obligatorio."],
       unique: true, 
       maxlength,
       validate: validateMaxLength
     },
-    name: { type: String, required: true, maxlength: 300 },
-    phone: { type: Number, maxlength: 10, minlength: 10 },
-    company: { type: String, maxlength },
-    description: { type: String, maxlength, default: "" },
-    image: { type: String, maxlength: maxlengthImage, default: urlImageDefaultProfile },
-    active: { type: Boolean, required: true },
-    rfc: { type: String, unique: true },
-    role: { type: String, required: true }
+    name: { 
+      type: String, 
+      required: [true, "El nombre de la empresa es obligatorio."], 
+      maxlength,
+      validate: validateMaxLength
+    },
+    phone: { 
+      type: Number,
+      required: true, 
+      validate: {
+        validator: (value: number) => value.toString().length === 10,
+        message: "El número telefónico tienen que ser de 10 dígitos."
+      }
+    },
+    description: { 
+      type: String, 
+      maxlength,
+    },
+    image: { 
+      type: String, 
+      maxlength: maxlengthImage, 
+      default: urlImageDefaultProfile,
+      validate: validateMaxLengthImage 
+    },
+    active: { 
+      type: Boolean, 
+      default: true
+    },
+    rfc: { 
+      type: String, 
+      unique: true 
+    },
+    role: { 
+      type: String, 
+      default: "Administrador", 
+    }
   },
   optionsModel
 );
+
+schema.pre<UserAdmin>('save', async function (next) {
+  const { id, rfc } = this;
+
+  if (rfc) {
+    const otherModelSameRfc = await findOneUserAdmin({ rfc: this.rfc });
+
+    if (otherModelSameRfc && otherModelSameRfc?.id !== id) {
+      throw "Ya existe una emprsa con este RFC.";
+    }
+  }
+
+  next();
+});
 
 export default model<UserAdmin>('UserAdmin', schema);

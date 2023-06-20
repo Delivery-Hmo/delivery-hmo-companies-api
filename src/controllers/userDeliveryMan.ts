@@ -41,7 +41,6 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 
     model.userAdmin = userAdmin as UserAdmin;
     model.active = true;
-    model.role = "Repartidor";
 
     delete model.password;
 

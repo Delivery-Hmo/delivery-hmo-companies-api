@@ -18,7 +18,6 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 
     model.uid = createAuth.uid;
     model.userAdmin = userAdmin as UserAdmin;
-    model.role = "Vendedor";
 
     delete model.password;
 

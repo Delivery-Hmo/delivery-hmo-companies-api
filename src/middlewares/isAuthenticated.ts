@@ -3,13 +3,13 @@ import { Document } from "mongoose";
 import admin from 'firebase-admin';
 import { Rols, Users } from "../types";
 import { unauthorized } from "../utils/handleError";
-import { getBranchOfficeByUid } from "../repositories/branchOffice";
-import { getUserAdminByUid } from "../repositories/userAdmin";
+import { findByUidBranchOffice } from "../repositories/branchOffice";
+import { findByUidUserAdmin } from "../repositories/userAdmin";
 
 const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
   "": () => Promise.resolve(null),
-  "Administrador": (uid: string) => getUserAdminByUid(uid),
-  "Administrador sucursal": (uid: string) => getBranchOfficeByUid(uid),
+  "Administrador": (uid: string) => findByUidUserAdmin(uid),
+  "Administrador sucursal": (uid: string) => findByUidBranchOffice(uid),
   "Vendedor": (uid: string) => Promise.resolve(null),
   "Repartidor": (uid: string) => Promise.resolve(null),
 };

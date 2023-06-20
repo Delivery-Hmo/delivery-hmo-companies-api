@@ -21,7 +21,7 @@ export const createBranchOffice = async (model: BranchOffice) => {
 
 export const findByIdAndUpdateBranchOffice = async (id: string, data: UpdateQuery<BranchOffice>) => {
   try {
-    const x = await BranchOfficeModel.findByIdAndUpdate(id, data, { new: true });
+    return await BranchOfficeModel.findByIdAndUpdate(id, data, { new: true });
   } catch (error) {
     throw handleErrorSaveBranchOffice(error);
   }

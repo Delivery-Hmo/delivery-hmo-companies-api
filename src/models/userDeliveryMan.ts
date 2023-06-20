@@ -22,6 +22,7 @@ const schema = new Schema<UserDeliveryMan>(
     userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin' },
     password: { type: String },
     latLng: latLngSchema(),
+    role: { type: String, default: "Repartidor" }
   },
   optionsModel
 );

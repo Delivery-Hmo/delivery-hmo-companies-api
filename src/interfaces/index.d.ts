@@ -3,7 +3,7 @@ import { Rols } from "../types";
 export interface User {
   readonly id?: string;
   uid?: string;
-  role: Rols;
+  readonly role: Rols;
   name: string;
   email: string;
   description?: string;
@@ -12,7 +12,6 @@ export interface User {
   password?: string;
 }
 export interface UserAdmin extends User {
-  company?: string;
   phone?: number; 
   rfc?: string;
 }
