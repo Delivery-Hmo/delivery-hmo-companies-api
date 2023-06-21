@@ -1,4 +1,4 @@
-import { FilterQuery, Model } from "mongoose";
+import { FilterQuery } from "mongoose";
 import BranchOfficeModel from '../models/branchOffice';
 import { handleErrorFunction } from "../utils/handleError";
 import { findBranchOffice } from "../repositories/branchOffice";
@@ -9,7 +9,7 @@ import { BranchOffice } from "../interfaces/users";
 export const getPaginatedListByUserAdmin = async ({ search, page, limit }: PaginatedListServiceProps) => {
   try {
     const userAdmin = global?.user;
-    let query: FilterQuery<Model<BranchOffice>> = {
+    let query: FilterQuery<BranchOffice> = {
       userAdmin: userAdmin?.id,
       active: true,
     };
@@ -30,7 +30,7 @@ export const getPaginatedListByUserAdmin = async ({ search, page, limit }: Pagin
 export const getListByUserAdmin = async () => {
   try {
     const userAdmin = global?.user;
-    const query: FilterQuery<Model<BranchOffice>> = {
+    const query: FilterQuery<BranchOffice> = {
       userAdmin: userAdmin?.id,
       active: true,
     };

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { handleError } from "../utils/handleError";
 import UserSellerModel from '../models/userSeller';
-import { FilterQuery, Model } from "mongoose";
+import { FilterQuery } from "mongoose";
 import { getPaginatedList } from "../repositories/allModels";
 import { createUserAuth, updateUserAuth } from "../repositories/firebaseAuth";
 import { FunctionController, ReqQuery } from "../types";
@@ -34,7 +34,7 @@ export const listByUserAdmin = async (req: Request, res: Response): FunctionCont
     const userAdmin = global?.user;
     const { search, page, limit } = req.query as ReqQuery;
 
-    let query: FilterQuery<Model<UserSeller>> = {
+    let query: FilterQuery<UserSeller> = {
       userAdmin: userAdmin?.id,
       active: true,
     };

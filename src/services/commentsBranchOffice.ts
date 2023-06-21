@@ -1,18 +1,17 @@
-import { FilterQuery, Model } from "mongoose";
-import { CommentsBranchOffice } from "../interfaces";
+import { FilterQuery } from "mongoose";
 import { getPaginatedList } from "../repositories/allModels";
 import { handleErrorFunction } from "../utils/handleError";
 import CommentsBranchOfficeModel from '../models/commentsBranchOffice';
-import { Request } from "express";
+import { CommentsBranchOffice } from "../interfaces/commentsBranchOffice";
+import { PaginatedListServiceProps } from "../interfaces/services";
 
-export const getPaginatedListByCommentsBranch = async ({ idBranchOffice, req }: { idBranchOffice: string, req: Request }) => {
+export const getPaginatedListByCommentsBranch = async ({ search: idBranchOffice, page, limit }: PaginatedListServiceProps) => {
   try {
-    const query: FilterQuery<Model<CommentsBranchOffice>> = {
-      idBranchOffice
+    const query: FilterQuery<CommentsBranchOffice> = {
+      branchOffice: idBranchOffice,
     };
 
-    return await getPaginatedList({ model: CommentsBranchOfficeModel, query, populate: "userAdmin", req });
-
+    return await getPaginatedList({ model: CommentsBranchOfficeModel, query, populate: "", page, limit });
   } catch (error) {
     throw handleErrorFunction(error);
   }

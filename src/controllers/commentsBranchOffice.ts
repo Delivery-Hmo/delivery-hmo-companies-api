@@ -19,9 +19,9 @@ export const create = async (req: Request, res: Response): FunctionController =>
 
 export const listCommentsBranch = async (req: Request, res: Response): FunctionController => {
   try {
-    const { idBranchOffice } = req.query as ReqQuery;
+    const { idBranchOffice, page } = req.query as ReqQuery;
 
-    const paginatedList = await getPaginatedListByCommentsBranch({ idBranchOffice: idBranchOffice, req });
+    const paginatedList = await getPaginatedListByCommentsBranch({ search: idBranchOffice, page: +page, limit: 10 });
 
     return res.status(200).json(paginatedList);
   } catch (err) {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { handleError } from "../utils/handleError";
-import { FilterQuery, Model } from "mongoose";
+import { FilterQuery } from "mongoose";
 import UserDeliverymanModel from '../models/userDeliveryMan';
 import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan, validateUserDeliveryMan } from "../services/deliveryMan";
 import { getPaginatedList } from "../repositories/allModels";
@@ -13,7 +13,7 @@ export const listByUserAdmin = async (req: Request, res: Response): FunctionCont
     const { page, limit } = req.query as ReqQuery;
 
     const userAdmin = global?.user;
-    const query: FilterQuery<Model<UserDeliveryMan>> = {
+    const query: FilterQuery<UserDeliveryMan> = {
       userAdmin: userAdmin?.id,
       active: true,
     };
