@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import handleError from "../utils/handleError";
-import { CommentsBranchOffice } from '../interfaces';
+import { handleError } from "../utils/handleError";
 import CommentsBranchOfficeModel from '../models/commentsBranchOffice';
+import { CommentsBranchOffice } from "../interfaces/commentsBranchOffice";
+import { FunctionController, ReqQuery } from "../types";
 import { getPaginatedListByCommentsBranch } from "../services/commentsBranchOffice";
 
-export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const create = async (req: Request, res: Response): FunctionController => {
   try {
     const model = req.body as CommentsBranchOffice;
 
@@ -16,11 +17,11 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const listCommentsBranch = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const listCommentsBranch = async (req: Request, res: Response): FunctionController => {
   try {
-    const { idBranchOffice } = req.query;
+    const { idBranchOffice } = req.query as ReqQuery;
 
-    const paginatedList = await getPaginatedListByCommentsBranch({ idBranchOffice: idBranchOffice as string, req });
+    const paginatedList = await getPaginatedListByCommentsBranch({ idBranchOffice: idBranchOffice, req });
 
     return res.status(200).json(paginatedList);
   } catch (err) {
@@ -28,7 +29,7 @@ export const listCommentsBranch = async (req: Request, res: Response): Promise<R
   }
 }
 
-export const getById = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const getById = async (req: Request, res: Response): FunctionController => {
   try {
     const { id } = req.query;
     const model = await CommentsBranchOfficeModel.findById(id);
@@ -39,7 +40,7 @@ export const getById = async (req: Request, res: Response): Promise<Response<any
   }
 }
 
-export const update = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const update = async (req: Request, res: Response): FunctionController => {
   try {
     const model = req.body as CommentsBranchOffice;
     const _id = model.id;
@@ -52,7 +53,7 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const disable = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const disable = async (req: Request, res: Response): FunctionController => {
   try {
     const { id, active } = req.body;
 
