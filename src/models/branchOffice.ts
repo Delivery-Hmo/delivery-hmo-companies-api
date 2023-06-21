@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
 import { latLngSchema } from '.';
 import { maxlength, optionsModel } from '../constants';
-import { BranchOffice } from '../interfaces';
 import { isPointInsideCircle } from "../utils/functions";
 import { validateMaxLength } from "../utils/mongoose";
 import { findOneBranchOffice } from "../repositories/branchOffice";
+import { BranchOffice } from "../interfaces/users";
 
 export const schema = new Schema<BranchOffice>(
   {

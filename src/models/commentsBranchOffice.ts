@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { optionsModel } from '../constants';
-import { CommentsBranchOffice} from '../interfaces';
+import { CommentsBranchOffice } from "../interfaces/commentsBranchOffice";
 
 const schema = new Schema<CommentsBranchOffice>(
   {

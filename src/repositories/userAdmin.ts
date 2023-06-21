@@ -1,6 +1,6 @@
 import { FilterQuery } from "mongoose";
-import { UserAdmin } from "../interfaces";
 import UserAdminModel from '../models/userAdmin';
+import { UserAdmin } from "../interfaces/users";
 
 export const findByIdUserAdmin = (id: string) => UserAdminModel.findById(id);
 

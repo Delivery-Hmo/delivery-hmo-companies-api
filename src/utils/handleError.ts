@@ -3,7 +3,7 @@ import { MongooseError } from "mongoose";
 
 export const unauthorized = (res: Response) => res.status(401).json({ message: 'Unauthorized' });
 
-export const handleErrorFunction = (error: unknown, message?: string) => {
+export const handleErrorFunction = (error: unknown) => {
   console.log(error);
   
 	if(typeof error === "string") throw error;
@@ -12,7 +12,7 @@ export const handleErrorFunction = (error: unknown, message?: string) => {
     throw error.message;
   }
 
-  throw message || "Error";
+  throw "Error en el servidor!";
 }
 
 export const handleError = (res: Response, err: any) => {
@@ -22,6 +22,8 @@ export const handleError = (res: Response, err: any) => {
 };
 
 export const handleErrorSaveBranchOffice = (error: unknown) => {
+  console.log(error)
+
   if(error instanceof MongooseError) {
     if(error.message.includes("BranchOffice validation failed: salesGoalByMonth: ")) {
       throw error.message.split(": ")[2];
@@ -29,8 +31,6 @@ export const handleErrorSaveBranchOffice = (error: unknown) => {
 
     throw error.message;
   }
-
-  console.log(error)
 
   throw "Error al guardar la sucursal.";
 }

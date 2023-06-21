@@ -1,11 +1,12 @@
 import { FilterQuery, Model } from "mongoose";
 import BranchOfficeModel from '../models/branchOffice';
-import { BranchOffice, UserAdmin } from "../interfaces";
 import { handleErrorFunction } from "../utils/handleError";
 import { findBranchOffice } from "../repositories/branchOffice";
 import { getPaginatedList } from "../repositories/allModels";
+import { PaginatedListServiceProps } from "../interfaces/services";
+import { BranchOffice } from "../interfaces/users";
 
-export const getPaginatedListByUserAdmin = async ({ search, page, limit }: { search: string, page: number, limit: number }) => {
+export const getPaginatedListByUserAdmin = async ({ search, page, limit }: PaginatedListServiceProps) => {
   try {
     const userAdmin = global?.user;
     let query: FilterQuery<Model<BranchOffice>> = {
@@ -43,7 +44,7 @@ export const getListByUserAdmin = async () => {
 export const newBranchOffice = (branchOffice: BranchOffice) => {
   try {
     const userAdmin = global?.user;
-    branchOffice.userAdmin = userAdmin as UserAdmin;
+    branchOffice.userAdmin = userAdmin!;
 
     return branchOffice;
   } catch (error) {

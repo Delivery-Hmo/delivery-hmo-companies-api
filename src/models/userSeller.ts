@@ -1,7 +1,7 @@
 import { Schema, model, SchemaOptions } from 'mongoose';
 import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
-import { UserSeller } from '../interfaces';
 import { validateMaxLength } from "../utils/mongoose";
+import { UserSeller } from "../interfaces/users";
 
 const schema = new Schema<UserSeller>(
   {

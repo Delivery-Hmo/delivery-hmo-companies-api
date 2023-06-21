@@ -1,7 +1,7 @@
-import { BranchOffice } from "../interfaces";
 import BranchOfficeModel from '../models/branchOffice';
 import { FilterQuery, UpdateQuery } from 'mongoose';
 import { handleErrorSaveBranchOffice } from "../utils/handleError";
+import { BranchOffice } from "../interfaces/users";
 
 export const findByIdBranchOffice = (id: string) => BranchOfficeModel.findById(id);
 
@@ -13,7 +13,6 @@ export const findOneBranchOffice = (query: FilterQuery<BranchOffice>) => BranchO
 
 export const createBranchOffice = async (model: BranchOffice) => {
   try {
-    return await BranchOfficeModel.create(model);
   } catch (error) {
     throw handleErrorSaveBranchOffice(error);
   }

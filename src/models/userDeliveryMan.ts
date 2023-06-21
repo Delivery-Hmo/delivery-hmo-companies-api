@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { maxlength, optionsModel } from '../constants';
-import { UserDeliveryMan } from '../interfaces';
 import { latLngSchema } from ".";
 import { validateMaxLength } from "../utils/mongoose";
+import { UserDeliveryMan } from "../interfaces/users";
 
 const schema = new Schema<UserDeliveryMan>(
   {

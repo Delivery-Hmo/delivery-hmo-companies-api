@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
-import { UserAdmin } from '../interfaces';
 import { validateMaxLength, validateMaxLengthImage } from "../utils/mongoose";
 import { findOneUserAdmin } from "../repositories/userAdmin";
+import { UserAdmin } from "../interfaces/users";
 
 const schema = new Schema<UserAdmin>(
   {

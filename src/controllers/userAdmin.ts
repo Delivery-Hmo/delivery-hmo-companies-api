@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { handleError } from "../utils/handleError";
-import { UserAdmin } from '../interfaces';
 import UserModel from '../models/userAdmin';
 import { findByUidUserAdmin } from "../repositories/userAdmin";
 import { createUser, updateUser } from "../services";
-import { ReqQuery } from "../types";
+import { FunctionController, ReqQuery } from "../types";
+import { getPaginatedListUserAdmins } from "../services/userAdmin";
+import { UserAdmin } from "../interfaces/users";
+import { BodyDisable } from "../interfaces";
 
-export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const create = async (req: Request, res: Response): FunctionController => {
   const body = req.body as UserAdmin;
 
   try {
@@ -18,22 +20,19 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const list = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const list = async (req: Request, res: Response): FunctionController => {
   try {
-    const { page, limit } = req.query;
+    const { search, page, limit } = req.query as ReqQuery;
 
-    const model = await UserModel.find()
-      .sort({ createdAt: -1 })
-      .limit(Number(limit))
-      .skip(Number(page) - 1);
+    const paginatedList = await getPaginatedListUserAdmins({ search, page: +page, limit: +limit });
 
-    return res.status(200).json(model);
+    return res.status(200).json(paginatedList);
   } catch (err) {
     return handleError(res, err);
   }
 }
 
-export const getByUid = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const getByUid = async (req: Request, res: Response): FunctionController => {
   try {
     const { uid } = req.query as ReqQuery;
 
@@ -45,7 +44,7 @@ export const getByUid = async (req: Request, res: Response): Promise<Response<an
   }
 }
 
-export const update = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const update = async (req: Request, res: Response): FunctionController => {
   try {
     const model = req.body as UserAdmin;
 
@@ -57,9 +56,9 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const disable = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const disable = async (req: Request, res: Response): FunctionController => {
   try {
-    const { id, active } = req.body;
+    const { id, active } = req.body as BodyDisable;
 
     const userAdmin = await UserModel.findByIdAndUpdate(id, { active });
 
