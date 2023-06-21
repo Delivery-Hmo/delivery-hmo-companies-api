@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { handleError } from "../utils/handleError";
 import CommentsBranchOfficeModel from '../models/commentsBranchOffice';
 import { CommentsBranchOffice } from "../interfaces/commentsBranchOffice";
-import { FunctionController } from "../types";
+import { FunctionController, ReqQuery } from "../types";
 import { getPaginatedListByCommentsBranch } from "../services/commentsBranchOffice";
 
 export const create = async (req: Request, res: Response): FunctionController => {

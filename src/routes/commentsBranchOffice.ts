@@ -1,13 +1,12 @@
 import { Application, Router } from "express";
-import { create,list,getById,update,disable } from "../controllers/commentsBranchOffice";
+import { create, getById, update, disable } from "../controllers/commentsBranchOffice";
 import isAuthenticated from "../middlewares/isAuthenticated";
 
 const router = Router();
 
 const RoutesCommentsBranchOffice = (app: Application) => {
-  router.get('/list', list);
   router.get('/getById', getById);
-  router.post('/create',create);
+  router.post('/create', create);
   router.put('/update', update);
   router.patch('/disable', disable);
 
