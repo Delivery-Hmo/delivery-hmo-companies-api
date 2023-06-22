@@ -3,6 +3,7 @@ import { getPaginatedList } from "../repositories/allModels";
 import { handleErrorFunction } from "../utils/handleError";
 import { CommentsBranchOffice } from "../interfaces/commentsBranchOffice";
 import { PaginatedListServiceProps } from "../interfaces/services";
+import CommentsBranchOfficeModel from "../models/commentsBranchOffice";
 
 export const getPaginatedListByCommentsBranch = async ({ search: idBranchOffice, page, limit }: PaginatedListServiceProps) => {
   try {

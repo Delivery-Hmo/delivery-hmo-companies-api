@@ -4,7 +4,6 @@ import CommentsBranchOfficeModel from '../models/commentsBranchOffice';
 import { CommentsBranchOffice } from "../interfaces/commentsBranchOffice";
 import { FunctionController, ReqQuery } from "../types";
 import { getPaginatedListByCommentsBranch } from "../services/commentsBranchOffice";
-import { ReqQuery } from "../types";
 
 export const create = async (req: Request, res: Response): FunctionController => {
   try {
@@ -20,9 +19,9 @@ export const create = async (req: Request, res: Response): FunctionController =>
 
 export const list = async (req: Request, res: Response): FunctionController => {
   try {
-    const { idBranchOffice, page, limit  } = req.query as ReqQuery;
+    const { idBranchOffice, page } = req.query as ReqQuery;
 
-    const paginatedList = await getPaginatedListByCommentsBranch({ idBranchOffice, page: +page, limit: 10 });
+    const paginatedList = await getPaginatedListByCommentsBranch({ search: idBranchOffice, page: +page, limit: 10 });
 
     return res.status(200).json(paginatedList);
   } catch (err) {
