@@ -1,5 +1,5 @@
+import { UserDeliveryMan } from "../interfaces/users";
 import UserDeliveryManModel from '../models/userDeliveryMan';
-import { UserDeliveryMan } from "../interfaces";
 import { FilterQuery } from 'mongoose';
 
 export const findUserDeliveryMan = (query: FilterQuery<UserDeliveryMan>) => UserDeliveryManModel.find(query);

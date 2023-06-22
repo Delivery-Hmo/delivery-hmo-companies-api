@@ -38,6 +38,6 @@ export const uploadImageBase64ToStorage = async (req: Request) => {
 
 		return url;
 	} catch (error) {
-		throw handleErrorFunction(error, "Error al subir la imagen.");
+		throw handleErrorFunction(error);
 	}
 }

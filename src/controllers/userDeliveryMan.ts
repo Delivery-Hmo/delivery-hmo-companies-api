@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
-import handleError from "../utils/handleError";
-import { UserDeliveryMan, UserAdmin } from '../interfaces';
-import { FilterQuery, Model } from "mongoose";
+import { handleError } from "../utils/handleError";
+import { FilterQuery } from "mongoose";
 import UserDeliverymanModel from '../models/userDeliveryMan';
 import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan, validateUserDeliveryMan } from "../services/deliveryMan";
 import { getPaginatedList } from "../repositories/allModels";
 import { createUserAuth } from "../repositories/firebaseAuth";
-import { ReqQuery } from "../types";
+import { FunctionController, ReqQuery } from "../types";
+import { UserDeliveryMan } from "../interfaces/users";
 
-export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const listByUserAdmin = async (req: Request, res: Response): FunctionController => {
   try {
     const { page, limit } = req.query as ReqQuery;
 
     const userAdmin = global?.user;
-    const query: FilterQuery<Model<UserDeliveryMan>> = {
+    const query: FilterQuery<UserDeliveryMan> = {
       userAdmin: userAdmin?.id,
       active: true,
     };
@@ -26,7 +26,7 @@ export const listByUserAdmin = async (req: Request, res: Response): Promise<Resp
   }
 }
 
-export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const create = async (req: Request, res: Response): FunctionController => {
   try {
     const model = req.body as UserDeliveryMan;
     const { email, password } = model;
@@ -39,9 +39,8 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
 
     const userAdmin = global?.user;
 
-    model.userAdmin = userAdmin as UserAdmin;
+    model.userAdmin = userAdmin!;
     model.active = true;
-    model.role = "Repartidor";
 
     delete model.password;
 
@@ -57,7 +56,7 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const getById = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const getById = async (req: Request, res: Response): FunctionController => {
   try {
     const { id } = req.query;
 
@@ -69,7 +68,7 @@ export const getById = async (req: Request, res: Response): Promise<Response<any
   }
 }
 
-export const update = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const update = async (req: Request, res: Response): FunctionController => {
   try {
     const model = req.body as UserDeliveryMan;
     const { id } = model;
@@ -82,7 +81,7 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const disable = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const disable = async (req: Request, res: Response): FunctionController => {
   try {
     const { id, active } = req.body;
 

@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import handleError from "../utils/handleError";
-import { UserSeller, UserAdmin } from '../interfaces';
+import { handleError } from "../utils/handleError";
 import UserSellerModel from '../models/userSeller';
-import { FilterQuery, Model } from "mongoose";
+import { FilterQuery } from "mongoose";
 import { getPaginatedList } from "../repositories/allModels";
 import { createUserAuth, updateUserAuth } from "../repositories/firebaseAuth";
-import { ReqQuery } from "../types";
+import { FunctionController, ReqQuery } from "../types";
+import { UserSeller } from "../interfaces/users";
 
-export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const create = async (req: Request, res: Response): FunctionController => {
   try {
     const model = req.body as UserSeller;
     const { email, password } = model;
@@ -17,8 +17,7 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
     const userAdmin = global?.user;
 
     model.uid = createAuth.uid;
-    model.userAdmin = userAdmin as UserAdmin;
-    model.role = "Vendedor";
+    model.userAdmin = userAdmin!;
 
     delete model.password;
 
@@ -30,12 +29,12 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const listByUserAdmin = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const listByUserAdmin = async (req: Request, res: Response): FunctionController => {
   try {
     const userAdmin = global?.user;
     const { search, page, limit } = req.query as ReqQuery;
 
-    let query: FilterQuery<Model<UserSeller>> = {
+    let query: FilterQuery<UserSeller> = {
       userAdmin: userAdmin?.id,
       active: true,
     };
@@ -56,7 +55,7 @@ export const listByUserAdmin = async (req: Request, res: Response): Promise<Resp
   }
 }
 
-export const getById = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const getById = async (req: Request, res: Response): FunctionController => {
   try {
     const { id } = req.query;
 
@@ -68,7 +67,7 @@ export const getById = async (req: Request, res: Response): Promise<Response<any
   }
 }
 
-export const update = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const update = async (req: Request, res: Response): FunctionController => {
   try {
     const model = req.body as UserSeller;
     const { email, password, id } = model;
@@ -83,7 +82,7 @@ export const update = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const disable = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const disable = async (req: Request, res: Response): FunctionController => {
   try {
     const { id, active } = req.body;
 
