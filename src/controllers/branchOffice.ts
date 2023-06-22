@@ -20,7 +20,7 @@ export const getByUid = async (req: Request, res: Response): ControllerFunction 
 
 export const paginatedListByUserAdmin = async (req: Request, res: Response): ControllerFunction => {
   try {
-    let { search, page, limit } = req.query as ReqQuery;
+    const { search, page, limit } = req.query as ReqQuery;
 
     const paginatedList = await getPaginatedListByUserAdmin({ search, page: +page, limit: +limit });
 

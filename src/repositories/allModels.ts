@@ -24,6 +24,7 @@ export const getPaginatedList = async <T extends {}>({ model, query, populate, p
       total
     };
   } catch (error) {
+    console.log(error);
     throw "Error al obtener la lista";
   }
 }

@@ -8,7 +8,6 @@ export const schema = new Schema<BranchOffice>(
     uid: { type: String, required: true, maxlength },
     userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin', required: true },
     name: { type: String, required: true, unique: true,  maxlength },
-    email: { type: String, required: true, unique: true, maxlength },
     salesGoalByMonth: { type: Number, default: 0, min: 0, max: 50000 },
     facebook: { type: String, maxlength },
     phones: { type: [Number] },

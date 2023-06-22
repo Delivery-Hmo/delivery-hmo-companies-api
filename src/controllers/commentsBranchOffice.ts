@@ -3,6 +3,7 @@ import handleError from "../utils/handleError";
 import { CommentsBranchOffice } from '../interfaces';
 import CommentsBranchOfficeModel from '../models/commentsBranchOffice';
 import { getPaginatedListByCommentsBranch } from "../services/commentsBranchOffice";
+import { ReqQuery } from "../types";
 
 export const create = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
@@ -16,11 +17,11 @@ export const create = async (req: Request, res: Response): Promise<Response<any,
   }
 }
 
-export const listCommentsBranch = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+export const list = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
   try {
-    const { idBranchOffice } = req.query;
+    const { idBranchOffice, page, limit  } = req.query as ReqQuery;
 
-    const paginatedList = await getPaginatedListByCommentsBranch({ idBranchOffice: idBranchOffice as string, req });
+    const paginatedList = await getPaginatedListByCommentsBranch({ idBranchOffice, page: +page, limit: +limit });
 
     return res.status(200).json(paginatedList);
   } catch (err) {
