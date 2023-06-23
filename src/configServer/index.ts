@@ -10,9 +10,8 @@ export const server = {
   HOST: process.env.HOST || 'localhost',
   PORT: Number(process.env.PORT)
 } as const;
-
 export const serviceAccount: admin.ServiceAccount = {
-  projectId: process.env.PROJECT_ID,
+  projectId: process.env.ENVIRONMENT === 'serve' ? process.env.PROJECT_ID?.replaceAll(" ", '\n') : process.env.PROJECT_ID?.replaceAll(" ", '\n'),
   privateKey: process.env.PRIVATE_KEY,
   clientEmail: process.env.CLIENT_EMAIL,
 } as const;
