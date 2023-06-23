@@ -11,7 +11,7 @@ export const server = {
   PORT: Number(process.env.PORT)
 } as const;
 export const serviceAccount: admin.ServiceAccount = {
-  projectId: process.env.ENVIRONMENT === 'serve' ? process.env.PROJECT_ID?.replaceAll(" ", '\n') : process.env.PROJECT_ID?.replaceAll(" ", '\n'),
+  projectId: process.env.PROJECT_ID,
   privateKey: process.env.PRIVATE_KEY,
   clientEmail: process.env.CLIENT_EMAIL,
 } as const;
