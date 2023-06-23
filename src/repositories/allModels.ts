@@ -14,14 +14,17 @@ export const getByIdAllModels = async (nameModel: NameModels, id: string) => {
   }
 }
 
-export const getPaginatedList = async <T extends {}>({ model, query, populate, req }: PropsPaginatedList<T>) => {
-  const { page, limit } = req.query;
-
-  const list = await model.find(query).limit(Number(limit)).skip((Number(page) - 1) * Number(limit)).populate(populate) as GenericDocument<T>[];
-  const total = await model.countDocuments(query);
-
-  return {
-    list,
-    total
-  };
+export const getPaginatedList = async <T extends {}>({ model, query, populate, page, limit }: PropsPaginatedList<T>) => {
+  try {
+    const list = await model.find(query).limit(limit).skip((page - 1) * limit).populate(populate) as GenericDocument<T>[];
+    const total = await model.countDocuments(query);
+  
+    return {
+      list,
+      total
+    };
+  } catch (error) {
+    console.log(error);
+    throw "Error al obtener la lista";
+  }
 }

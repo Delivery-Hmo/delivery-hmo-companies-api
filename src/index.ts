@@ -1,9 +1,10 @@
 import express from 'express';
 import { initializeApp, cert } from 'firebase-admin/app';
 import configServer, { server, serviceAccount, storageBucket } from './configServer';
-import startDb from './configServer/mongodb';
+import { connectDB, disconnectDB } from './configServer/mongodb';
 import routes from './routes';
 import uploadFiles from "./middlewares/uploadFiles";
+import { disconnectDBMiddleware } from "./middlewares/disconnectDB";
 //import cluster from 'cluster';
 
 const app = express();
@@ -11,9 +12,11 @@ const app = express();
 try {
   configServer(app);
   initializeApp({ credential: cert(serviceAccount), storageBucket });
-  await startDb();
+  await connectDB();
   uploadFiles(app);
   await routes(app);
+
+  app.use(disconnectDBMiddleware);
 
   /*   
     const numCpus = require('os').cpus().length;
@@ -30,6 +33,7 @@ try {
     console.log(`App listening server on http://${server.HOST}:${app.get('port')}`);
   });
 } catch (error) {
+  await disconnectDB();
   console.error(error);
 }
 

@@ -2,7 +2,6 @@ import tf, { Tensor3D } from "@tensorflow/tfjs-node";
 import nsfw from "nsfwjs";
 import { handleErrorFunction } from "./handleError";
 import sharp from "sharp";
-//import axios, { AxiosResponse } from "axios";
 
 const earthRadius = 6371000;
 
@@ -36,7 +35,7 @@ export const checkSecureImage = async (base64: string) => {
 
 		if (!isSecure) throw "La imagen no es segura.";
 	} catch (error) {
-		throw handleErrorFunction(error, "Error al verificar la imagen.");
+		throw handleErrorFunction(error);
 	}
 }
 
@@ -63,7 +62,7 @@ export const compreesImage = async (buffer: Buffer) => {
 
 		return await sharp(buffer).jpeg().toBuffer();
 	} catch (error) {
-		throw handleErrorFunction(error, "Error al comprimir la imagen.");
+		throw handleErrorFunction(error);
 	}
 }
 
@@ -73,6 +72,6 @@ export const fileToBuffer = async (blob: Blob) => {
 
 		return Buffer.from(arrayBuffer);
 	} catch (error) {
-		throw handleErrorFunction(error, "Error al convertir el archivo.");
+		throw handleErrorFunction(error);
 	}
 }

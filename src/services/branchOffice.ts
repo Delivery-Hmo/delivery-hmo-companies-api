@@ -1,16 +1,15 @@
-import { isPointInsideCircle } from "../utils/functions";
+import { FilterQuery } from "mongoose";
 import BranchOfficeModel from '../models/branchOffice';
-import { BranchOffice } from "../interfaces";
-import { FilterQuery, Model } from "mongoose";
 import { handleErrorFunction } from "../utils/handleError";
-import { getPaginatedList } from "../repositories/allModels";
-import { Request } from "express";
 import { findBranchOffice } from "../repositories/branchOffice";
+import { getPaginatedList } from "../repositories/allModels";
+import { PaginatedListServiceProps } from "../interfaces/services";
+import { BranchOffice } from "../interfaces/users";
 
-export const getPaginatedListByUserAdmin = async ({ search, req }: { search: string, req: Request }) => {
+export const getPaginatedListByUserAdmin = async ({ search, page, limit }: PaginatedListServiceProps) => {
   try {
     const userAdmin = global?.user;
-    let query: FilterQuery<Model<BranchOffice>> = {
+    let query: FilterQuery<BranchOffice> = {
       userAdmin: userAdmin?.id,
       active: true,
     };
@@ -22,7 +21,7 @@ export const getPaginatedListByUserAdmin = async ({ search, req }: { search: str
       ];
     }
 
-    return await getPaginatedList({ model: BranchOfficeModel, query, populate: "userAdmin", req });
+    return await getPaginatedList({ model: BranchOfficeModel, query, populate: "userAdmin", page, limit });
   } catch (error) {
     throw handleErrorFunction(error);
   }
@@ -31,7 +30,7 @@ export const getPaginatedListByUserAdmin = async ({ search, req }: { search: str
 export const getListByUserAdmin = async () => {
   try {
     const userAdmin = global?.user;
-    const query: FilterQuery<Model<BranchOffice>> = {
+    const query: FilterQuery<BranchOffice> = {
       userAdmin: userAdmin?.id,
       active: true,
     };
@@ -40,40 +39,15 @@ export const getListByUserAdmin = async () => {
   } catch (error) {
     throw handleErrorFunction(error);
   }
-}    
+}
 
-export const validateBranchOffice = async (branchOffice: BranchOffice) => {
-  const { latLng, center, radius, email, phones, name } = branchOffice;
+export const newBranchOffice = (branchOffice: BranchOffice) => {
+  try {
+    const userAdmin = global?.user;
+    branchOffice.userAdmin = userAdmin!;
 
-  if (!latLng.lat || !latLng.lng) {
-    throw "La ubicación de la sucursal es obligatoria.";
-  }
-
-  if (!radius || !center.lat || !center.lng) {
-    throw "El radio de entrega es obligatorio.";
-  }
-
-  const latLngInCircle = isPointInsideCircle(latLng.lat, latLng.lng, center.lat, center.lng, radius);
-
-  if(!latLngInCircle) {
-    throw "La ubicación de la sucursal esta fuera del radio.";
-  }
-
-  for (const phone of phones) {
-    if(phone && phone?.toString().length !== 10) {
-     "Los números telefónicos tiene que ser de 10 dígitos.";
-    }
-  }
-
-  const otherModelSameEmail = await BranchOfficeModel.findOne({ email });
-
-  if(otherModelSameEmail && otherModelSameEmail?.id !== branchOffice.id) {
-    throw "Ya existe una sucursal con este correo.";
-  }
-
-  const otherModelSameName = await BranchOfficeModel.findOne({ name });
-
-  if(otherModelSameName && otherModelSameName?.id !== branchOffice.id) {
-    throw "Ya existe una sucursal con este nombre.";
+    return branchOffice;
+  } catch (error) {
+    throw handleErrorFunction(error);
   }
 }
