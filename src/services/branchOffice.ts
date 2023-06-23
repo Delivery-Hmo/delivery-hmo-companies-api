@@ -2,7 +2,7 @@ import { FilterQuery } from "mongoose";
 import BranchOfficeModel from '../models/branchOffice';
 import { handleErrorFunction } from "../utils/handleError";
 import { findBranchOffice } from "../repositories/branchOffice";
-import { getPaginatedList } from "../repositories/allModels";
+import { getPaginatedList } from "../repositories";
 import { PaginatedListServiceProps } from "../interfaces/services";
 import { BranchOffice } from "../interfaces/users";
 

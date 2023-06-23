@@ -2,10 +2,11 @@ import AllModels from "../models/allModels";
 import { NameModels } from "../types";
 import { GenericDocument } from "../types";
 import { PropsPaginatedList } from "../interfaces/allModels";
+import { Model } from "mongoose";
 
-export const getByIdAllModels = async (nameModel: NameModels, id: string) => {
+export const getByIdAllUsersModel = async <T extends {}>(nameModel: NameModels, id: string) => {
   try {
-    const model = AllModels[nameModel];
+    const model = AllModels[nameModel] as Model<T>;
 
     return model.findById(id);
   } catch (error) {
