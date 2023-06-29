@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import admin from 'firebase-admin';
 
 dotenv.config();
-
+console.log(process.env.PRIVATE_KEY)
 export const server = Object.freeze({
   NODE_ENV: process.env.NODE_ENV || 'development',
   HOST: process.env.HOST || 'localhost',
