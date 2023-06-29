@@ -1,5 +1,5 @@
 import { FilterQuery } from "mongoose";
-import { getPaginatedList } from "../repositories/allModels";
+import { getPaginatedList } from "../repositories";
 import { handleErrorFunction } from "../utils/handleError";
 import { CommentsBranchOffice } from "../interfaces/commentsBranchOffice";
 import { PaginatedListServiceProps } from "../interfaces/services";

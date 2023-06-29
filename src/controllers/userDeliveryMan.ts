@@ -3,7 +3,7 @@ import { handleError } from "../utils/handleError";
 import { FilterQuery } from "mongoose";
 import UserDeliverymanModel from '../models/userDeliveryMan';
 import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan, validateUserDeliveryMan } from "../services/deliveryMan";
-import { getPaginatedList } from "../repositories/allModels";
+import { getPaginatedList } from "../repositories";
 import { createUserAuth } from "../repositories/firebaseAuth";
 import { FunctionController, ReqQuery } from "../types";
 import { UserDeliveryMan } from "../interfaces/users";
