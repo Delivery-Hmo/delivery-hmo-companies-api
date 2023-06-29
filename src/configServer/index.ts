@@ -5,7 +5,11 @@ import dotenv from "dotenv";
 import admin from 'firebase-admin';
 
 dotenv.config();
+console.log('-----------------PRIVATE_KEY------------')
 console.log(process.env.PRIVATE_KEY)
+console.log('-----------------PRIVATE_KEYnnnnnn------------')
+console.log(process.env.PRIVATE_KEY && process.env.PRIVATE_KEY.replace(/\@/g, '\n'))
+
 export const server = Object.freeze({
   NODE_ENV: process.env.NODE_ENV || 'development',
   HOST: process.env.HOST || 'localhost',
