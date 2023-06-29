@@ -31,4 +31,5 @@ artifacts:
     - ".ebextensions/**/*"
     - ".elasticbeanstalk/**/*"
     - build/.env
+    - .env
   discard-paths: no
