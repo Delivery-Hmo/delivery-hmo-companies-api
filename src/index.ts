@@ -6,7 +6,6 @@ import routes from './routes';
 import uploadFiles from "./middlewares/uploadFiles";
 // import { disconnectDBMiddleware } from "./middlewares/disconnectDB";
 //import cluster from 'cluster';
-
 const app = express();
 
 try {
