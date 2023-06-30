@@ -4,7 +4,7 @@ import configServer, { server, serviceAccount, storageBucket } from './configSer
 import { connectDB, disconnectDB } from './configServer/mongodb';
 import routes from './routes';
 import uploadFiles from "./middlewares/uploadFiles";
-import { disconnectDBMiddleware } from "./middlewares/disconnectDB";
+// import { disconnectDBMiddleware } from "./middlewares/disconnectDB";
 //import cluster from 'cluster';
 
 const app = express();
@@ -16,7 +16,7 @@ try {
   uploadFiles(app);
   await routes(app);
 
-  app.use(disconnectDBMiddleware);
+  // app.use(disconnectDBMiddleware);
 
   /*   
     const numCpus = require('os').cpus().length;
