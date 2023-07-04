@@ -61,8 +61,8 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     } as const;
 
     if (newModels[rol]) {
-      const newModel = newModels[rol]! as ((model: T) => T);
-      model = newModel(model)
+      const newModel = newModels[rol]!;
+      model = newModel(model);
     }
 
     const { id, uid, email, password } = model;
@@ -81,7 +81,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     } as const;
 
     delete model.password;
-
+    
     const modelUpdated = await reposUpdate[rol]!(id!, model);
 
     return modelUpdated;
@@ -89,6 +89,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     if (error instanceof MongooseError && oldEmail) {
       const { uid, password } = model;
       const messageError = password ? `Solo la contraseña pudo ser actualizada. ${error.message}` : error.message;
+
       try {
         //si esta actualizacion falla hay que hacer algo en el front para que el email de mongo sea igual al userAuth y no tener desfase se informacion
         await updateUserAuth(uid!, { email: oldEmail });

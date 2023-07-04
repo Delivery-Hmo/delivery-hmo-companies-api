@@ -1,5 +1,6 @@
 import { Rols } from "../types";
 import { CommentsBranchOffice } from "./commentsBranchOffice";
+import { LatLng } from ".";
 
 export interface User {
   readonly id?: string;
@@ -26,9 +27,9 @@ export interface BranchOffice extends User {
   center: LatLng;
   radius: number;
   address: string; 
-  showingInApp: boolean;
   comments?: CommentsBranchOffice[];
   totolSales?: number; 
+  showingInApp: boolean;
   validatedImages: boolean;
   validatingImages: boolean;
 }

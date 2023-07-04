@@ -3,7 +3,7 @@ import { latLngSchema } from '.';
 import { maxlength, optionsModel } from '../constants';
 import { isPointInsideCircle } from "../utils/functions";
 import { validateMaxLength } from "../utils/mongoose";
-import { findOneBranchOffice } from "../repositories/branchOffice";
+import { findByIdBranchOffice, findOneBranchOffice } from "../repositories/branchOffice";
 import { BranchOffice } from "../interfaces/users";
 
 export const schema = new Schema<BranchOffice>(
@@ -103,13 +103,14 @@ export const schema = new Schema<BranchOffice>(
 );
 
 schema.pre<BranchOffice>('save', async function (next) {
-  const invalidPhones = this.phones.some(value => value && value.toString().length !== 10);
+  const { latLng, center, radius, name, id, phones } = this;
+
+  const invalidPhones = phones.some(value => value && value.toString().length !== 10);
 
   if (invalidPhones) {
     throw "Los números telefónicos tienen que ser de 10 dígitos.";
   }
 
-  const { latLng, center, radius, name, id } = this;
   const latLngInCircle = isPointInsideCircle(latLng.lat, latLng.lng, center.lat, center.lng, radius);
 
   if (!latLngInCircle) {
@@ -120,6 +121,21 @@ schema.pre<BranchOffice>('save', async function (next) {
 
   if (otherModelSameName && otherModelSameName?.id !== id) {
     throw "Ya existe una sucursal con este nombre.";
+  }
+
+  if(!id) {
+    return next();
+  }
+
+  const oldBranchOffice = await findByIdBranchOffice(id);
+
+  const { lat: oldLat, lng: oldLng } = oldBranchOffice?.latLng!;
+  const { lat, lng } = this.latLng!;
+
+  if(lat !== oldLat || lng !== oldLng) {
+    this.showingInApp = false;
+    this.validatedImages = false;
+    this.validatingImages = false;
   }
 
   next();
