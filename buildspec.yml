@@ -5,22 +5,31 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-       - npm install
-       - npm install ts-node
-       - npm install -g typescript --save-dev @types/node
-       - npm install express
-       - npm install --silent --no-progress -g npm
+      - npm install
+      - npm install ts-node
+      - npm install -g typescript --save-dev @types/node
+      - npm install express
+      - npm install --silent --no-progress -g npm
   build:
     commands:
-      - echo Build started on `date`
       - npm run build
+  post_build:
+    commands:
+    
+      - echo "ENVIRONMENT=serve" >> .env
+      - echo "PORT=$(aws ssm get-parameter --name "PORT" --with-decryption --query "Parameter.Value" --output text)" >> .env
+      - echo "DB_CONN_STRING=$(aws ssm get-parameter --name "DB_CONN_STRING" --with-decryption --query "Parameter.Value" --output text)" >> .env
+      - echo "DB_CONN_STRING_PRODUCTION=$(aws ssm get-parameter --name "DB_CONN_STRING_PRODUCTION" --with-decryption --query "Parameter.Value" --output text)" >> .env
+      - echo "PROJECT_ID=$(aws ssm get-parameter --name "PROJECT_ID" --with-decryption --query "Parameter.Value" --output text)" >> .env
+      - echo "PRIVATE_KEY=$(aws ssm get-parameter --name "PRIVATE_KEY" --with-decryption --query "Parameter.Value" --output text)" >> .env
+      - echo "CLIENT_EMAIL=$(aws ssm get-parameter --name "CLIENT_EMAIL" --with-decryption --query "Parameter.Value" --output text)" >> .env
 artifacts:
   files:
     - package.json
     - package-lock.json
     - build/**/*
-    - '.platform/**/*'
-    - '.ebextensions/**/*'
-    - '.elasticbeanstalk/**/*'
+    - ".platform/**/*"
+    - ".ebextensions/**/*"
+    - ".elasticbeanstalk/**/*"
     - .env
   discard-paths: no
