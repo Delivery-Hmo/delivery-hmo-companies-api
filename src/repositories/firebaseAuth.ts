@@ -33,3 +33,5 @@ export const updateUserAuth = (uid: string, props: UpdateUserAuth) => auth.updat
 export const deleteUserAuth = (uid: string) => auth.deleteUser(uid);
 
 export const getUserAuthByUid = (uid: string) => auth.getUser(uid);
+
+export const getUserAuthByEmail = (email: string) => auth.getUserByEmail(email);
