@@ -1,6 +1,6 @@
 import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction } from "../types";
 import { newBranchOffice } from "./branchOffice";
-import { createUserAuth, deleteUserAuth, getUserAuthByUid, updateUserAuth } from "../repositories/firebaseAuth";
+import { createUserAuth, deleteUserAuth, getUserAuthByEmail, getUserAuthByUid, updateUserAuth } from "../repositories/firebaseAuth";
 import { createBranchOffice, findByIdAndUpdateBranchOffice } from "../repositories/branchOffice";
 import { createUserAdmin, findByIdAndUpdateUserAdmin } from "../repositories/userAdmin";
 import { handleErrorFunction } from "../utils/handleError";
@@ -20,9 +20,12 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
 
     const { email, password } = model;
 
-    const userAuth = await createUserAuth({ email, password, displayName: rol });
+    const userAuth = rol === "Administrador"
+      ? await getUserAuthByEmail(email)
+      : await createUserAuth({ email, password, displayName: rol })
 
     model.uid = userAuth.uid;
+
     delete model.password;
 
     const reposCreate: Record<Rols, CreateRepoFunction<T>> = {
@@ -57,9 +60,9 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "": null
     } as const;
 
-    if(newModels[rol]) {
+    if (newModels[rol]) {
       const newModel = newModels[rol]! as ((model: T) => T);
-      model = newModel(model) 
+      model = newModel(model)
     }
 
     const { id, uid, email, password } = model;
@@ -83,19 +86,19 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
 
     return modelUpdated;
   } catch (error) {
-    if(error instanceof MongooseError && oldEmail) {
+    if (error instanceof MongooseError && oldEmail) {
       const { uid, password } = model;
       const messageError = password ? `Solo la contraseña pudo ser actualizada. ${error.message}` : error.message;
       try {
         //si esta actualizacion falla hay que hacer algo en el front para que el email de mongo sea igual al userAuth y no tener desfase se informacion
         await updateUserAuth(uid!, { email: oldEmail });
-    
+
         throw handleErrorFunction(messageError);
       } catch (error) {
         throw handleErrorFunction(messageError);
       }
     }
-    
+
     throw handleErrorFunction(error);
   }
 }

@@ -17,7 +17,7 @@ const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers
 
-  if (!authorization || !authorization.startsWith('Bearer')) 
+  if (!authorization?.startsWith('Bearer ')) 
     return unauthorized(res);
 
   const split = authorization.split('Bearer ');

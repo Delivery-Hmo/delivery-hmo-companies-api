@@ -69,6 +69,14 @@ export const schema = new Schema<BranchOffice>(
       type: Boolean, 
       default: true 
     },
+    validatedImages: {
+      type: Boolean,
+      default: false
+    },
+    validatingImages: {
+      type: Boolean,
+      default: false
+    },
     showingInApp: { 
       type: Boolean, 
       default: false 

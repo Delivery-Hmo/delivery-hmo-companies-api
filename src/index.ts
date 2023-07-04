@@ -4,10 +4,10 @@ import configServer, { server, serviceAccount, storageBucket } from './configSer
 import { connectDB, disconnectDB } from './configServer/mongodb';
 import routes from './routes';
 import uploadFiles from "./middlewares/uploadFiles";
-import { disconnectDBMiddleware } from "./middlewares/disconnectDB";
 //import cluster from 'cluster';
 
 const app = express();
+let expressServer = null;
 
 try {
   configServer(app);
@@ -16,25 +16,32 @@ try {
   uploadFiles(app);
   await routes(app);
 
-  app.use(disconnectDBMiddleware);
-
   /*   
-    const numCpus = require('os').cpus().length;
-    
-    if(cluster.isPrimary) {
-      for (let i = 0; i < numCpus; i++) {
-        cluster.fork();
-      }
-  
-      return;
-    }
-  */
+   const numCpus = require('os').cpus().length;
+   
+   if(cluster.isPrimary) {
+     for (let i = 0; i < numCpus; i++) {
+       cluster.fork();
+     }
+ 
+     return;
+   }
+ */
 
-  app.listen(app.get('port'), server.HOST, () => {
+  expressServer = app.listen(app.get('port'), server.HOST, () => {
     console.log(`App listening server on http://${server.HOST}:${app.get('port')}`);
   });
+
+  disconnectDB(expressServer);
+
+  expressServer.on("error", (error) => {
+    console.error(error);
+  });
 } catch (error) {
-  await disconnectDB();
+  if (expressServer) {
+    disconnectDB(expressServer);
+  }
+
   console.error(error);
 }
 

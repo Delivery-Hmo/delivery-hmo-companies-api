@@ -9,7 +9,7 @@ export interface User {
   email: string;
   description?: string;
   active: boolean;
-  image?: string;
+  readonly image: string;
   password?: string;
 }
 export interface UserAdmin extends User {
@@ -26,9 +26,11 @@ export interface BranchOffice extends User {
   center: LatLng;
   radius: number;
   address: string; 
-  showingInApp?: boolean;
+  showingInApp: boolean;
   comments?: CommentsBranchOffice[];
   totolSales?: number; 
+  validatedImages: boolean;
+  validatingImages: boolean;
 }
 
 export interface UserSeller extends User {
