@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { handleError } from "../utils/handleError";
 import UserSellerModel from '../models/userSeller';
 import { FilterQuery } from "mongoose";
-import { getPaginatedList } from "../repositories/allModels";
+import { getPaginatedList } from "../repositories";
 import { createUserAuth, updateUserAuth } from "../repositories/firebaseAuth";
 import { FunctionController, ReqQuery } from "../types";
 import { UserSeller } from "../interfaces/users";

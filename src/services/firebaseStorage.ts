@@ -1,9 +1,9 @@
 import { Request } from "express";
 import { checkSecureImage, compreesImage } from "../utils/functions";
-import { baseUrlStorage, baseUrlStorageGoogle } from "../constants";
+import { baseUrlStorageGoogle, urlImageDefaultProfile } from "../constants";
 import { deleteFile, uploadFile } from "../repositories/firebaseStorage";
-import { getByIdAllModels } from "../repositories/allModels";
-import { NameModels } from "../types";
+import { getByIdAllUsersModel } from "../repositories";
+import { NameModels, Users } from "../types";
 import { handleErrorFunction } from "../utils/handleError";
 import short from "short-uuid";
 
@@ -27,9 +27,9 @@ export const uploadImageBase64ToStorage = async (req: Request) => {
 			const routeController = req.originalUrl.replace("/", "").split("/")[0];
 			const nameModel = routeController.charAt(0).toUpperCase() + routeController.slice(1) as NameModels;
 
-			const modelDoc = await getByIdAllModels(nameModel, id);
+			const modelDoc = await getByIdAllUsersModel<Users>(nameModel, id);
 
-			if (modelDoc && !modelDoc.image.includes(baseUrlStorage)) {
+			if (modelDoc?.image && !modelDoc.image.includes(urlImageDefaultProfile)) {
 				const fileName = modelDoc.image.split(baseUrlStorageGoogle)[1].split('?')[0];
 
 				await deleteFile(fileName);

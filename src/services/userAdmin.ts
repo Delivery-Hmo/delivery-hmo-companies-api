@@ -2,7 +2,7 @@ import { FilterQuery } from "mongoose";
 import { PaginatedListServiceProps } from "../interfaces/services";
 import { handleErrorFunction } from "../utils/handleError";
 import UserAdminModel from "../models/userAdmin";
-import { getPaginatedList } from "../repositories/allModels";
+import { getPaginatedList } from "../repositories";
 import { UserAdmin } from "../interfaces/users";
 
 export const getPaginatedListUserAdmins = async ({ search, page, limit } : PaginatedListServiceProps) => {
