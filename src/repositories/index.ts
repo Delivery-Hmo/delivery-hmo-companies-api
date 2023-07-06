@@ -1,7 +1,7 @@
+import { PropsPaginatedList } from "../interfaces";
 import AllModels from "../models/allModels";
 import { NameModels } from "../types";
 import { GenericDocument } from "../types";
-import { PropsPaginatedList } from "../interfaces/allModels";
 import { Model } from "mongoose";
 
 export const getByIdAllUsersModel = async <T extends {}>(nameModel: NameModels, id: string) => {

@@ -30,7 +30,7 @@ try {
     console.log(`App listening server on http://${server.HOST}:${app.get('port')}`);
   });
 
-  expressServer.on("error", (error) => {
+  expressServer.on("error", error => {
     console.error(error);
   });
 } catch (error) {

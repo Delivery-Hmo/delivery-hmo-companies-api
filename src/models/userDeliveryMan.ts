@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { maxlength, optionsModel } from '../constants';
-import { latLngSchema } from ".";
 import { validateMaxLength } from "../utils/mongoose";
 import { UserDeliveryMan } from "../interfaces/users";
+import { schemalatLng } from ".";
 
 const schema = new Schema<UserDeliveryMan>(
   {
@@ -21,7 +21,7 @@ const schema = new Schema<UserDeliveryMan>(
     branchOffice: { type: Schema.Types.ObjectId, ref: 'BranchOffice' },
     userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin' },
     password: { type: String },
-    latLng: latLngSchema(),
+    latLng: schemalatLng(),
     role: { type: String, default: "Repartidor" }
   },
   optionsModel

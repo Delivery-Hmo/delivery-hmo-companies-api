@@ -27,11 +27,12 @@ export interface BranchOffice extends User {
   center: LatLng;
   radius: number;
   address: string; 
-  comments?: CommentsBranchOffice[];
+  comments: CommentsBranchOffice[];
   totolSales?: number; 
-  showingInApp: boolean;
+  showInApp: boolean;
   validatedImages: boolean;
   validatingImages: boolean;
+  products: string[] | Product[];
 }
 
 export interface UserSeller extends User {

@@ -1,4 +1,4 @@
-import BranchOfficeModel from '../models/branchOffice';
+import BranchOfficeModel from '../models/brancOffice.ts';
 import { FilterQuery, UpdateQuery } from 'mongoose';
 import { handleErrorSaveBranchOffice } from "../utils/handleError";
 import { BranchOffice } from "../interfaces/users";
