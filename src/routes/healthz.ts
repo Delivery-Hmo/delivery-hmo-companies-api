@@ -4,7 +4,7 @@ const router = Router();
 
 const RouteExample = (app: Application) => {
   router.get('/', async (req, res) => {
-    res.status(200).send({ check: "OKtest1" });
+    res.status(200).send({ check: "OKtest1222" });
   });
 
   app.use("/", router);
