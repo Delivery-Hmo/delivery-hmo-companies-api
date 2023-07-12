@@ -32,5 +32,6 @@ export type FunctionController = FunctionController;
 
 export type ReqQuery = Record<string, string>;
 
-
-
+export type UndefinedInterface<T> = {
+  [P in keyof T]?: T[P] | undefined;
+};

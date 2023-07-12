@@ -6,101 +6,108 @@ import { validateMaxLength } from "../../utils/mongoose";
 import { findOneBranchOffice } from "../../repositories/branchOffice";
 import { BranchOffice } from "../../interfaces/users";
 import { shemaBranchProduct } from "./products";
+import { ModelDefinition } from "../../interfaces";
+
+//Quitar de la interface las propiedades que no son del modelo
+type BranchOfficeModelInterface = Omit<BranchOffice, "comments" | "id" | "image" | "password">;
+
+const definition: ModelDefinition<BranchOfficeModelInterface> = {
+  uid: {
+    type: String,
+    required: [true, "El uid es obligatorio."],
+    unique: true,
+    maxlength,
+    validate: validateMaxLength
+  },
+  userAdmin: {
+    type: Schema.Types.ObjectId,
+    ref: 'UserAdmin',
+    required: [true, "La empresa de la succursal es obligatoria."]
+  },
+  email: { 
+    type: String, 
+    required: [true, "El email de la sucursal es obligatorio."],
+    unique: true, 
+    maxlength,
+    validate: validateMaxLength
+  },
+  name: {
+    type: String,
+    required: [true, "El nombre de la sucursal es obligatorio."],
+    unique: true,
+    maxlength,
+    validate: validateMaxLength
+  },
+  salesGoalByMonth: {
+    type: Number,
+    default: 0,
+    validate: {
+      validator: (value: number) => value >= 0 && value <= 100000,
+      message: "La meta de ventas por mes está fuera de rango."
+    }
+  },
+  facebook: {
+    type: String,
+    maxlength,
+    validate: validateMaxLength
+  },
+  phones: { type: [Number] },
+  latLng: schemalatLng(true),
+  center: schemalatLng(true),
+  radius: {
+    type: Number,
+    required: [true, "El radio de entrega es obligatorio."],
+    validate: {
+      validator: (value: number) => {
+        value >= 1000 && value <= 3800
+      },
+      message: "El radio de entrega está fuera de rango."
+    }
+  },
+  address: {
+    type: String,
+    maxlength,
+    validate: validateMaxLength
+  },
+  active: { 
+    type: Boolean, 
+    default: true 
+  },
+  validatedImages: {
+    type: Boolean,
+    default: false
+  },
+  validatingImages: {
+    type: Boolean,
+    default: false
+  },
+  showInApp: { 
+    type: Boolean, 
+    default: false 
+  },
+  totolSales: {
+    type: Number,
+    default: 0,
+    validate: {
+      validator: (value: number) => value <= 100000,
+      message: "El total de ventas por mes no puede ser mayor a 100000"
+    }
+  },
+  role: { 
+    type: String, 
+    default: "Administrador sucursal" 
+  },
+  description: {
+    type: String,
+    maxlength,
+    validate: validateMaxLength
+  },
+  products: [shemaBranchProduct],
+  images: [String],
+}
 
 export const schema = new Schema<BranchOffice>(
-  {
-    uid: {
-      type: String,
-      required: [true, "El uid es obligatorio."],
-      unique: true,
-      maxlength,
-      validate: validateMaxLength
-    },
-    userAdmin: {
-      type: Schema.Types.ObjectId,
-      ref: 'UserAdmin',
-      required: [true, "La empresa de la succursal es obligatoria."]
-    },
-    email: { 
-      type: String, 
-      required: [true, "El email de la sucursal es obligatorio."],
-      unique: true, 
-      maxlength,
-      validate: validateMaxLength
-    },
-    name: {
-      type: String,
-      required: [true, "El nombre de la sucursal es obligatorio."],
-      unique: true,
-      maxlength,
-      validate: validateMaxLength
-    },
-    salesGoalByMonth: {
-      type: Number,
-      default: 0,
-      validate: {
-        validator: (value: number) => value >= 0 && value <= 100000,
-        message: "La meta de ventas por mes está fuera de rango."
-      }
-    },
-    facebook: {
-      type: String,
-      maxlength,
-      validate: validateMaxLength
-    },
-    phones: { type: [Number] },
-    latLng: schemalatLng(true),
-    center: schemalatLng(true),
-    radius: {
-      type: Number,
-      required: [true, "El radio de entrega es obligatorio."],
-      validate: {
-        validator: (value: number) => {
-          value >= 1000 && value <= 3800
-        },
-        message: "El radio de entrega está fuera de rango."
-      }
-    },
-    address: {
-      type: String,
-      maxlength,
-      validate: validateMaxLength
-    },
-    active: { 
-      type: Boolean, 
-      default: true 
-    },
-    validatedImages: {
-      type: Boolean,
-      default: false
-    },
-    validatingImages: {
-      type: Boolean,
-      default: false
-    },
-    showInApp: { 
-      type: Boolean, 
-      default: false 
-    },
-    totolSales: {
-      type: Number,
-      default: 0,
-      validate: {
-        validator: (value: number) => value <= 100000,
-        message: "El total de ventas por mes no puede ser mayor a 100000"
-      }
-    },
-    role: { 
-      type: String, 
-      default: "Administrador sucursal" 
-    },
-    description: {
-      type: String,
-      maxlength,
-      validate: validateMaxLength
-    },
-    products: [shemaBranchProduct]
-  },
+  definition,
   optionsModel
 );
 

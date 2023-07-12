@@ -1,7 +1,7 @@
 import { FilterQuery } from "mongoose";
 import BranchOfficeModel from '../models/brancOffice.ts';
 import { handleErrorFunction } from "../utils/handleError";
-import { findBranchOffice } from "../repositories/branchOffice";
+import { findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
 import { getPaginatedList } from "../repositories";
 import { PaginatedListServiceProps } from "../interfaces/services";
 import { BranchOffice } from "../interfaces/users";
@@ -47,6 +47,18 @@ export const newBranchOffice = (branchOffice: BranchOffice) => {
     branchOffice.userAdmin = userAdmin!;
 
     return branchOffice;
+  } catch (error) {
+    throw handleErrorFunction(error);
+  }
+}
+
+export const validateImagesBranchOffice = async ({ id, images }: { id: string, images: string[] }) => {
+  try {
+    const branchOffice = await findByIdBranchOffice(id) as BranchOffice;
+
+    branchOffice.images = images;
+
+    return await findByIdAndUpdateBranchOffice(id, branchOffice);
   } catch (error) {
     throw handleErrorFunction(error);
   }

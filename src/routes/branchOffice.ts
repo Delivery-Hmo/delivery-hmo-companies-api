@@ -1,5 +1,5 @@
 import { Application, Router } from "express";
-import { listByUserAdmin, paginatedListByUserAdmin, create, update, disable, getByUid } from "../controllers/branchOffice";
+import { listByUserAdmin, paginatedListByUserAdmin, create, update, disable, getByUid, validateImages } from "../controllers/branchOffice";
 import isAuthenticated from "../middlewares/isAuthenticated";
 import isAdmin from "../middlewares/isAdmin";
 import isBranchOffice from "../middlewares/isBranchOffice";
@@ -12,6 +12,7 @@ const RoutesBranchOffice = (app: Application) => {
   router.get('/listByUserAdmin', isAdmin, listByUserAdmin);
   router.post('/create', isAdmin, create);
   router.put('/update', isBranchOffice, update);
+  router.put('/validateImages', isBranchOffice, validateImages);
   router.patch('/disable', isAdmin, disable);
 
   app.use("/branchOffice", [isAuthenticated], router);

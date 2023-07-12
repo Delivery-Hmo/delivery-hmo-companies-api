@@ -1,5 +1,9 @@
 import { Request } from "express";
-import { FilterQuery, Model } from "mongoose";
+import { SchemaDefinitionProperty } from "mongoose";
+
+export type ModelDefinition<M> = {
+  [P in keyof M]-?: SchemaDefinitionProperty<M[P]>;
+};
 
 export interface LatLng {
   lat: number;
@@ -13,8 +17,8 @@ export interface BodyDisable {
 
 export interface PropsPaginatedList<T> {
   model: Model<T>;
-  query: FilterQuery<Model<T>>; 
+  query: FilterQuery<Model<T>>;
   populate: string | string[];
   page: number;
   limit: number;
-}
+};

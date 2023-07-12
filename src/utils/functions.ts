@@ -33,7 +33,7 @@ export const checkSecureImage = async (base64: string) => {
 
 		const isSecure = !predictions.some(p => ["Hentai", "Porn", "Sexy"].includes(p.className) && p.probability >= 0.5);
 
-		if (!isSecure) throw "La imagen no es segura.";
+		if (!isSecure) throw "La imagen o las imagenes no son seguras.";
 	} catch (error) {
 		throw handleErrorFunction(error);
 	}

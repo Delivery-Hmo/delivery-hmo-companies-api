@@ -33,6 +33,7 @@ export interface BranchOffice extends User {
   validatedImages: boolean;
   validatingImages: boolean;
   products: string[] | Product[];
+  images: string[];
 }
 
 export interface UserSeller extends User {
