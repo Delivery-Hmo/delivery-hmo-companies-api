@@ -20,6 +20,17 @@ export const create = async (req: Request, res: Response): FunctionController =>
 export const list = async (req: Request, res: Response): FunctionController => {
   try {
     const { idBranchOffice, page } = req.query as ReqQuery;
+    // const comment: CommentsBranchOffice = {
+    //   branchOffice: idBranchOffice,
+    //   comment: faker.lorem.text(),
+    //   user: faker.string.uuid(),
+    // }
+
+    // const comments: CommentsBranchOffice[] = faker.helpers.multiple(() => comment, {
+    //   count: 10,
+    // });
+
+    // await createManyCommentsBranchOffice(comments);
 
     const paginatedList = await getPaginatedListByCommentsBranch({ search: idBranchOffice, page: +page, limit: 10 });
 
@@ -64,3 +75,4 @@ export const disable = async (req: Request, res: Response): FunctionController =
     return handleError(res, err);
   }
 }
+

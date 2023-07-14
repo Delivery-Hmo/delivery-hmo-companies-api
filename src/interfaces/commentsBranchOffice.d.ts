@@ -3,6 +3,6 @@ export interface CommentsBranchOffice {
   readonly id?: string;
   comment: string;
   user: string;
-  date: Date;
+  createdAt?: Date;
   branchOffice: string | BranchOffice;
 }
