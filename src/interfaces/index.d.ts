@@ -1,8 +1,8 @@
 import { Request } from "express";
 import { SchemaDefinitionProperty } from "mongoose";
 
-export type ModelDefinition<M> = {
-  [P in keyof M]-?: SchemaDefinitionProperty<M[P]>;
+export type ModelDefinition<T> = {
+  [K in keyof T]-?: SchemaDefinitionProperty<T[K]>;
 };
 
 export interface LatLng {

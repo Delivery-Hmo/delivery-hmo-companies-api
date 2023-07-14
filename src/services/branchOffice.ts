@@ -57,6 +57,7 @@ export const validateImagesBranchOffice = async ({ id, images }: { id: string, i
     const branchOffice = await findByIdBranchOffice(id) as BranchOffice;
 
     branchOffice.images = images;
+    branchOffice.validatingImages = true;
 
     return await findByIdAndUpdateBranchOffice(id, branchOffice);
   } catch (error) {
