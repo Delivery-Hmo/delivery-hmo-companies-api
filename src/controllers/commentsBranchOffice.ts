@@ -32,7 +32,7 @@ export const list = async (req: Request, res: Response): FunctionController => {
 
     // await createManyCommentsBranchOffice(comments);
 
-    const paginatedList = await getPaginatedListByCommentsBranch({ search: idBranchOffice, page: +page, limit: 10 });
+    const paginatedList = await getPaginatedListByCommentsBranch({ search: idBranchOffice, page: +page, limit: 5 });
 
     return res.status(200).json(paginatedList);
   } catch (err) {
