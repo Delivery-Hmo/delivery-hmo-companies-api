@@ -5,7 +5,7 @@ import { isPointInsideCircle } from "../../utils/functions";
 import { validateMaxLength } from "../../utils/mongoose";
 import { findOneBranchOffice } from "../../repositories/branchOffice";
 import { BranchOffice } from "../../interfaces/users";
-import { shemaBranchProduct } from "./products";
+import { shemaBranchProduct } from "./brachOfficeProducts";
 import { ModelDefinition } from "../../types";
 
 //Quitar de la interface las propiedades que no son del modelo
