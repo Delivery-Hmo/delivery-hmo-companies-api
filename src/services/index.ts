@@ -1,10 +1,11 @@
 import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction } from "../types";
 import { newBranchOffice } from "./branchOffice";
 import { createUserAuth, deleteUserAuth, getUserAuthByEmail, getUserAuthByUid, updateUserAuth } from "../repositories/firebaseAuth";
-import { createBranchOffice, findByIdAndUpdateBranchOffice } from "../repositories/branchOffice";
+import { createBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
 import { createUserAdmin, findByIdAndUpdateUserAdmin } from "../repositories/userAdmin";
 import { handleErrorFunction } from "../utils/handleError";
 import { MongooseError } from "mongoose";
+import { BranchOffice } from "../interfaces/users";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
@@ -81,7 +82,23 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     } as const;
 
     delete model.password;
-    
+
+    if (rol === "Administrador sucursal") {
+      const oldBranchOffice = await findByIdBranchOffice(id!);
+      const branchOffice = model as BranchOffice;
+
+      const { lat: oldLat, lng: oldLng } = oldBranchOffice?.latLng!;
+      const { lat, lng } = branchOffice.latLng!;
+  
+      if(lat !== oldLat || lng !== oldLng) {
+        branchOffice.showInApp = false;
+        branchOffice.validatedImages = false;
+        branchOffice.validatingImages = false;
+      }
+
+      model = branchOffice as T;
+    }
+      
     const modelUpdated = await reposUpdate[rol]!(id!, model);
 
     return modelUpdated;

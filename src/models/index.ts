@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 import { LatLng } from "../interfaces";
 
-export const latLngSchema = (required?: boolean) => {
+export const schemalatLng = (required?: boolean) => {
   const req = required === undefined ? true : required;
 
   return new Schema<LatLng>({
@@ -11,7 +11,7 @@ export const latLngSchema = (required?: boolean) => {
       validate: {
         validator: (value: number) => value >= -180 && value <= 180 || !required,
         message: "La latitud esta fuera de rango."
-      }
+      },
     },
     lng: { 
       type: Number, 

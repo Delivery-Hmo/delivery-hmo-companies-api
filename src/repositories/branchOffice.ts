@@ -1,7 +1,8 @@
-import BranchOfficeModel from '../models/branchOffice';
-import { FilterQuery, UpdateQuery } from 'mongoose';
+import BranchOfficeModel from '../models/brancOffice.ts';
+import { FilterQuery } from 'mongoose';
 import { handleErrorSaveBranchOffice } from "../utils/handleError";
 import { BranchOffice } from "../interfaces/users";
+import { UndefinedInterface } from "../types/index.js";
 
 export const findByIdBranchOffice = (id: string) => BranchOfficeModel.findById(id);
 
@@ -13,12 +14,13 @@ export const findOneBranchOffice = (query: FilterQuery<BranchOffice>) => BranchO
 
 export const createBranchOffice = async (model: BranchOffice) => {
   try {
+    return await BranchOfficeModel.create(model);
   } catch (error) {
     throw handleErrorSaveBranchOffice(error);
   }
 }
 
-export const findByIdAndUpdateBranchOffice = async (id: string, data: UpdateQuery<BranchOffice>) => {
+export const findByIdAndUpdateBranchOffice = async (id: string, data: UndefinedInterface<BranchOffice>) => {
   try {
     return await BranchOfficeModel.findByIdAndUpdate(id, data, { new: true });
   } catch (error) {

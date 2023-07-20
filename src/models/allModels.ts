@@ -1,5 +1,5 @@
 import UserAdminModel from "./userAdmin";
-import BrancOfficeModel from "./branchOffice";
+import BrancOfficeModel from "./brancOffice.ts";
 import UserSellerModel from "./userSeller";
 import UserDeliveryManModel from "./userDeliveryMan";
 import CommentsBranchOfficeModel from "./commentsBranchOffice";

@@ -1,8 +1,9 @@
 import { Response } from "express";
 import { Types, Document, Model } from "mongoose";
 import { BranchOffice, UserAdmin, UserDeliveryMan, UserSeller } from '../interfaces/users';
+import { SchemaDefinitionProperty } from "mongoose";
 
-export {};
+export { };
 
 declare global {
   var user: Users | undefined;
@@ -32,5 +33,10 @@ export type FunctionController = FunctionController;
 
 export type ReqQuery = Record<string, string>;
 
+export type UndefinedInterface<T> = {
+  [K in keyof T]?: T[K] | undefined;
+};
 
-
+export type ModelDefinition<T> = {
+  [K in keyof T]-?: SchemaDefinitionProperty<T[K]>;
+};
