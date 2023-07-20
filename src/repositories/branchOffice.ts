@@ -14,6 +14,7 @@ export const findOneBranchOffice = (query: FilterQuery<BranchOffice>) => BranchO
 
 export const createBranchOffice = async (model: BranchOffice) => {
   try {
+    return await BranchOfficeModel.create(model);
   } catch (error) {
     throw handleErrorSaveBranchOffice(error);
   }

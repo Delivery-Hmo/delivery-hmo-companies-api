@@ -6,7 +6,7 @@ import { validateMaxLength } from "../../utils/mongoose";
 import { findOneBranchOffice } from "../../repositories/branchOffice";
 import { BranchOffice } from "../../interfaces/users";
 import { shemaBranchProduct } from "./products";
-import { ModelDefinition } from "../../interfaces";
+import { ModelDefinition } from "../../types";
 
 //Quitar de la interface las propiedades que no son del modelo
 type BranchOfficeModelInterface = Omit<BranchOffice, "comments" | "id" | "image" | "password">;
@@ -24,10 +24,10 @@ const definition: ModelDefinition<BranchOfficeModelInterface> = {
     ref: 'UserAdmin',
     required: [true, "La empresa de la succursal es obligatoria."]
   },
-  email: { 
-    type: String, 
+  email: {
+    type: String,
     required: [true, "El email de la sucursal es obligatorio."],
-    unique: true, 
+    unique: true,
     maxlength,
     validate: validateMaxLength
   },
@@ -69,9 +69,9 @@ const definition: ModelDefinition<BranchOfficeModelInterface> = {
     maxlength,
     validate: validateMaxLength
   },
-  active: { 
-    type: Boolean, 
-    default: true 
+  active: {
+    type: Boolean,
+    default: true
   },
   validatedImages: {
     type: Boolean,
@@ -81,9 +81,9 @@ const definition: ModelDefinition<BranchOfficeModelInterface> = {
     type: Boolean,
     default: false
   },
-  showInApp: { 
-    type: Boolean, 
-    default: false 
+  showInApp: {
+    type: Boolean,
+    default: false
   },
   totolSales: {
     type: Number,
@@ -93,9 +93,9 @@ const definition: ModelDefinition<BranchOfficeModelInterface> = {
       message: "El total de ventas por mes no puede ser mayor a 100000"
     }
   },
-  role: { 
-    type: String, 
-    default: "Administrador sucursal" 
+  role: {
+    type: String,
+    default: "Administrador sucursal"
   },
   description: {
     type: String,
