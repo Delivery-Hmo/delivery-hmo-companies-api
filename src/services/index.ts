@@ -10,8 +10,9 @@ import { BranchOffice } from "../interfaces/users";
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
     const newModels: Record<Rols, NewModelFunction<T>> = {
-      "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
+      "SuperAdmin": null,
       "Administrador": newBranchOffice as any as NewModelFunction<T>,
+      "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
       "": null
@@ -30,6 +31,7 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
     delete model.password;
 
     const reposCreate: Record<Rols, CreateRepoFunction<T>> = {
+      "SuperAdmin": null,
       "Administrador": createUserAdmin as any as CreateRepoFunction<T>,
       "Administrador sucursal": createBranchOffice as any as CreateRepoFunction<T>,
       "Repartidor": null,
@@ -54,6 +56,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
 
   try {
     const newModels: Record<Rols, NewModelFunction<T>> = {
+      "SuperAdmin": null,
       "Administrador": null,
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": null,
@@ -74,6 +77,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     oldEmail = userAuth.email!;
 
     const reposUpdate: Record<Rols, UpdateRepoFunction<T>> = {
+      "SuperAdmin": null,
       "Administrador": findByIdAndUpdateUserAdmin as any as UpdateRepoFunction<T>,
       "Administrador sucursal": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
       "Repartidor": null,
@@ -89,8 +93,8 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
 
       const { lat: oldLat, lng: oldLng } = oldBranchOffice?.latLng!;
       const { lat, lng } = branchOffice.latLng!;
-  
-      if(lat !== oldLat || lng !== oldLng) {
+
+      if (lat !== oldLat || lng !== oldLng) {
         branchOffice.showInApp = false;
         branchOffice.validatedImages = false;
         branchOffice.validatingImages = false;
@@ -98,7 +102,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
 
       model = branchOffice as T;
     }
-      
+
     const modelUpdated = await reposUpdate[rol]!(id!, model);
 
     return modelUpdated;

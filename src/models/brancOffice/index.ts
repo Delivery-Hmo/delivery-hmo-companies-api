@@ -104,7 +104,7 @@ const definition: ModelDefinition<BranchOfficeModelInterface> = {
   },
   products: [shemaBranchProduct],
   images: [String],
-}
+};
 
 export const schema = new Schema<BranchOffice>(
   definition,

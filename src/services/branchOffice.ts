@@ -1,5 +1,5 @@
 import { FilterQuery } from "mongoose";
-import BranchOfficeModel from '../models/brancOffice.ts';
+import BranchOfficeModel from '../models/brancOffice/index.js';
 import { handleErrorFunction } from "../utils/handleError";
 import { findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
 import { getPaginatedList } from "../repositories";

@@ -12,9 +12,9 @@ const routes = async (app: Application) => {
   for (const file of files) {
     try {
       const module = await import(`./${file}`);
-      const ruta = module.default as (app: Application) => void;
+      const route = module.default as (app: Application) => void;
 
-      ruta(app);
+      route(app);
     } catch (error) {
       console.log(error);
       continue;
