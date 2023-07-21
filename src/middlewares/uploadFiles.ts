@@ -9,22 +9,22 @@ const uploadFiles = (app: Application) => {
 			if (!["POST", "PUT"].includes(req.method) || !req.body || !Object.keys(req.body).some(key => ["image", "images"].includes(key))) {
 				return next();
 			}
-	
+
 			const { image, images, id } = req.body as { image: string, images: string[], id?: string };
 			const { originalUrl } = req;
-	
+
 			if (image) {
 				req.body.image = await uploadImageBase64ToStorage({ originalUrl, image, id, checkImage: true });
 			}
 
 			if (images.length) {
-				await Promise.all(images.map(image => {
+				await Promise.all(images.filter(image => image).map(image => {
 					const fileBase64 = image.split(",")[1];
 
-				  return checkSecureImage(fileBase64);
+					return checkSecureImage(fileBase64);
 				}));
-				
-				const allResultsImages = await Promise.allSettled(images.map(image => uploadImageBase64ToStorage({ originalUrl, image, id })));
+
+				const allResultsImages = await Promise.allSettled(images.map(image => uploadImageBase64ToStorage({ originalUrl, image })));
 
 				const resultImagesRejected = allResultsImages.find(image => image.status === 'rejected') as PromiseRejectedResult | undefined;
 
@@ -36,12 +36,12 @@ const uploadFiles = (app: Application) => {
 
 				req.body.images = resultsImagesFulfilled.map(image => image.value);
 			}
-	
+
 			return next();
 		} catch (error) {
 			return handleError(res, error);
 		}
 	});
-} 
+}
 
 export default uploadFiles;

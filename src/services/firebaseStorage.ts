@@ -7,7 +7,14 @@ import short from "short-uuid";
 import { getByIdAllModels } from "../repositories/allModels";
 import { Document } from "mongoose";
 
-export const uploadImageBase64ToStorage = async ({ originalUrl, image, id, checkImage }: { originalUrl: string; image: string; id?: string; checkImage?: boolean }) => {
+interface Props {
+	originalUrl: string;
+	image: string;
+	id?: string;
+	checkImage?: boolean;
+}
+
+export const uploadImageBase64ToStorage = async ({ originalUrl, image, id, checkImage }: Props) => {
 	try {
 		const fileBase64 = image.split(",")[1];
 

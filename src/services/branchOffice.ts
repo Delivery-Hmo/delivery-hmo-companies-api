@@ -61,6 +61,8 @@ export const validateImagesBranchOffice = async ({ id, images }: UndefinedInterf
       return branchOffice;
     }
 
+    //si no se suben las 3 imagenes con el middleware avisar al front para que sepa que tiene que subir las demas-
+
     return await findByIdAndUpdateBranchOffice(id!, { images, validatingImages: true });
   } catch (error) {
     throw handleErrorFunction(error);
