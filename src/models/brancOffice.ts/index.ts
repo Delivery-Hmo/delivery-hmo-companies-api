@@ -1,8 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { schemalatLng } from '..';
-import { maxlength, optionsModel } from '../../constants';
+import { maxlength, optionsModel, validateMaxLength } from '../../constants';
 import { isPointInsideCircle } from "../../utils/functions";
-import { validateMaxLength } from "../../utils/mongoose";
 import { findOneBranchOffice } from "../../repositories/branchOffice";
 import { BranchOffice } from "../../interfaces/users";
 import { shemaBranchProduct } from "./products";
