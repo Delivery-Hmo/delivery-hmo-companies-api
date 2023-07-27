@@ -42,8 +42,16 @@ const definition: ModelDefinition<UserDeliveryManModelInterface> = {
     default: urlImageDefaultProfile,
     validate: validateMaxLengthImage
   },
-  branchOffice: { type: Schema.Types.ObjectId, ref: 'BranchOffice' },
-  userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin' },
+  branchOffice: {
+    type: Schema.Types.ObjectId,
+    ref: 'BranchOffice',
+    required: [true, "La sucursal ah la que pertenece el repartidor es obligatoria"]
+  },
+  userAdmin: {
+    type: Schema.Types.ObjectId,
+    ref: 'UserAdmin',
+    required: [true, "El usuario es obligatorio"]
+  },
   latLng: schemalatLng(),
   role: {
     type: String,

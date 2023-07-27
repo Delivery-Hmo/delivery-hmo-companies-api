@@ -29,8 +29,16 @@ const schema = new Schema<UserSeller>(
       type: Boolean,
       default: true
     },
-    branchOffice: { type: Schema.Types.ObjectId, ref: 'BranchOffice', required: true },
-    userAdmin: { type: Schema.Types.ObjectId, ref: 'UserAdmin', required: true },
+    branchOffice: {
+      type: Schema.Types.ObjectId,
+      ref: 'BranchOffice',
+      required: [true, "La sucursal ah la que pertenece el vendedor es obligatoria"]
+    },
+    userAdmin: {
+      type: Schema.Types.ObjectId,
+      ref: 'UserAdmin',
+      required: [true, "El usuario es obligatorio"]
+    },
     description: {
       type: String,
       maxlength,
@@ -42,7 +50,10 @@ const schema = new Schema<UserSeller>(
       default: urlImageDefaultProfile,
       validate: validateMaxLengthImage
     },
-    role: { type: String, default: "Vendedor" }
+    role: {
+      type: String,
+      default: "Vendedor"
+    }
   },
   optionsModel as SchemaOptions<UserSeller>
 );
