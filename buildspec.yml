@@ -32,7 +32,3 @@ artifacts:
     - ".elasticbeanstalk/**/*"
     - .env
   discard-paths: no
-  cache:
-  paths:
-    - path
-    - path
