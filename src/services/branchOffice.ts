@@ -4,7 +4,7 @@ import { handleErrorFunction } from "../utils/handleError";
 import { findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
 import { getPaginatedList } from "../repositories";
 import { PaginatedListServiceProps } from "../interfaces/services";
-import { BranchOffice } from "../interfaces/users";
+import { BranchOffice, UserAdmin } from "../interfaces/users";
 
 export const getPaginatedListByUserAdmin = async ({ search, page, limit }: PaginatedListServiceProps) => {
   try {
@@ -44,7 +44,7 @@ export const getListByUserAdmin = async () => {
 export const newBranchOffice = (branchOffice: BranchOffice) => {
   try {
     const userAdmin = global?.user;
-    branchOffice.userAdmin = userAdmin!;
+    branchOffice.userAdmin = userAdmin as UserAdmin;
 
     return branchOffice;
   } catch (error) {

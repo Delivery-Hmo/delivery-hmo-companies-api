@@ -45,12 +45,11 @@ const definition: ModelDefinition<UserDeliveryManModelInterface> = {
   branchOffice: {
     type: Schema.Types.ObjectId,
     ref: 'BranchOffice',
-    required: [true, "La sucursal ah la que pertenece el repartidor es obligatoria"]
   },
   userAdmin: {
     type: Schema.Types.ObjectId,
     ref: 'UserAdmin',
-    required: [true, "El usuario es obligatorio"]
+    required: [true, "El administrador de la sucursal es obligatorio."]
   },
   latLng: schemalatLng(),
   role: {

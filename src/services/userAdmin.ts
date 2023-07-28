@@ -4,7 +4,6 @@ import { handleErrorFunction } from "../utils/handleError";
 import UserAdminModel from "../models/userAdmin";
 import { getPaginatedList } from "../repositories";
 import { UserAdmin } from "../interfaces/users";
-import { findByIdAndUpdateUserAdmin, findByIdUserAdmin } from "../repositories/userAdmin";
 
 export const getPaginatedListUserAdmins = async ({ search, page, limit }: PaginatedListServiceProps) => {
   try {
@@ -25,14 +24,9 @@ export const getPaginatedListUserAdmins = async ({ search, page, limit }: Pagina
   }
 }
 
-export const validateImagesUserAdmin = async ({ id, images }: { id: string, images: string[] }) => {
+export const newUserAdmin = (userAdmin: UserAdmin) => {
   try {
-    const userAdmin = await findByIdUserAdmin(id) as UserAdmin;
-
-    userAdmin.images = images;
-    userAdmin.validatingImages = true;
-
-    return await findByIdAndUpdateUserAdmin(id, userAdmin);
+    return userAdmin;
   } catch (error) {
     throw handleErrorFunction(error);
   }

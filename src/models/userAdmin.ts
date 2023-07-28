@@ -47,16 +47,7 @@ const schema = new Schema<UserAdmin>(
     role: {
       type: String,
       default: "Administrador",
-    },
-    validatedImages: {
-      type: Boolean,
-      default: false
-    },
-    validatingImages: {
-      type: Boolean,
-      default: false
-    },
-    images: [String],
+    }
   },
   optionsModel
 );

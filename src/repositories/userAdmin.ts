@@ -8,6 +8,6 @@ export const findOneUserAdmin = (query: FilterQuery<UserAdmin>) => UserAdminMode
 
 export const findByUidUserAdmin = (uid: string) => UserAdminModel.findOne({ uid });
 
-export const createUserAdmin = (model: UserAdmin) =>  UserAdminModel.create(model);
+export const createUserAdmin = (model: UserAdmin) => UserAdminModel.create(model);
 
 export const findByIdAndUpdateUserAdmin = (id: string, data: UserAdmin) => UserAdminModel.findByIdAndUpdate(id, data, { new: true });

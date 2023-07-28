@@ -4,7 +4,7 @@ import UserModel from '../models/userAdmin';
 import { findByUidUserAdmin } from "../repositories/userAdmin";
 import { createUser, updateUser } from "../services";
 import { FunctionController, ReqQuery } from "../types";
-import { getPaginatedListUserAdmins, validateImagesUserAdmin } from "../services/userAdmin";
+import { getPaginatedListUserAdmins } from "../services/userAdmin";
 import { UserAdmin } from "../interfaces/users";
 import { BodyDisable } from "../interfaces";
 
@@ -63,22 +63,6 @@ export const disable = async (req: Request, res: Response): FunctionController =
     const userAdmin = await UserModel.findByIdAndUpdate(id, { active });
 
     return res.status(200).json(userAdmin);
-  } catch (err) {
-    return handleError(res, err);
-  }
-}
-
-export const validateImages = async (req: Request, res: Response): FunctionController => {
-  try {
-    const { images, id } = req.body as any;
-
-    if (images?.length !== 3) {
-      return res.status(500).json("Las fotos de la sucursal deben ser 3.");
-    }
-
-    const branchOffice = await validateImagesUserAdmin({ id: id!, images });
-
-    return res.status(200).json(branchOffice);
   } catch (err) {
     return handleError(res, err);
   }

@@ -16,9 +16,6 @@ export interface User {
 export interface UserAdmin extends User {
   phone?: number;
   rfc?: string;
-  images: string[];
-  validatedImages: boolean;
-  validatingImages: boolean;
 }
 
 export interface BranchOffice extends User {
