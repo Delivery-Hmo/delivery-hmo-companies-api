@@ -9,8 +9,8 @@ import uploadFiles from "./middlewares/uploadFiles";
 const app = express();
 
 try {
-  configServer(app);
   initializeApp({ credential: cert(serviceAccount), storageBucket });
+  configServer(app);
   await connectDB();
   uploadFiles(app);
   await routes(app);

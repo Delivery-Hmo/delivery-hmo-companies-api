@@ -1,4 +1,4 @@
-import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction } from "../types";
+import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction, NameModelsUsers } from "../types";
 import { newBranchOffice } from "./branchOffice";
 import { createUserAuth, deleteUserAuth, getUserAuthByEmail, getUserAuthByUid, updateUserAuth } from "../repositories/firebaseAuth";
 import { createBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
@@ -6,6 +6,7 @@ import { createUserAdmin, findByIdAndUpdateUserAdmin } from "../repositories/use
 import { handleErrorFunction } from "../utils/handleError";
 import { MongooseError } from "mongoose";
 import { BranchOffice } from "../interfaces/users";
+import { getByIdAllUserModels } from "../repositories";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
@@ -121,6 +122,16 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       }
     }
 
+    throw handleErrorFunction(error);
+  }
+}
+
+export const getUserModelsByRoute = async (routeController: string, id: string) => {
+  try {
+    const nameModel = routeController.charAt(0).toUpperCase() + routeController.slice(1) as NameModelsUsers;
+
+    return await getByIdAllUserModels<Users>(nameModel, id);
+  } catch (error) {
     throw handleErrorFunction(error);
   }
 }

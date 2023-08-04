@@ -2,7 +2,7 @@ import { PropsPaginatedList } from "../interfaces";
 import AllModels from "../models/allModels";
 import { GenericDocument, NameModels } from "../types";
 
-export const getByIdAllUsersModel = async <T extends {}>(nameModel: NameModels, id: string) => {
+export const getByIdAllUserModels = async <T extends {}>(nameModel: NameModels, id: string) => {
   try {
     const model = AllModels<T>()[nameModel];
 
