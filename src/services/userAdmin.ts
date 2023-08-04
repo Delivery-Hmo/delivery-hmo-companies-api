@@ -5,7 +5,7 @@ import UserAdminModel from "../models/userAdmin";
 import { getPaginatedList } from "../repositories";
 import { UserAdmin } from "../interfaces/users";
 
-export const getPaginatedListUserAdmins = async ({ search, page, limit } : PaginatedListServiceProps) => {
+export const getPaginatedListUserAdmins = async ({ search, page, limit }: PaginatedListServiceProps) => {
   try {
     let query: FilterQuery<UserAdmin> = {
       active: true
@@ -20,6 +20,14 @@ export const getPaginatedListUserAdmins = async ({ search, page, limit } : Pagin
 
     return await getPaginatedList({ model: UserAdminModel, query, populate: "", page, limit });
   } catch (error) {
-    throw handleErrorFunction(error);    
+    throw handleErrorFunction(error);
+  }
+}
+
+export const newUserAdmin = (userAdmin: UserAdmin) => {
+  try {
+    return userAdmin;
+  } catch (error) {
+    throw handleErrorFunction(error);
   }
 }

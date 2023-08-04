@@ -7,7 +7,6 @@ import { findByUidBranchOffice } from "../repositories/branchOffice";
 import { findByUidUserAdmin } from "../repositories/userAdmin";
 
 const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
-  "": () => Promise.resolve(null),
   "Administrador": (uid: string) => findByUidUserAdmin(uid),
   "Administrador sucursal": (uid: string) => findByUidBranchOffice(uid),
   "Vendedor": (uid: string) => Promise.resolve(null),

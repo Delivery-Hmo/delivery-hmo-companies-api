@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
-import { validateMaxLength, validateMaxLengthImage } from "../utils/mongoose";
+import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, phone, validateMaxLength, validateMaxLengthImage } from '../constants';
 import { findOneUserAdmin } from "../repositories/userAdmin";
 import { UserAdmin } from "../interfaces/users";
 
@@ -13,48 +12,41 @@ const schema = new Schema<UserAdmin>(
       maxlength,
       validate: validateMaxLength
     },
-    email: { 
-      type: String, 
+    email: {
+      type: String,
       required: [true, "El correo electronico de la empresa es obligatorio."],
-      unique: true, 
+      unique: true,
       maxlength,
       validate: validateMaxLength
     },
-    name: { 
-      type: String, 
-      required: [true, "El nombre de la empresa es obligatorio."], 
+    name: {
+      type: String,
+      required: [true, "El nombre de la empresa es obligatorio."],
       maxlength,
       validate: validateMaxLength
     },
-    phone: { 
-      type: Number,
-      required: true, 
-      validate: {
-        validator: (value: number) => value.toString().length === 10,
-        message: "El número telefónico tienen que ser de 10 dígitos."
-      }
-    },
-    description: { 
-      type: String, 
+    phone,
+    description: {
+      type: String,
       maxlength,
     },
-    image: { 
-      type: String, 
-      maxlength: maxlengthImage, 
+    image: {
+      type: String,
+      maxlength: maxlengthImage,
       default: urlImageDefaultProfile,
-      validate: validateMaxLengthImage 
+      validate: validateMaxLengthImage
     },
-    active: { 
-      type: Boolean, 
+    active: {
+      type: Boolean,
       default: true
     },
-    rfc: { 
-      type: String, 
-      unique: true 
+    rfc: {
+      type: String,
+      unique: true
     },
-    role: { 
-      type: String, 
-      default: "Administrador", 
+    role: {
+      type: String,
+      default: "Administrador",
     }
   },
   optionsModel

@@ -7,6 +7,7 @@ import { handleErrorFunction } from "../utils/handleError";
 import { MongooseError } from "mongoose";
 import { BranchOffice } from "../interfaces/users";
 import { getByIdAllUserModels } from "../repositories";
+import { createUserDeliveryMan } from "./deliveryMan";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
@@ -16,7 +17,6 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
-      "": null
     } as const;
 
     model = newModels[rol]!(model);
@@ -35,9 +35,8 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
       "SuperAdmin": null,
       "Administrador": createUserAdmin as any as CreateRepoFunction<T>,
       "Administrador sucursal": createBranchOffice as any as CreateRepoFunction<T>,
-      "Repartidor": null,
+      "Repartidor": createUserDeliveryMan as any as CreateRepoFunction<T>,
       "Vendedor": null,
-      "": null
     } as const;
 
     const modelCreated = await reposCreate[rol]!(model);
@@ -62,7 +61,6 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
-      "": null
     } as const;
 
     if (newModels[rol]) {
@@ -83,7 +81,6 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador sucursal": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
-      "": null
     } as const;
 
     delete model.password;
