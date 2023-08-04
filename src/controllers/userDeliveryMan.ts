@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import { handleError } from "../utils/handleError";
 import { FilterQuery } from "mongoose";
 import UserDeliverymanModel from '../models/userDeliveryMan';
-import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan, validateUserDeliveryMan } from "../services/deliveryMan";
+import { findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan } from "../services/deliveryMan";
 import { getPaginatedList } from "../repositories";
-import { createUserAuth } from "../repositories/firebaseAuth";
 import { FunctionController, ReqQuery } from "../types";
 import { UserDeliveryMan } from "../interfaces/users";
+import { createUser } from "../services";
 
 export const listByUserAdmin = async (req: Request, res: Response): FunctionController => {
   try {
@@ -27,30 +27,12 @@ export const listByUserAdmin = async (req: Request, res: Response): FunctionCont
 }
 
 export const create = async (req: Request, res: Response): FunctionController => {
+  const body = req.body as UserDeliveryMan;
+
   try {
-    const model = req.body as UserDeliveryMan;
-    const { email, password } = model;
+    const userDeliveryMan = await createUser(body, "Repartidor");
 
-    const error = await validateUserDeliveryMan(model);
-
-    if (error) {
-      return res.status(500).json(error);
-    }
-
-    const userAdmin = global?.user;
-
-    model.userAdmin = userAdmin!;
-    model.active = true;
-
-    delete model.password;
-
-    const createAuth = await createUserAuth({ email, password: password! });
-
-    model.uid = createAuth.uid;
-
-    await createUserDeliveryMan(model);
-
-    return res.status(201).json(model);
+    return res.status(201).json(userDeliveryMan);
   } catch (err) {
     return handleError(res, err);
   }

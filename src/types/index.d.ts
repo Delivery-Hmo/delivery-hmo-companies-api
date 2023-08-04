@@ -9,7 +9,7 @@ declare global {
   var user: Users | undefined;
 }
 
-export type Rols = "" | "Administrador" | "Administrador sucursal" | "Vendedor" | "Repartidor";
+export type Rols = "Administrador" | "Administrador sucursal" | "Vendedor" | "Repartidor";
 
 export type NameModels = "UserAdmin" | "BranchOffice" | "UserSeller" | "UserDeliveryMan" | "CommentsBranchOffice";
 

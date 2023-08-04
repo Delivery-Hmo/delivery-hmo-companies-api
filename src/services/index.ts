@@ -6,15 +6,17 @@ import { createUserAdmin, findByIdAndUpdateUserAdmin } from "../repositories/use
 import { handleErrorFunction } from "../utils/handleError";
 import { MongooseError } from "mongoose";
 import { BranchOffice } from "../interfaces/users";
+import { newUserAdmin } from "./userAdmin";
+import { newUserDeliveryMan } from "./userDeliveryMan";
+import { createUserDeliveryMan } from "./deliveryMan";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
     const newModels: Record<Rols, NewModelFunction<T>> = {
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
-      "Administrador": newBranchOffice as any as NewModelFunction<T>,
-      "Repartidor": null,
+      "Administrador": newUserAdmin as any as NewModelFunction<T>,
+      "Repartidor": newUserDeliveryMan as any as NewModelFunction<T>,
       "Vendedor": null,
-      "": null
     } as const;
 
     model = newModels[rol]!(model);
@@ -32,9 +34,8 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
     const reposCreate: Record<Rols, CreateRepoFunction<T>> = {
       "Administrador": createUserAdmin as any as CreateRepoFunction<T>,
       "Administrador sucursal": createBranchOffice as any as CreateRepoFunction<T>,
-      "Repartidor": null,
+      "Repartidor": createUserDeliveryMan as any as CreateRepoFunction<T>,
       "Vendedor": null,
-      "": null
     } as const;
 
     const modelCreated = await reposCreate[rol]!(model);
@@ -58,7 +59,6 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
-      "": null
     } as const;
 
     if (newModels[rol]) {
@@ -78,7 +78,6 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador sucursal": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
       "Repartidor": null,
       "Vendedor": null,
-      "": null
     } as const;
 
     delete model.password;
@@ -89,8 +88,8 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
 
       const { lat: oldLat, lng: oldLng } = oldBranchOffice?.latLng!;
       const { lat, lng } = branchOffice.latLng!;
-  
-      if(lat !== oldLat || lng !== oldLng) {
+
+      if (lat !== oldLat || lng !== oldLng) {
         branchOffice.showInApp = false;
         branchOffice.validatedImages = false;
         branchOffice.validatingImages = false;
@@ -98,7 +97,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
 
       model = branchOffice as T;
     }
-      
+
     const modelUpdated = await reposUpdate[rol]!(id!, model);
 
     return modelUpdated;
