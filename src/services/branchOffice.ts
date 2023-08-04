@@ -1,7 +1,7 @@
 import { FilterQuery } from "mongoose";
 import BranchOfficeModel from '../models/brancOffice/index.js';
 import { handleErrorFunction } from "../utils/handleError";
-import { findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
+import { findBranchOffice, findByIdAndUpdateBranchOffice } from "../repositories/branchOffice";
 import { getPaginatedList } from "../repositories";
 import { PaginatedListServiceProps } from "../interfaces/services";
 import { BranchOffice } from "../interfaces/users";
@@ -12,13 +12,13 @@ export const getPaginatedListByUserAdmin = async ({ search, page, limit }: Pagin
     const userAdmin = global?.user;
     let query: FilterQuery<BranchOffice> = {
       userAdmin: userAdmin?.id,
-      active: true,
+      active: true
     };
 
     if (search) {
       query.$or = [
         { name: { "$regex": search, "$options": "i" } },
-        { email: { "$regex": search, "$options": "i" } },
+        { email: { "$regex": search, "$options": "i" } }
       ];
     }
 
@@ -33,7 +33,7 @@ export const getListByUserAdmin = async () => {
     const userAdmin = global?.user;
     const query: FilterQuery<BranchOffice> = {
       userAdmin: userAdmin?.id,
-      active: true,
+      active: true
     };
 
     return await findBranchOffice(query);
@@ -55,14 +55,6 @@ export const newBranchOffice = (branchOffice: BranchOffice) => {
 
 export const validateImagesBranchOffice = async ({ id, images }: UndefinedInterface<BranchOffice>) => {
   try {
-    const branchOffice = await findByIdBranchOffice(id!);
-
-    if (branchOffice?.validatingImages) {
-      return branchOffice;
-    }
-
-    //si no se suben las 3 imagenes con el middleware avisar al front para que sepa que tiene que subir las demas-
-
     return await findByIdAndUpdateBranchOffice(id!, { images, validatingImages: true });
   } catch (error) {
     throw handleErrorFunction(error);

@@ -11,14 +11,19 @@
     "target": "ESNext",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "typeRoots": ["./src/types"],
+    "typeRoots": [
+      "./src/types"
+    ],
     "rootDir": "src",
   },
   "compileOnSave": true,
   "include": [
-    "./src/**/*"
-, "src/interfaces/.ts"  ],
-  "exclude": ["node_module"],
+    "./src/**/*",
+    "src/interfaces/.ts"
+  ],
+  "exclude": [
+    "node_module"
+  ],
   "ts-node": {
     "files": true
   },

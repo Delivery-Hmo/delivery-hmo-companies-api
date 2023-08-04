@@ -2,6 +2,16 @@ import { handleError } from "../utils/handleError";
 import { Application } from "express";
 import { uploadImageBase64ToStorage } from "../services/firebaseStorage";
 import { checkSecureImage } from "../utils/functions";
+import { deleteFile } from "../repositories/firebaseStorage";
+import { baseUrlStorageGoogle } from "../constants";
+
+interface UploadFiles {
+	image: string;
+	images?: string[];
+	oldImages?: string[];
+	id?: string;
+	failedImages?: number;
+}
 
 const uploadFiles = (app: Application) => {
 	app.use(async (req, res, next) => {
@@ -10,32 +20,40 @@ const uploadFiles = (app: Application) => {
 				return next();
 			}
 
-			const { image, images, id } = req.body as { image: string, images: string[], id?: string };
 			const { originalUrl } = req;
+			let { image, images, oldImages, id } = req.body as UploadFiles;
 
 			if (image) {
 				req.body.image = await uploadImageBase64ToStorage({ originalUrl, image, id, checkImage: true });
 			}
 
-			if (images.length) {
-				await Promise.all(images.filter(image => image).map(image => {
+			if (images?.length) {
+				images = images.filter(image => image);
+
+				await Promise.all(images.map(image => {
 					const fileBase64 = image.split(",")[1];
 
 					return checkSecureImage(fileBase64);
 				}));
 
-				const allResultsImages = await Promise.allSettled(images.map(image => uploadImageBase64ToStorage({ originalUrl, image })));
+				const allResultsImages = await Promise.allSettled(images.map(image => uploadImageBase64ToStorage({ originalUrl, image, id })));
 
-				const resultImagesRejected = allResultsImages.find(image => image.status === 'rejected') as PromiseRejectedResult | undefined;
-
-				if (resultImagesRejected) {
-					return handleError(res, resultImagesRejected.reason);
-				}
-
+				const resultsImagesRejected = allResultsImages.filter(image => image.status === 'rejected') as PromiseRejectedResult[];
 				const resultsImagesFulfilled = allResultsImages.filter(image => image.status === 'fulfilled') as PromiseFulfilledResult<string>[];
 
 				req.body.images = resultsImagesFulfilled.map(image => image.value);
+				req.body.failedImages = resultsImagesRejected.length;
 			}
+
+			if (oldImages?.length) {
+				Promise.all(oldImages.map(image => {
+					const fileName = image.split(baseUrlStorageGoogle)[1].split('?')[0];
+
+					return deleteFile(fileName);
+				}));
+			}
+
+			delete req.body.oldImages;
 
 			return next();
 		} catch (error) {

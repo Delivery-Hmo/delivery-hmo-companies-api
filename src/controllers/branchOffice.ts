@@ -82,15 +82,18 @@ export const disable = async (req: Request, res: Response): FunctionController =
 
 export const validateImages = async (req: Request, res: Response): FunctionController => {
   try {
-    const { images, id } = req.body as UndefinedInterface<BranchOffice>;
+    const { images, id, failedImages } = req.body as UndefinedInterface<BranchOffice> & { failedImages: number };
 
-    if (images?.length !== 3) {
-      return res.status(500).json("Las fotos de la sucursal deben ser 3.");
+    if (((images?.length || 0) + failedImages) > 3) {
+      return res.status(500).json("Las fotos de la sucursal no pueden ser mas de 3.");
     }
 
     const branchOffice = await validateImagesBranchOffice({ id: id!, images });
 
-    return res.status(200).json(branchOffice);
+    return res.status(200).json({
+      branchOffice,
+      message: failedImages ? `Las fotos se han validado correcetamente, excepto ${failedImages}.` : "Las fotos se han validado correcetamente."
+    });
   } catch (err) {
     return handleError(res, err);
   }
