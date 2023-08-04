@@ -11,6 +11,7 @@ const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
   "Administrador sucursal": (uid: string) => findByUidBranchOffice(uid),
   "Vendedor": (uid: string) => Promise.resolve(null),
   "Repartidor": (uid: string) => Promise.resolve(null),
+  "SuperAdmin": (uid: string) => Promise.resolve(null),
 };
 
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {

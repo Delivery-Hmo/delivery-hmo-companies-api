@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { schemalatLng } from '..';
-import { maxlength, optionsModel, validateMaxLength } from '../../constants';
+import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, validateMaxLength, validateMaxLengthImage } from '../../constants';
 import { isPointInsideCircle } from "../../utils/functions";
 import { findOneBranchOffice } from "../../repositories/branchOffice";
 import { BranchOffice } from "../../interfaces/users";
@@ -8,7 +8,7 @@ import { shemaBranchProduct } from "./brachOfficeProducts";
 import { ModelDefinition } from "../../types";
 
 //Quitar de la interface las propiedades que no son del modelo
-type BranchOfficeModelInterface = Omit<BranchOffice, "comments" | "id" | "image" | "password">;
+type BranchOfficeModelInterface = Omit<BranchOffice, "comments" | "id" | "password">;
 
 const definition: ModelDefinition<BranchOfficeModelInterface> = {
   uid: {
@@ -103,6 +103,12 @@ const definition: ModelDefinition<BranchOfficeModelInterface> = {
   },
   products: [shemaBranchProduct],
   images: [String],
+  image: {
+    type: String,
+    maxlength: maxlengthImage,
+    default: urlImageDefaultProfile,
+    validate: validateMaxLengthImage
+  }
 }
 
 export const schema = new Schema<BranchOffice>(

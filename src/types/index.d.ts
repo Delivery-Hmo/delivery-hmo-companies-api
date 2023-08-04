@@ -1,25 +1,27 @@
 import { Response } from "express";
 import { Types, Document, Model } from "mongoose";
-import { BranchOffice, UserAdmin, UserDeliveryMan, UserSeller } from '../interfaces/users';
+import { BranchOffice, SuperAdmin, UserAdmin, UserDeliveryMan, UserSeller } from '../interfaces/users';
 import { SchemaDefinitionProperty } from "mongoose";
 
 export { };
 
 declare global {
   var user: Users | undefined;
-}
+};
 
-export type Rols = "Administrador" | "Administrador sucursal" | "Vendedor" | "Repartidor";
+export type Rols = "SuperAdmin" | "Administrador" | "Administrador sucursal" | "Vendedor" | "Repartidor";
 
-export type NameModels = "UserAdmin" | "BranchOffice" | "UserSeller" | "UserDeliveryMan" | "CommentsBranchOffice";
+export type NameModels = "SuperAdmin" | "UserAdmin" | "BranchOffice" | "UserSeller" | "UserDeliveryMan" | "CommentsBranchOffice";
+
+export type NameModelsUsers = "UserAdmin" | "BranchOffice" | "UserSeller" | "UserDeliveryMan";
 
 export type Users = UserAdmin | BranchOffice | UserSeller | UserDeliveryMan;
 
-export type GenericDocument<T> = (Document<unknown, {}, T> & Omit<T & {
+export type GenericDocument<T> = (Document<T, {}, T> & Omit<T & {
   _id: Types.ObjectId;
-}, never>)
+}, never>);
 
-export type GenericModel<T> = Model<T, {}, {}, {}, Document<unknown, {}, T> & Omit<T & {
+export type GenericModel<T> = Model<T, {}, {}, {}, Document<T, {}, T> & Omit<T & {
   _id: Types.ObjectId;
 }, never>, any>;
 

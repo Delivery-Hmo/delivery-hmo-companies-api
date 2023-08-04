@@ -1,17 +1,15 @@
 import { PropsPaginatedList } from "../interfaces";
 import AllModels from "../models/allModels";
-import { NameModels } from "../types";
-import { GenericDocument } from "../types";
-import { Model } from "mongoose";
+import { GenericDocument, NameModels } from "../types";
 
-export const getByIdAllUsersModel = async <T extends {}>(nameModel: NameModels, id: string) => {
+export const getByIdAllUserModels = async <T extends {}>(nameModel: NameModels, id: string) => {
   try {
-    const model = AllModels[nameModel] as Model<T>;
+    const model = AllModels<T>()[nameModel];
 
     return model.findById(id);
   } catch (error) {
     console.log(error);
-    throw "Error al obtener el modelo.";
+    throw error;
   }
 }
 
@@ -19,13 +17,13 @@ export const getPaginatedList = async <T extends {}>({ model, query, populate, p
   try {
     const list = await model.find(query).limit(limit).skip((page - 1) * limit).populate(populate) as GenericDocument<T>[];
     const total = await model.countDocuments(query);
-  
+
     return {
       list,
       total
     };
   } catch (error) {
     console.log(error);
-    throw "Error al obtener la lista";
+    throw error;
   }
 }
