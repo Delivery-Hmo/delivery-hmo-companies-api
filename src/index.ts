@@ -7,6 +7,7 @@ import uploadFiles from "./middlewares/uploadFiles";
 //import cluster from 'cluster';
 
 const app = express();
+
 try {
   configServer(app);
   initializeApp({ credential: cert(serviceAccount), storageBucket });

@@ -1,5 +1,5 @@
 import { FilterQuery } from "mongoose";
-import BranchOfficeModel from '../models/brancOffice.ts';
+import BranchOfficeModel from '../models/brancOffice/index.js';
 import { handleErrorFunction } from "../utils/handleError";
 import { findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
 import { getPaginatedList } from "../repositories";
@@ -60,6 +60,8 @@ export const validateImagesBranchOffice = async ({ id, images }: UndefinedInterf
     if (branchOffice?.validatingImages) {
       return branchOffice;
     }
+
+    //si no se suben las 3 imagenes con el middleware avisar al front para que sepa que tiene que subir las demas-
 
     return await findByIdAndUpdateBranchOffice(id!, { images, validatingImages: true });
   } catch (error) {

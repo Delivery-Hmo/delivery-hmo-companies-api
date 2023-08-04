@@ -1,12 +1,20 @@
 import { checkSecureImage, compreesImage } from "../utils/functions";
 import { baseUrlStorageGoogle } from "../constants";
 import { deleteFile, uploadFile } from "../repositories/firebaseStorage";
-import { getByIdAllUsersModel } from "../repositories";
-import { NameModels, Users } from "../types";
+import { NameModels } from "../types";
 import { handleErrorFunction } from "../utils/handleError";
 import short from "short-uuid";
+import { getByIdAllModels } from "../repositories/allModels";
+import { Document } from "mongoose";
 
-export const uploadImageBase64ToStorage = async ({ originalUrl, image, id, checkImage }: { originalUrl: string; image: string; id?: string; checkImage?: boolean  }) => {
+interface Props {
+	originalUrl: string;
+	image: string;
+	id?: string;
+	checkImage?: boolean;
+}
+
+export const uploadImageBase64ToStorage = async ({ originalUrl, image, id, checkImage }: Props) => {
 	try {
 		const fileBase64 = image.split(",")[1];
 
@@ -27,7 +35,7 @@ export const uploadImageBase64ToStorage = async ({ originalUrl, image, id, check
 
 		const nameModel = routeController.charAt(0).toUpperCase() + routeController.slice(1) as NameModels;
 
-		const modelDoc = await getByIdAllUsersModel<Users>(nameModel, id);
+		const modelDoc = await getByIdAllModels(nameModel, id) as Document<any> & { image: string };
 
 		if (modelDoc?.image) {
 			const fileName = modelDoc.image.split(baseUrlStorageGoogle)[1].split('?')[0];

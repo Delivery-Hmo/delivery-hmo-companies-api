@@ -14,21 +14,26 @@ export interface User {
   password?: string;
 }
 export interface UserAdmin extends User {
-  phone?: number; 
+  phone?: number;
   rfc?: string;
 }
+
+export interface SuperAdmin extends User {
+  phone?: number;
+}
+
 
 export interface BranchOffice extends User {
   userAdmin?: string | UserAdmin;
   salesGoalByMonth: number;
-  facebook: string; 
+  facebook: string;
   phones: number[];
   latLng: LatLng;
   center: LatLng;
   radius: number;
-  address: string; 
+  address: string;
   comments: CommentsBranchOffice[];
-  totolSales?: number; 
+  totolSales?: number;
   showInApp: boolean;
   validatedImages: boolean;
   validatingImages: boolean;
@@ -39,12 +44,12 @@ export interface BranchOffice extends User {
 export interface UserSeller extends User {
   branchOffice?: string | BranchOffice;
   userAdmin?: string | UserAdmin;
-  phone?: number; 
+  phone?: number;
 }
 
 export interface UserDeliveryMan extends User {
   branchOffice?: string | BranchOffice;
   userAdmin?: string | UserAdmin;
   latLng?: LatLng;
-  phone?: number; 
+  phone?: number;
 }

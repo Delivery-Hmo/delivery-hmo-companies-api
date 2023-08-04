@@ -12,12 +12,13 @@ const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
   "Administrador sucursal": (uid: string) => findByUidBranchOffice(uid),
   "Vendedor": (uid: string) => Promise.resolve(null),
   "Repartidor": (uid: string) => Promise.resolve(null),
+  "SuperAdmin": (uid: string) => Promise.resolve(null),
 };
 
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers
 
-  if (!authorization?.startsWith('Bearer ')) 
+  if (!authorization?.startsWith('Bearer '))
     return unauthorized(res);
 
   const split = authorization.split('Bearer ');
@@ -34,10 +35,10 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
     const userAuth = await admin.auth().getUser(uid);
     const user = await getUserDatas[(userAuth.displayName || "") as Rols](uid) as any as Users;
 
-    if(!user) return unauthorized(res);
+    if (!user) return unauthorized(res);
 
     global.user = user;
-    
+
     return next();
   } catch (err) {
     console.error(err);
