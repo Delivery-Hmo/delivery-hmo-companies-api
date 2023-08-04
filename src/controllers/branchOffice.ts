@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FunctionController, ReqQuery } from "../types";
+import { FunctionController, ReqQuery, UndefinedInterface } from "../types";
 import { handleError } from "../utils/handleError";
 import { createUser, updateUser } from "../services";
 import { getListByUserAdmin, getPaginatedListByUserAdmin, validateImagesBranchOffice } from "../services/branchOffice";
@@ -82,13 +82,13 @@ export const disable = async (req: Request, res: Response): FunctionController =
 
 export const validateImages = async (req: Request, res: Response): FunctionController => {
   try {
-    const { images, id } = req.body as any;
+    const { images, id } = req.body as UndefinedInterface<BranchOffice>;
 
-    if(images?.length !== 3) {
+    if (images?.length !== 3) {
       return res.status(500).json("Las fotos de la sucursal deben ser 3.");
-    } 
+    }
 
-    const branchOffice = await validateImagesBranchOffice({ id: id!, images});
+    const branchOffice = await validateImagesBranchOffice({ id: id!, images });
 
     return res.status(200).json(branchOffice);
   } catch (err) {

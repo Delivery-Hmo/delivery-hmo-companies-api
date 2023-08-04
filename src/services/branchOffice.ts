@@ -5,6 +5,7 @@ import { findBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice }
 import { getPaginatedList } from "../repositories";
 import { PaginatedListServiceProps } from "../interfaces/services";
 import { BranchOffice, UserAdmin } from "../interfaces/users";
+import { UndefinedInterface } from "../types/index.js";
 
 export const getPaginatedListByUserAdmin = async ({ search, page, limit }: PaginatedListServiceProps) => {
   try {
@@ -52,14 +53,15 @@ export const newBranchOffice = (branchOffice: BranchOffice) => {
   }
 }
 
-export const validateImagesBranchOffice = async ({ id, images }: { id: string, images: string[] }) => {
+export const validateImagesBranchOffice = async ({ id, images }: UndefinedInterface<BranchOffice>) => {
   try {
-    const branchOffice = await findByIdBranchOffice(id) as BranchOffice;
+    const branchOffice = await findByIdBranchOffice(id!);
 
-    branchOffice.images = images;
-    branchOffice.validatingImages = true;
+    if (branchOffice?.validatingImages) {
+      return branchOffice;
+    }
 
-    return await findByIdAndUpdateBranchOffice(id, branchOffice);
+    return await findByIdAndUpdateBranchOffice(id!, { images, validatingImages: true });
   } catch (error) {
     throw handleErrorFunction(error);
   }
