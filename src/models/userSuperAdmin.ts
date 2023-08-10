@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile } from '../constants';
-import { validateMaxLength, validateMaxLengthImage } from "../utils/mongoose";
+import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, validateMaxLength, validateMaxLengthImage } from '../constants';
 import { SuperAdmin } from "../interfaces/users";
 import { ModelDefinition } from "../types";
 

@@ -84,8 +84,8 @@ export const validateImages = async (req: Request, res: Response): FunctionContr
   try {
     const { images, id, failedImages } = req.body as UndefinedInterface<BranchOffice> & { failedImages: number };
 
-    if (((images?.length || 0) + failedImages) > 3) {
-      return res.status(500).json("Las fotos de la sucursal no pueden ser mas de 3.");
+    if (((images?.length || 0) + failedImages) !== 3) {
+      return res.status(500).json("Las fotos de la sucursal deben ser 3.");
     }
 
     const branchOffice = await validateImagesBranchOffice({ id: id!, images });
