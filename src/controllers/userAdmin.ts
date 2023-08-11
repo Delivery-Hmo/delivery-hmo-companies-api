@@ -48,9 +48,9 @@ export const update = async (req: Request, res: Response): FunctionController =>
   try {
     const model = req.body as UserAdmin;
 
-    const branchOffice = await updateUser(model, "Administrador");
+    const userAdmin = await updateUser(model, "Administrador");
 
-    return res.status(200).json(branchOffice);
+    return res.status(200).json(userAdmin);
   } catch (err) {
     return handleError(res, err);
   }

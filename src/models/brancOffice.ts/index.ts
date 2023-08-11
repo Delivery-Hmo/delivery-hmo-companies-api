@@ -103,6 +103,14 @@ const definition: ModelDefinition<BranchOfficeModelInterface> = {
   },
   products: [shemaBranchProduct],
   images: [String],
+  rfc: {
+    type: String,
+    unique: true,
+    validate: {
+      validator: (value: string) => value.length === 13,
+      message: "El rfc debe tener 13 caracteres."
+    }
+  }
 }
 
 export const schema = new Schema<BranchOffice>(

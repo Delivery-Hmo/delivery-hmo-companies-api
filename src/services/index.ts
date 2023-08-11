@@ -9,6 +9,8 @@ import { BranchOffice } from "../interfaces/users";
 import { newUserAdmin } from "./userAdmin";
 import { newUserDeliveryMan } from "./userDeliveryMan";
 import { createUserDeliveryMan } from "./deliveryMan";
+import { newUserSeller } from "./userSeller";
+import { createUserSeller } from "../repositories/userSeller";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
@@ -16,7 +18,7 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Administrador": newUserAdmin as any as NewModelFunction<T>,
       "Repartidor": newUserDeliveryMan as any as NewModelFunction<T>,
-      "Vendedor": null,
+      "Vendedor": newUserSeller as any as NewModelFunction<T>,
     } as const;
 
     model = newModels[rol]!(model);
@@ -35,7 +37,7 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador": createUserAdmin as any as CreateRepoFunction<T>,
       "Administrador sucursal": createBranchOffice as any as CreateRepoFunction<T>,
       "Repartidor": createUserDeliveryMan as any as CreateRepoFunction<T>,
-      "Vendedor": null,
+      "Vendedor": createUserSeller as any as CreateRepoFunction<T>,
     } as const;
 
     const modelCreated = await reposCreate[rol]!(model);

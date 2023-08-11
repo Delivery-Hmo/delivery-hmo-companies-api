@@ -6,7 +6,7 @@ export const newUserDeliveryMan = (userDeliveryMan: UserDeliveryMan) => {
     const user = global?.user;
     userDeliveryMan.userAdmin = user as UserAdmin;
 
-    if (user?.role === "Administrador") {
+    if (user?.role === "Repartidor") {
       return userDeliveryMan;
     }
 
