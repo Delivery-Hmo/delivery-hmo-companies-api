@@ -8,12 +8,13 @@ import { MongooseError } from "mongoose";
 import { BranchOffice } from "../interfaces/users";
 import { getByIdAllUserModels } from "../repositories";
 import { createUserDeliveryMan } from "./deliveryMan";
+import { newUserAdmin } from "./userAdmin";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
     const newModels: Record<Rols, NewModelFunction<T>> = {
       "SuperAdmin": null,
-      "Administrador": newBranchOffice as any as NewModelFunction<T>,
+      "Administrador": newUserAdmin as any as NewModelFunction<T>,
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": null,
       "Vendedor": null,

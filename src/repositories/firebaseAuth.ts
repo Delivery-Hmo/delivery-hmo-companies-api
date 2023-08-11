@@ -33,3 +33,5 @@ export const deleteUserAuth = (uid: string) => admin.auth().deleteUser(uid);
 export const getUserAuthByUid = (uid: string) => admin.auth().getUser(uid);
 
 export const getUserAuthByEmail = (email: string) => admin.auth().getUserByEmail(email);
+
+export const verifyIdToken = (idToken: string) => admin.auth().verifyIdToken(idToken);
