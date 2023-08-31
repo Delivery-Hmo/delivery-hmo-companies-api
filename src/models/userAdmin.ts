@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, phone, validateMaxLength, validateMaxLengthImage } from '../constants';
+import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, validateMaxLength, validateMaxLengthImage } from '../constants';
 import { findOneUserAdmin } from "../repositories/userAdmin";
 import { UserAdmin } from "../interfaces/users";
 
@@ -25,7 +25,13 @@ const schema = new Schema<UserAdmin>(
       maxlength,
       validate: validateMaxLength
     },
-    phone,
+    phone: {
+      type: Number,
+      validate: {
+        validator: (value: number) => value.toString().length === 10,
+        message: "El número telefónico tienen que ser de 10 dígitos."
+      }
+    },
     description: {
       type: String,
       maxlength,
