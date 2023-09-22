@@ -66,9 +66,9 @@ export const disable = async (req: Request, res: Response): FunctionController =
   try {
     const id = req.body.id as string;
 
-    const userDeliveryMan = await findByIdUserDeliveryMan(id!) as UserDeliveryMan;
+    const userDeliveryMan = await findByIdUserDeliveryMan(id!);
 
-    userDeliveryMan.active = false
+    userDeliveryMan!.active = false
 
     await findByIdAndUpdateUserDeliveryMan(id, { active: false });
 
