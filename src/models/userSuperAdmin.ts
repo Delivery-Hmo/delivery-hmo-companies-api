@@ -3,7 +3,7 @@ import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, valida
 import { SuperAdmin } from "../interfaces/users";
 import { ModelDefinition } from "../types";
 
-type SuperAdminModelInterface = Omit<SuperAdmin, "id" | "password">;
+type SuperAdminModelInterface = Omit<SuperAdmin, "id" | "password" | "rfc">;
 
 const definition: ModelDefinition<SuperAdminModelInterface> = {
   uid: {
