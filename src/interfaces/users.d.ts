@@ -12,10 +12,10 @@ export interface User {
   active: boolean;
   readonly image: string;
   password?: string;
+  rfc?: string;
 }
 export interface UserAdmin extends User {
   phone?: number;
-  rfc?: string;
 }
 
 export interface SuperAdmin extends User {

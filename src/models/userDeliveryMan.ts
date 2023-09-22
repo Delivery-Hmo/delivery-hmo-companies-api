@@ -3,6 +3,7 @@ import { maxlength, optionsModel, phone, maxlengthImage, urlImageDefaultProfile,
 import { UserDeliveryMan } from "../interfaces/users";
 import { schemalatLng } from ".";
 import { ModelDefinition } from '../types';
+import { findOneUserDeliveryMan } from '../repositories/userDeliveryMan';
 
 type UserDeliveryManModelInterface = Omit<UserDeliveryMan, "id" | "password">;
 
@@ -56,12 +57,26 @@ const definition: ModelDefinition<UserDeliveryManModelInterface> = {
     type: String,
     default: "Repartidor"
   },
-
+  rfc: {
+    type: String,
+  }
 };
 
-const schema = new Schema<UserDeliveryMan>(
+export const schema = new Schema<UserDeliveryMan>(
   definition,
   optionsModel
 );
 
-export default model<UserDeliveryMan>('UserDeliveryMan', schema);
+schema.pre<UserDeliveryMan>("save", async function (next) {
+  const { name, id } = this;
+
+  const otherModelSameName = await findOneUserDeliveryMan({ name });
+
+  if (otherModelSameName && otherModelSameName?.id !== id) {
+    throw "Ya existe un repartidor con el mismo nombre.";
+  }
+
+  next();
+});
+
+export default model<UserDeliveryMan>("UserDeliveryMan", schema);

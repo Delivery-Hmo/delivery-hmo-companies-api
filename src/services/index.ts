@@ -6,8 +6,11 @@ import { createUserAdmin, findByIdAndUpdateUserAdmin } from "../repositories/use
 import { handleErrorFunction } from "../utils/handleError";
 import { MongooseError } from "mongoose";
 import { BranchOffice } from "../interfaces/users";
+import { newUserDeliveryMan } from "./userDeliveryMan";
+import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan } from "./deliveryMan";
+import { newUserSeller } from "./userSeller";
+import { createUserSeller } from "../repositories/userSeller";
 import { getByIdAllUserModels } from "../repositories";
-import { createUserDeliveryMan } from "./deliveryMan";
 import { newUserAdmin } from "./userAdmin";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
@@ -15,9 +18,9 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
     const newModels: Record<Rols, NewModelFunction<T>> = {
       "SuperAdmin": null,
       "Administrador": newUserAdmin as any as NewModelFunction<T>,
+      "Repartidor": newUserDeliveryMan as any as NewModelFunction<T>,
+      "Vendedor": newUserSeller as any as NewModelFunction<T>,
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
-      "Repartidor": null,
-      "Vendedor": null,
     } as const;
 
     model = newModels[rol]!(model);
@@ -37,7 +40,7 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador": createUserAdmin as any as CreateRepoFunction<T>,
       "Administrador sucursal": createBranchOffice as any as CreateRepoFunction<T>,
       "Repartidor": createUserDeliveryMan as any as CreateRepoFunction<T>,
-      "Vendedor": null,
+      "Vendedor": createUserSeller as any as CreateRepoFunction<T>,
     } as const;
 
     const modelCreated = await reposCreate[rol]!(model);
@@ -60,7 +63,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "SuperAdmin": null,
       "Administrador": null,
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
-      "Repartidor": null,
+      "Repartidor": newUserDeliveryMan as any as NewModelFunction<T>,
       "Vendedor": null,
     } as const;
 
@@ -80,7 +83,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "SuperAdmin": null,
       "Administrador": findByIdAndUpdateUserAdmin as any as UpdateRepoFunction<T>,
       "Administrador sucursal": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
-      "Repartidor": null,
+      "Repartidor": findByIdAndUpdateUserDeliveryMan as any as UpdateRepoFunction<T>,
       "Vendedor": null,
     } as const;
 
