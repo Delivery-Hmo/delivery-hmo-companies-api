@@ -5,16 +5,19 @@ import { Rols, Users } from "../types";
 import { unauthorized } from "../utils/handleError";
 import { findByUidBranchOffice } from "../repositories/branchOffice";
 import { findByUidUserAdmin } from "../repositories/userAdmin";
+import { getUserAuthByUid, verifyIdToken } from "../repositories/firebaseAuth";
 
 const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
   "Administrador": (uid: string) => findByUidUserAdmin(uid),
   "Administrador sucursal": (uid: string) => findByUidBranchOffice(uid),
   "Vendedor": (uid: string) => Promise.resolve(null),
   "Repartidor": (uid: string) => Promise.resolve(null),
+  "SuperAdmin": (uid: string) => Promise.resolve(null),
 };
 
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers
+  const { originalUrl } = req;
 
   if (!authorization?.startsWith('Bearer '))
     return unauthorized(res);
@@ -27,15 +30,18 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
   const token = split[1];
 
   try {
-    const decodedToken: admin.auth.DecodedIdToken = await admin.auth().verifyIdToken(token);
+    const decodedToken: admin.auth.DecodedIdToken = await verifyIdToken(token);
     const { uid } = decodedToken;
 
-    const userAuth = await admin.auth().getUser(uid);
-    const user = await getUserDatas[(userAuth.displayName || "") as Rols](uid) as any as Users;
+    const userAuth = await getUserAuthByUid(uid);
 
-    if (!user) return unauthorized(res);
+    if (originalUrl !== "/userAdmin/create") {
+      const user = await getUserDatas[(userAuth.displayName || "") as Rols](uid) as any as Users;
 
-    global.user = user;
+      if (!user) return unauthorized(res);
+
+      global.user = user;
+    }
 
     return next();
   } catch (err) {

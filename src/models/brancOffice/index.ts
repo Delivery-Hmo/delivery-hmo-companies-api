@@ -8,7 +8,7 @@ import { shemaBranchProduct } from "./brachOfficeProducts";
 import { ModelDefinition } from "../../types";
 
 //Quitar de la interface las propiedades que no son del modelo
-type BranchOfficeModelInterface = Omit<BranchOffice, "comments" | "id" | "image" | "password">;
+type BranchOfficeModelInterface = Omit<BranchOffice, "comments" | "id" | "password" | "image">;
 
 const definition: ModelDefinition<BranchOfficeModelInterface> = {
   uid: {

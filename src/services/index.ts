@@ -1,4 +1,4 @@
-import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction } from "../types";
+import { NewModelFunction, CreateRepoFunction, Rols, Users, UpdateRepoFunction, NameModelsUsers } from "../types";
 import { newBranchOffice } from "./branchOffice";
 import { createUserAuth, deleteUserAuth, getUserAuthByEmail, getUserAuthByUid, updateUserAuth } from "../repositories/firebaseAuth";
 import { createBranchOffice, findByIdAndUpdateBranchOffice, findByIdBranchOffice } from "../repositories/branchOffice";
@@ -6,19 +6,21 @@ import { createUserAdmin, findByIdAndUpdateUserAdmin } from "../repositories/use
 import { handleErrorFunction } from "../utils/handleError";
 import { MongooseError } from "mongoose";
 import { BranchOffice } from "../interfaces/users";
-import { newUserAdmin } from "./userAdmin";
 import { newUserDeliveryMan } from "./userDeliveryMan";
 import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan } from "./deliveryMan";
 import { newUserSeller } from "./userSeller";
 import { createUserSeller } from "../repositories/userSeller";
+import { getByIdAllUserModels } from "../repositories";
+import { newUserAdmin } from "./userAdmin";
 
 export const createUser = async <T extends Users>(model: T, rol: Rols) => {
   try {
     const newModels: Record<Rols, NewModelFunction<T>> = {
-      "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
+      "SuperAdmin": null,
       "Administrador": newUserAdmin as any as NewModelFunction<T>,
       "Repartidor": newUserDeliveryMan as any as NewModelFunction<T>,
       "Vendedor": newUserSeller as any as NewModelFunction<T>,
+      "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
     } as const;
 
     model = newModels[rol]!(model);
@@ -34,6 +36,7 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
     delete model.password;
 
     const reposCreate: Record<Rols, CreateRepoFunction<T>> = {
+      "SuperAdmin": null,
       "Administrador": createUserAdmin as any as CreateRepoFunction<T>,
       "Administrador sucursal": createBranchOffice as any as CreateRepoFunction<T>,
       "Repartidor": createUserDeliveryMan as any as CreateRepoFunction<T>,
@@ -57,6 +60,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
 
   try {
     const newModels: Record<Rols, NewModelFunction<T>> = {
+      "SuperAdmin": null,
       "Administrador": null,
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": newUserDeliveryMan as any as NewModelFunction<T>,
@@ -76,6 +80,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     oldEmail = userAuth.email!;
 
     const reposUpdate: Record<Rols, UpdateRepoFunction<T>> = {
+      "SuperAdmin": null,
       "Administrador": findByIdAndUpdateUserAdmin as any as UpdateRepoFunction<T>,
       "Administrador sucursal": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
       "Repartidor": findByIdAndUpdateUserDeliveryMan as any as UpdateRepoFunction<T>,
@@ -118,6 +123,16 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       }
     }
 
+    throw handleErrorFunction(error);
+  }
+}
+
+export const getUserModelsByRoute = async (routeController: string, id: string) => {
+  try {
+    const nameModel = routeController.charAt(0).toUpperCase() + routeController.slice(1) as NameModelsUsers;
+
+    return await getByIdAllUserModels<Users>(nameModel, id);
+  } catch (error) {
     throw handleErrorFunction(error);
   }
 }

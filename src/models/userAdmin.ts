@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, phone, validateMaxLength, validateMaxLengthImage } from '../constants';
+import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, validateMaxLength, validateMaxLengthImage, phone } from '../constants';
 import { findOneUserAdmin } from "../repositories/userAdmin";
 import { UserAdmin } from "../interfaces/users";
 import { ModelDefinition } from '../types';

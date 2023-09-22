@@ -18,6 +18,11 @@ export interface UserAdmin extends User {
   phone?: number;
 }
 
+export interface SuperAdmin extends User {
+  phone?: number;
+}
+
+
 export interface BranchOffice extends User {
   userAdmin?: string | UserAdmin;
   salesGoalByMonth: number;
