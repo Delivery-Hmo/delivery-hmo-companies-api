@@ -8,7 +8,7 @@ import { MongooseError } from "mongoose";
 import { BranchOffice } from "../interfaces/users";
 import { newUserAdmin } from "./userAdmin";
 import { newUserDeliveryMan } from "./userDeliveryMan";
-import { createUserDeliveryMan } from "./deliveryMan";
+import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan } from "./deliveryMan";
 import { newUserSeller } from "./userSeller";
 import { createUserSeller } from "../repositories/userSeller";
 
@@ -59,7 +59,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     const newModels: Record<Rols, NewModelFunction<T>> = {
       "Administrador": null,
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
-      "Repartidor": null,
+      "Repartidor": newUserDeliveryMan as any as NewModelFunction<T>,
       "Vendedor": null,
     } as const;
 
@@ -78,7 +78,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
     const reposUpdate: Record<Rols, UpdateRepoFunction<T>> = {
       "Administrador": findByIdAndUpdateUserAdmin as any as UpdateRepoFunction<T>,
       "Administrador sucursal": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
-      "Repartidor": null,
+      "Repartidor": findByIdAndUpdateUserDeliveryMan as any as UpdateRepoFunction<T>,
       "Vendedor": null,
     } as const;
 

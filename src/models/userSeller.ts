@@ -34,8 +34,7 @@ const definition: ModelDefinition<UserSellerModelInterface> = {
   },
   branchOffice: {
     type: Schema.Types.ObjectId,
-    ref: 'BranchOffice',
-    required: [true, "La sucursal ah la que pertenece el vendedor es obligatoria"]
+    ref: 'BranchOffice'
   },
   userAdmin: {
     type: Schema.Types.ObjectId,

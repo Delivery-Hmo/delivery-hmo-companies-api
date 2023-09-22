@@ -1,4 +1,4 @@
-import { BranchOffice, UserAdmin, UserDeliveryMan } from "../interfaces/users";
+import { UserAdmin, UserDeliveryMan } from "../interfaces/users";
 import { handleErrorFunction } from "../utils/handleError";
 
 export const newUserDeliveryMan = (userDeliveryMan: UserDeliveryMan) => {
@@ -6,11 +6,11 @@ export const newUserDeliveryMan = (userDeliveryMan: UserDeliveryMan) => {
     const user = global?.user;
     userDeliveryMan.userAdmin = user as UserAdmin;
 
-    if (user?.role === "Repartidor") {
-      return userDeliveryMan;
+    if (userDeliveryMan.branchOffice === '') {
+      userDeliveryMan.branchOffice = undefined
     }
 
-    userDeliveryMan.branchOffice = user as BranchOffice;
+    userDeliveryMan;
     return userDeliveryMan;
   } catch (error) {
     throw handleErrorFunction(error);

@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { handleError } from "../utils/handleError";
 import { FilterQuery } from "mongoose";
-import UserDeliverymanModel from '../models/userDeliveryMan';
+import UserDeliveryManModel from '../models/userDeliveryMan';
 import { findByIdAndUpdateUserDeliveryMan, findByIdUserDeliveryMan } from "../services/deliveryMan";
 import { getPaginatedList } from "../repositories";
 import { FunctionController, ReqQuery } from "../types";
 import { UserDeliveryMan } from "../interfaces/users";
-import { createUser } from "../services";
+import { createUser, updateUser } from "../services";
 
 export const listByUserAdmin = async (req: Request, res: Response): FunctionController => {
   try {
@@ -18,7 +18,7 @@ export const listByUserAdmin = async (req: Request, res: Response): FunctionCont
       active: true,
     };
 
-    const paginatedList = await getPaginatedList({ model: UserDeliverymanModel, query, populate: "branchOffice", page: +page, limit: +limit });
+    const paginatedList = await getPaginatedList({ model: UserDeliveryManModel, query, populate: "branchOffice", page: +page, limit: +limit });
 
     return res.status(200).json(paginatedList);
   } catch (err) {
@@ -53,11 +53,10 @@ export const getById = async (req: Request, res: Response): FunctionController =
 export const update = async (req: Request, res: Response): FunctionController => {
   try {
     const model = req.body as UserDeliveryMan;
-    const { id } = model;
 
-    await findByIdAndUpdateUserDeliveryMan(id as string, model);
+    const userDeliveryMan = await updateUser(model, "Repartidor");
 
-    return res.status(200).json(model);
+    return res.status(200).json(userDeliveryMan);
   } catch (err) {
     return handleError(res, err);
   }
@@ -65,11 +64,15 @@ export const update = async (req: Request, res: Response): FunctionController =>
 
 export const disable = async (req: Request, res: Response): FunctionController => {
   try {
-    const { id, active } = req.body;
+    const id = req.body.id as string;
 
-    const model = await findByIdAndUpdateUserDeliveryMan(id, { active });
+    const userDeliveryMan = await findByIdUserDeliveryMan(id!) as UserDeliveryMan;
 
-    return res.status(200).json(model);
+    userDeliveryMan.active = false
+
+    await findByIdAndUpdateUserDeliveryMan(id, { active: false });
+
+    return res.status(200).json(true);
   } catch (err) {
     return handleError(res, err);
   }

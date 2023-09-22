@@ -6,6 +6,8 @@ import { getPaginatedList } from "../repositories";
 import { FunctionController, ReqQuery } from "../types";
 import { UserSeller } from "../interfaces/users";
 import { createUser, updateUser } from "../services";
+import { findByIdAndUpdateUserSeller } from "../repositories/userSeller";
+import { findByIdUserSeller } from "../services/userSeller";
 
 export const create = async (req: Request, res: Response): FunctionController => {
   const body = req.body as UserSeller;
@@ -63,11 +65,15 @@ export const update = async (req: Request, res: Response): FunctionController =>
 
 export const disable = async (req: Request, res: Response): FunctionController => {
   try {
-    const { id, active } = req.body;
+    const id = req.body.id as string;
 
-    const userBranchOfficeSeller = await UserSellerModel.findByIdAndUpdate(id, { active });
+    const userSeller = await findByIdUserSeller(id!) as UserSeller;
 
-    return res.status(200).json(userBranchOfficeSeller);
+    userSeller.active = false
+
+    await findByIdAndUpdateUserSeller(id, { active: false });
+
+    return res.status(200).json(true);
   } catch (err) {
     return handleError(res, err);
   }
