@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, validateMaxLength, validateMaxLengthImage, phone } from '../constants';
+import { maxlength, maxlengthImage, optionsModel, urlImageDefaultProfile, validateMaxLength, validateMaxLengthImage } from '../constants';
 import { findOneUserAdmin } from "../repositories/userAdmin";
 import { UserAdmin } from "../interfaces/users";
 import { ModelDefinition } from '../types';
@@ -27,7 +27,13 @@ const definition: ModelDefinition<UserAdminModelInterface> = {
     maxlength,
     validate: validateMaxLength
   },
-  phone,
+  phone: {
+    type: Number,
+    validate: {
+      validator: (value: number) => !value || value.toString().length === 10,
+      message: "El número telefónico tienen que ser de 10 dígitos."
+    }
+  },
   description: {
     type: String,
     maxlength,
