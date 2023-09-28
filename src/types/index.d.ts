@@ -31,7 +31,7 @@ export type CreateRepoFunction<T> = ((model: T) => Promise<GenericDocument<T>>) 
 
 export type UpdateRepoFunction<T> = ((id: string, model: T) => Promise<GenericDocument<T>>) | null;
 
-export type FunctionController = FunctionController;
+export type FunctionController = Promise<Response<any, Record<string, any>>>;
 
 export type ReqQuery = Record<string, string>;
 
