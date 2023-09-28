@@ -4,7 +4,7 @@ import { findOneUserAdmin } from "../repositories/userAdmin";
 import { UserAdmin } from "../interfaces/users";
 import { ModelDefinition } from '../types';
 
-type UserAdminModelInterface = Omit<UserAdmin, "id" | "password">;
+type UserAdminModelInterface = Omit<UserAdmin, "id" | "password" | "rfc">;
 
 const definition: ModelDefinition<UserAdminModelInterface> = {
   uid: {
@@ -47,10 +47,6 @@ const definition: ModelDefinition<UserAdminModelInterface> = {
   active: {
     type: Boolean,
     default: true
-  },
-  rfc: {
-    type: String,
-    unique: true
   },
   role: {
     type: String,

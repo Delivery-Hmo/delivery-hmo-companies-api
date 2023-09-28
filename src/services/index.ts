@@ -29,10 +29,10 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
     let userAuth = null;
 
     if (rol === "Administrador") {
-      userAuth = await getUserAuthByEmail(email)
-      await updateUserAuth(userAuth.uid, { displayName: "Administrador" })
+      userAuth = await getUserAuthByEmail(email);
+      await updateUserAuth(userAuth.uid, { displayName: "Administrador" });
     } else {
-      userAuth = await createUserAuth({ email, password, displayName: rol })
+      userAuth = await createUserAuth({ email, password, displayName: rol });
     }
 
     model.uid = userAuth.uid;
@@ -57,7 +57,7 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
 
     throw handleErrorFunction(error);
   }
-}
+};
 
 export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
   let oldEmail: string = "";
@@ -129,7 +129,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
 
     throw handleErrorFunction(error);
   }
-}
+};
 
 export const getUserModelsByRoute = async (routeController: string, id: string) => {
   try {
@@ -139,4 +139,4 @@ export const getUserModelsByRoute = async (routeController: string, id: string) 
   } catch (error) {
     throw handleErrorFunction(error);
   }
-}
+};

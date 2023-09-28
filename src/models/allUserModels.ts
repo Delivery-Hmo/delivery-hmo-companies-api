@@ -4,10 +4,10 @@ import UserSuperAdminModel from "./userSuperAdmin";
 import UserSellerModel from "./userSeller";
 import UserDeliveryManModel from "./userDeliveryMan";
 import BranchOfficeModel from "./brancOffice";
-import { NameUserModels } from "../types";
+import { NameModelsUsers } from "../types";
 import { BranchOffice } from "../interfaces/users";
 
-const AllModels: Record<NameUserModels, Model<any>> = {
+const AllModels: Record<NameModelsUsers, Model<any>> = {
   "SuperAdmin": UserSuperAdminModel,
   "UserAdmin": UserAdminModel,
   "BranchOffice": BranchOfficeModel as Model<BranchOffice>,
