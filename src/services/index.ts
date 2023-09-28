@@ -26,10 +26,14 @@ export const createUser = async <T extends Users>(model: T, rol: Rols) => {
     model = newModels[rol]!(model);
 
     const { email, password } = model;
+    let userAuth = null;
 
-    const userAuth = rol === "Administrador"
-      ? await getUserAuthByEmail(email)
-      : await createUserAuth({ email, password, displayName: rol })
+    if (rol === "Administrador") {
+      userAuth = await getUserAuthByEmail(email)
+      await updateUserAuth(userAuth.uid, { displayName: "Administrador" })
+    } else {
+      userAuth = await createUserAuth({ email, password, displayName: rol })
+    }
 
     model.uid = userAuth.uid;
 
