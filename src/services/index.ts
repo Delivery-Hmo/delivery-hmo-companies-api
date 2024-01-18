@@ -8,7 +8,7 @@ import { MongooseError } from "mongoose";
 import { BranchOffice } from "../interfaces/users";
 import { newUserDeliveryMan } from "./userDeliveryMan";
 import { createUserDeliveryMan, findByIdAndUpdateUserDeliveryMan } from "./deliveryMan";
-import { newUserSeller } from "./userSeller";
+import { findByIdAndUpdateUserSeller, newUserSeller } from "./userSeller";
 import { createUserSeller } from "../repositories/userSeller";
 import { getByIdAllUserModels } from "../repositories";
 import { newUserAdmin } from "./userAdmin";
@@ -68,7 +68,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador": null,
       "Administrador sucursal": newBranchOffice as any as NewModelFunction<T>,
       "Repartidor": newUserDeliveryMan as any as NewModelFunction<T>,
-      "Vendedor": null,
+      "Vendedor": newUserSeller as any as NewModelFunction<T>,
     } as const;
 
     if (newModels[rol]) {
@@ -88,7 +88,7 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       "Administrador": findByIdAndUpdateUserAdmin as any as UpdateRepoFunction<T>,
       "Administrador sucursal": findByIdAndUpdateBranchOffice as any as UpdateRepoFunction<T>,
       "Repartidor": findByIdAndUpdateUserDeliveryMan as any as UpdateRepoFunction<T>,
-      "Vendedor": null,
+      "Vendedor": findByIdAndUpdateUserSeller as any as UpdateRepoFunction<T>,
     } as const;
 
     delete model.password;
