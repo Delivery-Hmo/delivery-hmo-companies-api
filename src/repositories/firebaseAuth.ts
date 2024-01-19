@@ -1,5 +1,5 @@
 import admin, { FirebaseError } from 'firebase-admin';
-import { auth, authAdmin } from "../configServer/firebase";
+import { auth, authSuperAdmin } from "../configServer/firebase";
 import { CreateUserAuth, UpdateUserAuth } from "../interfaces/firebaseAuth";
 
 export const createUserAuth = async (props: CreateUserAuth) => {
@@ -39,7 +39,7 @@ export const verifyIdToken = (idToken: string) => auth.verifyIdToken(idToken);
 
 export const verifyIdTokenSuperAdmin = (idToken: string) => {
   try {
-    return authAdmin.verifyIdToken(idToken);
+    return authSuperAdmin.verifyIdToken(idToken);
   } catch (error) {
     throw error;
   }

@@ -8,12 +8,12 @@ const appSuperAdmin = admin.initializeApp({ credential: cert(serviceAccountAdmin
 const storage = app.storage();
 
 const auth = app.auth();
-const authAdmin = appSuperAdmin.auth();
+const authSuperAdmin = appSuperAdmin.auth();
 
 export {
   app,
   appSuperAdmin,
   storage,
   auth,
-  authAdmin
+  authSuperAdmin
 };
