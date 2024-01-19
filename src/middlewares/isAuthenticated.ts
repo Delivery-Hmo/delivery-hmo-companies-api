@@ -5,7 +5,7 @@ import { Rols, Users } from "../types";
 import { unauthorized } from "../utils/handleError";
 import { findByUidBranchOffice } from "../repositories/branchOffice";
 import { findByUidUserAdmin } from "../repositories/userAdmin";
-import { getUserAuthByUid, verifyIdToken } from "../repositories/firebaseAuth";
+import { getUserAuthByUid, verifyIdToken, verifyIdTokenSuperAdmin } from "../repositories/firebaseAuth";
 
 const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
   "Administrador": (uid: string) => findByUidUserAdmin(uid),
@@ -15,8 +15,10 @@ const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
   "SuperAdmin": (uid: string) => Promise.resolve(null),
 };
 
+const pathsSuperAdmnin: readonly string[] = ["/userAdmin/list"];
+
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
-  const { authorization } = req.headers
+  const { authorization } = req.headers;
   const { originalUrl } = req;
 
   if (!authorization?.startsWith('Bearer '))
@@ -30,7 +32,14 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
   const token = split[1];
 
   try {
-    const decodedToken: admin.auth.DecodedIdToken = await verifyIdToken(token);
+    let decodedToken: admin.auth.DecodedIdToken | null = null;
+
+    if (pathsSuperAdmnin.includes(originalUrl)) {
+      decodedToken = await verifyIdTokenSuperAdmin(token);
+    } else {
+      decodedToken = await verifyIdToken(token);
+    }
+
     const { uid } = decodedToken;
 
     const userAuth = await getUserAuthByUid(uid);
@@ -48,6 +57,6 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
     console.error(err);
     return unauthorized(res);
   }
-}
+};
 
 export default isAuthenticated;
