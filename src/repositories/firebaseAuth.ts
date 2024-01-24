@@ -37,10 +37,17 @@ export const getUserAuthByEmail = (email: string) => auth.getUserByEmail(email);
 
 export const verifyIdToken = (idToken: string) => auth.verifyIdToken(idToken);
 
-export const verifyIdTokenSuperAdmin = (idToken: string) => {
+//SuperAdmin
+
+export const updateUserAuthSuperAdmin = (uid: string, props: UpdateUserAuth) => authSuperAdmin.updateUser(uid, props);
+
+export const getUserAuthByUidSuperAdmin = async (uid: string) => {
   try {
-    return authSuperAdmin.verifyIdToken(idToken);
-  } catch (error) {
-    throw error;
+    return await authSuperAdmin.getUser(uid);
+  } catch (e) {
+    console.log(e);
+    throw e;
   }
 };
+
+export const verifyIdTokenSuperAdmin = (idToken: string) => authSuperAdmin.verifyIdToken(idToken);

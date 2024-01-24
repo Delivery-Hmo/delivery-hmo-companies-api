@@ -1,9 +1,14 @@
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
 import admin from 'firebase-admin';
 import { cert } from 'firebase-admin/app';
-import { serviceAccount, serviceAccountAdmin, storageBucket } from '../configServer';
+import { serviceAccount, storageBucket } from '../configServer';
 
 const app = admin.initializeApp({ credential: cert(serviceAccount), storageBucket });
-const appSuperAdmin = admin.initializeApp({ credential: cert(serviceAccountAdmin) }, "appSuperAdmin");
+const appSuperAdmin = admin.initializeApp({ credential: cert(process.env.GOOGLE_APPLICATION_CREDENTIALS_SUPERADMIN!) }, "appSuperAdmin");
 
 const storage = app.storage();
 
