@@ -36,7 +36,7 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
     let decodedToken: admin.auth.DecodedIdToken | null = null;
     let userAuth: UserRecord | null = null;
 
-    if (pathsSuperAdmnin.includes(originalUrl)) {
+    if (pathsSuperAdmnin.some(p => originalUrl.includes(p))) {
       decodedToken = await verifyIdTokenSuperAdmin(token);
 
       const { uid } = decodedToken;
