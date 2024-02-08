@@ -1,22 +1,25 @@
 import { Request, Response, NextFunction } from "express";
-import { Document } from "mongoose";
 import admin from 'firebase-admin';
 import { Rols, Users } from "../types";
 import { unauthorized } from "../utils/handleError";
 import { findByUidBranchOffice } from "../repositories/branchOffice";
 import { findByUidUserAdmin } from "../repositories/userAdmin";
-import { getUserAuthByUid, verifyIdToken } from "../repositories/firebaseAuth";
+import { getUserAuthByUid, getUserAuthByUidSuperAdmin, verifyIdToken, verifyIdTokenSuperAdmin } from "../repositories/firebaseAuth";
+import { UserRecord } from "firebase-admin/lib/auth/user-record";
+import { findByUidUserSuperAdmin } from "../repositories/userSuperAdmin";
 
-const getUserDatas: Record<Rols, (uid: string) => Promise<Document | null>> = {
+const getUserDatas: Record<Rols, (uid: string) => Promise<Users | null>> = {
   "Administrador": (uid: string) => findByUidUserAdmin(uid),
   "Administrador sucursal": (uid: string) => findByUidBranchOffice(uid),
   "Vendedor": (uid: string) => Promise.resolve(null),
   "Repartidor": (uid: string) => Promise.resolve(null),
-  "SuperAdmin": (uid: string) => Promise.resolve(null),
+  "SuperAdmin": (uid: string) => findByUidUserSuperAdmin(uid),
 };
 
+const pathsSuperAdmnin: readonly string[] = ["/userAdmin/list"];
+
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
-  const { authorization } = req.headers
+  const { authorization } = req.headers;
   const { originalUrl } = req;
 
   if (!authorization?.startsWith('Bearer '))
@@ -30,13 +33,25 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
   const token = split[1];
 
   try {
-    const decodedToken: admin.auth.DecodedIdToken = await verifyIdToken(token);
-    const { uid } = decodedToken;
+    let decodedToken: admin.auth.DecodedIdToken | null = null;
+    let userAuth: UserRecord | null = null;
 
-    const userAuth = await getUserAuthByUid(uid);
+    if (pathsSuperAdmnin.some(p => originalUrl.includes(p))) {
+      decodedToken = await verifyIdTokenSuperAdmin(token);
+
+      const { uid } = decodedToken;
+
+      userAuth = await getUserAuthByUidSuperAdmin(uid);
+    } else {
+      decodedToken = await verifyIdToken(token);
+
+      const { uid } = decodedToken;
+
+      userAuth = await getUserAuthByUid(uid);
+    }
 
     if (originalUrl !== "/userAdmin/create") {
-      const user = await getUserDatas[(userAuth.displayName || "") as Rols](uid) as any as Users;
+      const user = await getUserDatas[(userAuth.displayName || "") as Rols](userAuth.uid);
 
       if (!user) return unauthorized(res);
 
@@ -48,6 +63,6 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
     console.error(err);
     return unauthorized(res);
   }
-}
+};
 
 export default isAuthenticated;

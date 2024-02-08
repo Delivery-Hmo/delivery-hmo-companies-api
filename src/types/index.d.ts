@@ -14,8 +14,8 @@ export type Rols = "SuperAdmin" | "Administrador" | "Administrador sucursal" | "
 export type NameModels = "SuperAdmin" | "UserAdmin" | "BranchOffice" | "UserSeller" | "UserDeliveryMan" | "CommentsBranchOffice";
 
 export type NameModelsUsers = "SuperAdmin" | "UserAdmin" | "BranchOffice" | "UserSeller" | "UserDeliveryMan";
-//falta super admin
-export type Users = UserAdmin | BranchOffice | UserSeller | UserDeliveryMan;
+
+export type Users = SuperAdmin | UserAdmin | BranchOffice | UserSeller | UserDeliveryMan;
 
 export type GenericDocument<T> = (Document<T, {}, T> & Omit<T & {
   _id: Types.ObjectId;

@@ -18,6 +18,12 @@ export const serviceAccount: admin.ServiceAccount = Object.freeze({
   clientEmail: process.env.CLIENT_EMAIL,
 });
 
+export const serviceAccountAdmin: admin.ServiceAccount = Object.freeze({
+  projectId: process.env.PROJECT_ID_ADMIN,
+  privateKey: process.env.PRIVATE_KEY_ADMIN,
+  clientEmail: process.env.CLIENT_EMAIL_ADMIN,
+});
+
 export const storageBucket = process.env.STORAGE_BUCKET;
 
 const configServer = (app: Application) => {
@@ -26,6 +32,6 @@ const configServer = (app: Application) => {
   app.use(json({ limit: '50mb' }));
   app.use(cors({ origin: true }));
   app.use(s(path.join(new URL(import.meta.url).pathname, 'public')));
-}
+};
 
 export default configServer;
