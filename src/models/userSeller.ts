@@ -52,6 +52,7 @@ const definition: ModelDefinition<UserSellerModelInterface> = {
   },
   rfc: {
     type: String,
+    unique: true,
   },
   image: {
     type: String,
@@ -67,12 +68,18 @@ export const schema = new Schema<UserSeller>(
 );
 
 schema.pre<UserSeller>('save', async function (next) {
-  const { name, id } = this;
+  const { name, id, rfc } = this;
 
   const otherModelSameName = await findOneUserSeller({ name });
 
   if (otherModelSameName && otherModelSameName?.id !== id) {
     throw "Ya existe una vendedor con este nombre.";
+  }
+
+  const otherModelSameRfc = await findOneUserSeller({ rfc });
+
+  if (otherModelSameRfc && otherModelSameRfc?.id !== id) {
+    throw "Ya existe un vendedor con este rfc.";
   }
 
   next();
