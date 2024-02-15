@@ -59,6 +59,7 @@ const definition: ModelDefinition<UserDeliveryManModelInterface> = {
   },
   rfc: {
     type: String,
+    unique: true,
   }
 };
 
@@ -68,12 +69,18 @@ export const schema = new Schema<UserDeliveryMan>(
 );
 
 schema.pre<UserDeliveryMan>("save", async function (next) {
-  const { name, id } = this;
+  const { name, id, rfc } = this;
 
   const otherModelSameName = await findOneUserDeliveryMan({ name });
 
   if (otherModelSameName && otherModelSameName?.id !== id) {
     throw "Ya existe un repartidor con el mismo nombre.";
+  }
+
+  const otherModelSameRfc = await findOneUserDeliveryMan({ rfc });
+
+  if (otherModelSameRfc && otherModelSameRfc?.id !== id) {
+    throw "Ya existe un vendedor con este rfc.";
   }
 
   next();
