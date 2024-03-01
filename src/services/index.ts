@@ -109,6 +109,10 @@ export const updateUser = async <T extends Users>(model: T, rol: Rols) => {
       model = branchOffice as T;
     }
 
+    if (!model.image) {
+      delete model.image;
+    }
+
     const modelUpdated = await reposUpdate[rol]!(id!, model);
 
     return modelUpdated;

@@ -10,7 +10,7 @@ export interface User {
   email: string;
   description?: string;
   active: boolean;
-  readonly image: string;
+  image?: string;
   password?: string;
   rfc?: string;
 }
