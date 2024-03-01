@@ -3,11 +3,11 @@ import { handleError } from "../utils/handleError";
 import UserSellerModel from '../models/userSeller';
 import { FilterQuery } from "mongoose";
 import { getPaginatedList } from "../repositories";
-import { FunctionController, ReqQuery } from "../types";
+import { FunctionController, ReqQuery, UndefinedInterface } from "../types";
 import { UserSeller } from "../interfaces/users";
 import { createUser, updateUser } from "../services";
 import { findByIdAndUpdateUserSeller } from "../repositories/userSeller";
-import { findByIdUserSeller } from "../services/userSeller";
+import { findByIdUserSeller, validateImagesUserSeller } from "../services/userSeller";
 
 export const create = async (req: Request, res: Response): FunctionController => {
   const body = req.body as UserSeller;
@@ -74,6 +74,25 @@ export const disable = async (req: Request, res: Response): FunctionController =
     await findByIdAndUpdateUserSeller(id, { active: false });
 
     return res.status(200).json(true);
+  } catch (err) {
+    return handleError(res, err);
+  }
+}
+
+export const validateImages = async (req: Request, res: Response): FunctionController => {
+  try {
+    const { images, id, failedImages } = req.body as UndefinedInterface<UserSeller> & { failedImages: number };
+
+    if (((images?.length || 0) + failedImages) !== 3) {
+      return res.status(500).json("Las fotos de la sucursal deben ser 3.");
+    }
+
+    const branchOffice = await validateImagesUserSeller({ id: id!, images });
+
+    return res.status(200).json({
+      branchOffice,
+      message: failedImages ? `Las fotos se han validado correcetamente, excepto ${failedImages}.` : "Las fotos se han validado correcetamente."
+    });
   } catch (err) {
     return handleError(res, err);
   }

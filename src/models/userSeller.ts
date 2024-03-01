@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
-import { maxlength, optionsModel, validateMaxLength, phone, maxlengthImage, urlImageDefaultProfile, validateMaxLengthImage } from '../constants';
+import { maxlength, optionsModel, validateMaxLength, phone } from '../constants';
 import { UserSeller } from "../interfaces/users";
 import { findOneUserSeller } from '../repositories/userSeller';
 import { ModelDefinition } from '../types';
 
-type UserSellerModelInterface = Omit<UserSeller, "id" | "password">;
+type UserSellerModelInterface = Omit<UserSeller, "id" | "password" | "image">;
 
 const definition: ModelDefinition<UserSellerModelInterface> = {
   uid: {
@@ -54,12 +54,15 @@ const definition: ModelDefinition<UserSellerModelInterface> = {
     type: String,
     unique: true,
   },
-  image: {
-    type: String,
-    maxlength: maxlengthImage,
-    default: urlImageDefaultProfile,
-    validate: validateMaxLengthImage
-  }
+  validatedImages: {
+    type: Boolean,
+    default: false
+  },
+  validatingImages: {
+    type: Boolean,
+    default: false
+  },
+  images: [String],
 }
 
 export const schema = new Schema<UserSeller>(

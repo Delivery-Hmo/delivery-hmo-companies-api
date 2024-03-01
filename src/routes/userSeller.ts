@@ -1,5 +1,5 @@
 import { Application, Router } from "express";
-import { create, getById, update, disable, listByUserAdmin } from '../controllers/userSeller'
+import { create, getById, update, disable, listByUserAdmin, validateImages } from '../controllers/userSeller'
 import isAuthenticated from "../middlewares/isAuthenticated";
 import isBranchOffice from "../middlewares/isBranchOffice";
 
@@ -12,6 +12,7 @@ const RoutesUserSeller = (app: Application) => {
   router.post('/create', isBranchOffice, create);
   router.put('/update', update);
   router.patch('/disable', isBranchOffice, disable);
+  router.put('/validateImages', isBranchOffice, validateImages)
 
   app.use("/userSeller", [isAuthenticated], router);
 }

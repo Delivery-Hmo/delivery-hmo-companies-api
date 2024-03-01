@@ -45,6 +45,9 @@ export interface UserSeller extends User {
   branchOffice?: string | BranchOffice;
   userAdmin?: string | UserAdmin;
   phone?: number;
+  validatedImages: boolean;
+  validatingImages: boolean;
+  images: string[];
 }
 
 export interface UserDeliveryMan extends User {

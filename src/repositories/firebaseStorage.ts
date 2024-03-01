@@ -5,9 +5,9 @@ export const uploadFile = async (path: string, content: Buffer) => {
     const file = admin.storage().bucket().file(path);
 
     await file.save(content);
-  
+
     const [url] = await file.getSignedUrl({ action: "read", expires: "01-01-2045" });
-  
+
     return url;
   } catch (error) {
     console.log(error);

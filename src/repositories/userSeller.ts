@@ -8,3 +8,9 @@ export const createUserSeller = (model: UserSeller) => UserSellerModel.create(mo
 export const findOneUserSeller = (query: FilterQuery<UserSeller>) => UserSellerModel.findOne(query);
 
 export const findByIdAndUpdateUserSeller = (id: string, data: UndefinedInterface<UserSeller>) => UserSellerModel.findByIdAndUpdate(id, data, { new: true });
+
+export const findByIdUserSeller = (id: string) => UserSellerModel.findById(id);
+
+export const findByUidUserSeller = (uid: string) => UserSellerModel.findOne({ uid });
+
+export const findUserSeller = (query: FilterQuery<UserSeller>) => UserSellerModel.find(query);
