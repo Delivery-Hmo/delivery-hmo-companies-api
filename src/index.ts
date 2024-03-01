@@ -1,7 +1,6 @@
 import express from 'express';
-import { initializeApp, cert } from 'firebase-admin/app';
-import configServer, { server, serviceAccount, storageBucket } from './configServer';
 import { connectDB } from './configServer/mongodb';
+import configServer, { server } from './configServer';
 import routes from './routes';
 import uploadFiles from "./middlewares/uploadFiles";
 //import cluster from 'cluster';
@@ -9,7 +8,6 @@ import uploadFiles from "./middlewares/uploadFiles";
 const app = express();
 
 try {
-  initializeApp({ credential: cert(serviceAccount), storageBucket });
   configServer(app);
   await connectDB();
   uploadFiles(app);

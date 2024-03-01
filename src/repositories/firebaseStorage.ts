@@ -1,8 +1,8 @@
-import admin from "firebase-admin";
+import { storage } from "../configServer/firebase";
 
 export const uploadFile = async (path: string, content: Buffer) => {
   try {
-    const file = admin.storage().bucket().file(path);
+    const file = storage.bucket().file(path);
 
     await file.save(content);
 
@@ -13,15 +13,15 @@ export const uploadFile = async (path: string, content: Buffer) => {
     console.log(error);
     throw "Error al subir el archivo.";
   }
-}
+};
 
 export const deleteFile = async (fileName: string) => {
   try {
-    const file = admin.storage().bucket().file(fileName);
+    const file = storage.bucket().file(fileName);
 
     await file.delete();
   } catch (error) {
     console.log(error);
     throw "Error al eliminar el archivo.";
   }
-}
+};
