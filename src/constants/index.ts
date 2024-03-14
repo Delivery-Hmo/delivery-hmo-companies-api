@@ -15,12 +15,11 @@ export const optionsModel: SchemaOptions<any> = {
 } as const;
 export const phone: SchemaDefinitionProperty<number | undefined> = {
   type: Number,
-  required: true,
   validate: {
-    validator: (value: number) => value.toString().length === 10,
+    validator: (value: number | null) => value === null || value?.toString().length === 10,
     message: "El número telefónico tienen que ser de 10 dígitos."
   }
-} as const;
+};
 export const validateMaxLength: ValidateOpts<string> = {
   validator: (value: string) => value.length <= 300,
   message: "El maximo de caracteres permitido es 300."
