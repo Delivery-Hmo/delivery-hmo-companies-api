@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { Model } from "mongoose";
 
 export interface LatLng {
   lat: number;

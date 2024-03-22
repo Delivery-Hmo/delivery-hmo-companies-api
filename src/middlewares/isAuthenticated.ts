@@ -16,7 +16,7 @@ const getUserDatas: Record<Rols, (uid: string) => Promise<Users | null>> = {
   "SuperAdmin": (uid: string) => findByUidUserSuperAdmin(uid),
 };
 
-const pathsSuperAdmnin: readonly string[] = ["/userAdmin/list"];
+const pathsSuperAdmnin: readonly string[] = ["/empresas/list"];
 
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
@@ -50,7 +50,7 @@ const isAuthenticated = async (req: Request, res: Response, next: NextFunction) 
       userAuth = await getUserAuthByUid(uid);
     }
 
-    if (originalUrl !== "/userAdmin/create") {
+    if (originalUrl !== "/empresas/create") {
       const user = await getUserDatas[(userAuth.displayName || "") as Rols](userAuth.uid);
 
       if (!user) return unauthorized(res);
