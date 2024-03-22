@@ -22,9 +22,9 @@ export const newUserSeller = (userSeller: UserSeller) => {
   }
 }
 
-export const validateImagesUserSeller = async ({ id, images }: UndefinedInterface<UserSeller>) => {
+export const validateImagesUserSeller = async ({ id }: UndefinedInterface<UserSeller>) => {
   try {
-    return await findByIdAndUpdateUserSeller(id!, { images, validatingImages: true });
+    return await findByIdAndUpdateUserSeller(id!, { validatingImages: true });
   } catch (error) {
     throw handleErrorFunction(error);
   }

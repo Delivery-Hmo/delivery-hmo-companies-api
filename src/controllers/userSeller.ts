@@ -79,20 +79,15 @@ export const disable = async (req: Request, res: Response): FunctionController =
   }
 }
 
-export const validateImages = async (req: Request, res: Response): FunctionController => {
+export const getSellerSuperAdmin = async (req: Request, res: Response): FunctionController => {
   try {
-    const { images, id, failedImages } = req.body as UndefinedInterface<UserSeller> & { failedImages: number };
+    const { page, limit } = req.query as ReqQuery;
 
-    if (((images?.length || 0) + failedImages) !== 3) {
-      return res.status(500).json("Las fotos de la sucursal deben ser 3.");
-    }
+    const query: FilterQuery<UserSeller> = {};
 
-    const branchOffice = await validateImagesUserSeller({ id: id!, images });
+    const paginatedList = await getPaginatedList({ model: UserSellerModel, query, populate: "branchOffice", page: +page, limit: +limit });
 
-    return res.status(200).json({
-      branchOffice,
-      message: failedImages ? `Las fotos se han validado correcetamente, excepto ${failedImages}.` : "Las fotos se han validado correcetamente."
-    });
+    return res.status(200).json(paginatedList);
   } catch (err) {
     return handleError(res, err);
   }

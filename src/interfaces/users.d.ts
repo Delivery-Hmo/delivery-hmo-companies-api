@@ -47,7 +47,6 @@ export interface UserSeller extends User {
   phone?: number;
   validatedImages: boolean;
   validatingImages: boolean;
-  images: string[];
 }
 
 export interface UserDeliveryMan extends User {
