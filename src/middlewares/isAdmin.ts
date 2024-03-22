@@ -3,7 +3,7 @@ import { unauthorized } from "../utils/handleError";
 
 const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (req.originalUrl !== "/userAdmin/create" && !["SuperAdmin", "Administrador"].includes(global.user!.role)) {
+    if (req.originalUrl !== "/empresas/create" && !["SuperAdmin", "Administrador"].includes(global.user!.role)) {
       return unauthorized(res);
     }
 

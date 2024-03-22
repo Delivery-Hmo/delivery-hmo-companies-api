@@ -8,7 +8,7 @@
         "https"
     ],
     "paths": {
-        "/userAdmin/list": {
+        "/empresas/list": {
             "get": {
                 "tags": [
                     "userAdmin"
@@ -65,7 +65,7 @@
                 }
             }
         },
-        "/userAdmin/getById": {
+        "/empresas/getById": {
             "get": {
                 "tags": [
                     "userAdmin"
@@ -114,7 +114,7 @@
                 }
             }
         },
-        "/userAdmin/getByUid": {
+        "/empresas/getByUid": {
             "get": {
                 "tags": [
                     "userAdmin"

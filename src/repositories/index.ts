@@ -1,6 +1,6 @@
 import { PropsPaginatedList } from "../interfaces";
 import AllModels from "../models/allModels";
-import { GenericDocument, NameModels } from "../types";
+import { NameModels } from "../types";
 
 export const getByIdAllUserModels = async <T extends {}>(nameModel: NameModels, id: string) => {
   try {
@@ -8,14 +8,13 @@ export const getByIdAllUserModels = async <T extends {}>(nameModel: NameModels, 
 
     return model.findById(id);
   } catch (error) {
-    console.log(error);
     throw error;
   }
-}
+};
 
 export const getPaginatedList = async <T extends {}>({ model, query, populate, page, limit }: PropsPaginatedList<T>) => {
   try {
-    const list = await model.find(query).limit(limit).skip((page - 1) * limit).populate(populate) as GenericDocument<T>[];
+    const list = await model.find(query).limit(limit).skip((page - 1) * limit).populate(populate);
     const total = await model.countDocuments(query);
 
     return {
@@ -23,7 +22,6 @@ export const getPaginatedList = async <T extends {}>({ model, query, populate, p
       total
     };
   } catch (error) {
-    console.log(error);
     throw error;
   }
-}
+};

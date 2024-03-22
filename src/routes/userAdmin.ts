@@ -13,7 +13,7 @@ const RoutesUserAdmin = (app: Application) => {
   router.put('/update', update);
   router.patch('/disable', disable);
 
-  app.use("/userAdmin", [isAuthenticated, isAdmin], router);
+  app.use("/empresas", [isAuthenticated, isAdmin], router);
 };
 
 export default RoutesUserAdmin;

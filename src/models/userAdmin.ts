@@ -27,7 +27,7 @@ const definition: ModelDefinition<UserAdminModelInterface> = {
     maxlength,
     validate: validateMaxLength
   },
-  phone ,
+  phone,
   description: {
     type: String,
     maxlength,
