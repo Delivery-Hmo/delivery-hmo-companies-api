@@ -1,6 +1,7 @@
 import { UserAdmin, UserSeller } from "../interfaces/users";
 import { handleErrorFunction } from "../utils/handleError";
 import UserSellerModel from "../models/userSeller";
+import { UndefinedInterface } from "../types/index.js";
 
 export const findByIdUserSeller = (id: string) => UserSellerModel.findById(id);
 
@@ -16,6 +17,14 @@ export const newUserSeller = (userSeller: UserSeller) => {
     }
 
     return userSeller;
+  } catch (error) {
+    throw handleErrorFunction(error);
+  }
+}
+
+export const validateImagesUserSeller = async ({ id }: UndefinedInterface<UserSeller>) => {
+  try {
+    return await findByIdAndUpdateUserSeller(id!, { validatingImages: true });
   } catch (error) {
     throw handleErrorFunction(error);
   }
